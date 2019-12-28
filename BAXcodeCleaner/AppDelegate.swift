@@ -10,12 +10,12 @@ import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    public var rootVC: ViewController?
+    public var rootVC: BAXCMainVC?
     public var window: NSWindow?
     public var rootWC: NSWindowController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        self.rootVC = ViewController()
+        self.rootVC = BAXCMainVC()
         
         let width: CGFloat = floor(NSScreen.main!.frame.width * 0.618)
         let height: CGFloat = floor(NSScreen.main!.frame.height * 0.618)

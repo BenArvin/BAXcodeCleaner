@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  BAXCMainVC.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/25.
@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class BAXCMainVC: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -19,7 +19,6 @@ class ViewController: NSViewController {
     
     override func viewDidAppear() {
         super.viewDidAppear()
-//        self.view.wantsLayer = true
     }
 }
 

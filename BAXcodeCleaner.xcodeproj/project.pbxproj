@@ -8,11 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		E493A94B23B3056E00F8FE78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E493A94A23B3056E00F8FE78 /* AppDelegate.swift */; };
-		E493A94D23B3056E00F8FE78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E493A94C23B3056E00F8FE78 /* ViewController.swift */; };
+		E493A94D23B3056E00F8FE78 /* BAXCMainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E493A94C23B3056E00F8FE78 /* BAXCMainVC.swift */; };
 		E493A94F23B3057000F8FE78 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E493A94E23B3057000F8FE78 /* Assets.xcassets */; };
 		E493A95E23B3057000F8FE78 /* BAXcodeCleanerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E493A95D23B3057000F8FE78 /* BAXcodeCleanerTests.swift */; };
 		E493A96923B3057000F8FE78 /* BAXcodeCleanerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E493A96823B3057000F8FE78 /* BAXcodeCleanerUITests.swift */; };
 		E497EE2723B7365300D9212E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE2623B7365300D9212E /* main.swift */; };
+		E497EE2F23B74F7900D9212E /* BAXCFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE2E23B74F7900D9212E /* BAXCFileUtil.swift */; };
+		E497EE3123B74FEF00D9212E /* BAXCDerivedDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */; };
+		E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3423B7523F00D9212E /* BAXCXcodePathManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +38,7 @@
 /* Begin PBXFileReference section */
 		E493A94723B3056E00F8FE78 /* BAXcodeCleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BAXcodeCleaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E493A94A23B3056E00F8FE78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E493A94C23B3056E00F8FE78 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E493A94C23B3056E00F8FE78 /* BAXCMainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCMainVC.swift; sourceTree = "<group>"; };
 		E493A94E23B3057000F8FE78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E493A95323B3057000F8FE78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E493A95423B3057000F8FE78 /* BAXcodeCleaner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BAXcodeCleaner.entitlements; sourceTree = "<group>"; };
@@ -46,6 +49,9 @@
 		E493A96823B3057000F8FE78 /* BAXcodeCleanerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXcodeCleanerUITests.swift; sourceTree = "<group>"; };
 		E493A96A23B3057000F8FE78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E497EE2623B7365300D9212E /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		E497EE2E23B74F7900D9212E /* BAXCFileUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCFileUtil.swift; sourceTree = "<group>"; };
+		E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCDerivedDataManager.swift; sourceTree = "<group>"; };
+		E497EE3423B7523F00D9212E /* BAXCXcodePathManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCXcodePathManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +103,9 @@
 			isa = PBXGroup;
 			children = (
 				E493A94A23B3056E00F8FE78 /* AppDelegate.swift */,
-				E493A94C23B3056E00F8FE78 /* ViewController.swift */,
+				E497EE2B23B74F2200D9212E /* Business */,
+				E497EE2C23B74F3300D9212E /* Service */,
+				E497EE2D23B74F6400D9212E /* BaseUtils */,
 				E497EE2623B7365300D9212E /* main.swift */,
 				E493A94E23B3057000F8FE78 /* Assets.xcassets */,
 				E493A95323B3057000F8FE78 /* Info.plist */,
@@ -122,6 +130,31 @@
 				E493A96A23B3057000F8FE78 /* Info.plist */,
 			);
 			path = BAXcodeCleanerUITests;
+			sourceTree = "<group>";
+		};
+		E497EE2B23B74F2200D9212E /* Business */ = {
+			isa = PBXGroup;
+			children = (
+				E493A94C23B3056E00F8FE78 /* BAXCMainVC.swift */,
+			);
+			path = Business;
+			sourceTree = "<group>";
+		};
+		E497EE2C23B74F3300D9212E /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */,
+				E497EE3423B7523F00D9212E /* BAXCXcodePathManager.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		E497EE2D23B74F6400D9212E /* BaseUtils */ = {
+			isa = PBXGroup;
+			children = (
+				E497EE2E23B74F7900D9212E /* BAXCFileUtil.swift */,
+			);
+			path = BaseUtils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,9 +286,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E493A94D23B3056E00F8FE78 /* ViewController.swift in Sources */,
+				E493A94D23B3056E00F8FE78 /* BAXCMainVC.swift in Sources */,
+				E497EE2F23B74F7900D9212E /* BAXCFileUtil.swift in Sources */,
 				E493A94B23B3056E00F8FE78 /* AppDelegate.swift in Sources */,
 				E497EE2723B7365300D9212E /* main.swift in Sources */,
+				E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */,
+				E497EE3123B74FEF00D9212E /* BAXCDerivedDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
