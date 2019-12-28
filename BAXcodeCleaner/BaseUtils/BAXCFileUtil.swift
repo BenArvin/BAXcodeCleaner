@@ -45,6 +45,7 @@ extension BAXCFileUtil {
         do {
             try items = FileManager.default.contentsOfDirectory(atPath: path)
         } catch {
+            error.localizedDescription
             return nil
         }
         var result:[String] = []
@@ -70,6 +71,34 @@ extension BAXCFileUtil {
             return firstPart
         }
         return NSURL(fileURLWithPath: firstPart!).appendingPathComponent(secondPart!)!.path
+    }
+    
+    public class func splitFilePath(_ path: String?) -> (String?, String?, String?) {
+        if path == nil || path!.isEmpty {
+            return (nil, nil, nil)
+        }
+        let pathUrl: NSURL = NSURL(fileURLWithPath: path!)
+        let fullName: String? = pathUrl.lastPathComponent
+        let ext: String? = pathUrl.pathExtension
+        var realName: String? = fullName
+        if fullName != nil && !fullName!.isEmpty && ext != nil && !ext!.isEmpty {
+            realName = fullName!.mc_sub(from: 0, to: fullName!.count - ext!.count - 1)
+        }
+        return (fullName, realName, ext)
+    }
+    
+    public class func splitFileName(_ name: String?) -> (String?, String?) {
+        if name == nil || name!.isEmpty {
+            return (nil, nil)
+        }
+        let tmpStr: NSString = name! as NSString
+        let range: NSRange = tmpStr.range(of: ".", options: String.CompareOptions.backwards, range: NSRange.init(location: 0, length: tmpStr.length), locale: nil)
+        if range.location == NSNotFound {
+            return (name, nil)
+        }
+        let realName: String? = name!.mc_sub(from: 0, to: range.location)
+        let ext: String? = name!.mc_sub(from: range.location + 1, to: name!.count)
+        return (realName, ext)
     }
 }
 

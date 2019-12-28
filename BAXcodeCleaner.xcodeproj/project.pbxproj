@@ -16,6 +16,8 @@
 		E497EE2F23B74F7900D9212E /* BAXCFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE2E23B74F7900D9212E /* BAXCFileUtil.swift */; };
 		E497EE3123B74FEF00D9212E /* BAXCDerivedDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */; };
 		E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3423B7523F00D9212E /* BAXCXcodePathManager.swift */; };
+		E497EE3823B75E5500D9212E /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3723B75E5500D9212E /* String+Extension.swift */; };
+		E497EE3A23B75F1400D9212E /* BAXCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3923B75F1400D9212E /* BAXCError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,8 @@
 		E497EE2E23B74F7900D9212E /* BAXCFileUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCFileUtil.swift; sourceTree = "<group>"; };
 		E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCDerivedDataManager.swift; sourceTree = "<group>"; };
 		E497EE3423B7523F00D9212E /* BAXCXcodePathManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCXcodePathManager.swift; sourceTree = "<group>"; };
+		E497EE3723B75E5500D9212E /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		E497EE3923B75F1400D9212E /* BAXCError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,9 +156,19 @@
 		E497EE2D23B74F6400D9212E /* BaseUtils */ = {
 			isa = PBXGroup;
 			children = (
+				E497EE3623B75E2C00D9212E /* Extensions */,
 				E497EE2E23B74F7900D9212E /* BAXCFileUtil.swift */,
+				E497EE3923B75F1400D9212E /* BAXCError.swift */,
 			);
 			path = BaseUtils;
+			sourceTree = "<group>";
+		};
+		E497EE3623B75E2C00D9212E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E497EE3723B75E5500D9212E /* String+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,6 +301,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E493A94D23B3056E00F8FE78 /* BAXCMainVC.swift in Sources */,
+				E497EE3823B75E5500D9212E /* String+Extension.swift in Sources */,
+				E497EE3A23B75F1400D9212E /* BAXCError.swift in Sources */,
 				E497EE2F23B74F7900D9212E /* BAXCFileUtil.swift in Sources */,
 				E493A94B23B3056E00F8FE78 /* AppDelegate.swift in Sources */,
 				E497EE2723B7365300D9212E /* main.swift in Sources */,
