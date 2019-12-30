@@ -8,6 +8,28 @@
 
 import Foundation
 
+public enum BAXCFileError: Error {
+    public enum RemoveFailedReason {
+        case unknown(path: String?)
+        case invalidPath(path: String?)
+    }
+    case RemoveFailed(reason: RemoveFailedReason)
+}
+
+extension BAXCFileError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .RemoveFailed(let reason):
+            switch reason {
+            case .unknown(let path):
+                return "Remove path failed, unknown reason, path: ".appending(path!)
+            case .invalidPath(let path):
+                return "Remove path failed, invalid path: ".appending(path == nil ? "null" : path!)
+            }
+        }
+    }
+}
+
 public class BAXCFileUtil {
 }
 
@@ -22,9 +44,9 @@ extension BAXCFileUtil {
     }
 
     public class func remove(_ path: String) throws {
-//        if path.isEmpty {
-//            return Error
-//        }
+        if path.isEmpty {
+            throw BAXCFileError.RemoveFailed(reason: BAXCFileError.RemoveFailedReason.invalidPath(path: path))
+        }
         let (existed, _) = self.isPathExisted(path)
         if existed == false {
             return
@@ -45,7 +67,6 @@ extension BAXCFileUtil {
         do {
             try items = FileManager.default.contentsOfDirectory(atPath: path)
         } catch {
-            error.localizedDescription
             return nil
         }
         var result:[String] = []
@@ -73,7 +94,7 @@ extension BAXCFileUtil {
         return NSURL(fileURLWithPath: firstPart!).appendingPathComponent(secondPart!)!.path
     }
     
-    public class func splitFilePath(_ path: String?) -> (String?, String?, String?) {
+    public class func splitPath(_ path: String?) -> (String?, String?, String?) {
         if path == nil || path!.isEmpty {
             return (nil, nil, nil)
         }
@@ -85,6 +106,19 @@ extension BAXCFileUtil {
             realName = fullName!.mc_sub(from: 0, to: fullName!.count - ext!.count - 1)
         }
         return (fullName, realName, ext)
+    }
+    
+    public class func splitAbnormalPath(_ path: String?) -> String? {
+        if path == nil || path!.isEmpty {
+            return nil
+        }
+        let tmpStr: NSString = path! as NSString
+        let range: NSRange = tmpStr.range(of: "/", options: String.CompareOptions.backwards, range: NSRange.init(location: 0, length: tmpStr.length), locale: nil)
+        if range.location == NSNotFound {
+            return nil
+        }
+        let name: String? = path!.mc_sub(from: range.location + 1, to: tmpStr.length)
+        return name
     }
     
     public class func splitFileName(_ name: String?) -> (String?, String?) {

@@ -17,7 +17,8 @@
 		E497EE3123B74FEF00D9212E /* BAXCDerivedDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */; };
 		E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3423B7523F00D9212E /* BAXCXcodePathManager.swift */; };
 		E497EE3823B75E5500D9212E /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3723B75E5500D9212E /* String+Extension.swift */; };
-		E497EE3A23B75F1400D9212E /* BAXCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497EE3923B75F1400D9212E /* BAXCError.swift */; };
+		E4BEC9E423B9A40C00C785A5 /* BAXCXcodeAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BEC9E323B9A40C00C785A5 /* BAXCXcodeAppManager.swift */; };
+		E4BEC9E623B9A4B000C785A5 /* BAXCInfoPlistAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BEC9E523B9A4B000C785A5 /* BAXCInfoPlistAnalyzer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +56,8 @@
 		E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCDerivedDataManager.swift; sourceTree = "<group>"; };
 		E497EE3423B7523F00D9212E /* BAXCXcodePathManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCXcodePathManager.swift; sourceTree = "<group>"; };
 		E497EE3723B75E5500D9212E /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		E497EE3923B75F1400D9212E /* BAXCError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCError.swift; sourceTree = "<group>"; };
+		E4BEC9E323B9A40C00C785A5 /* BAXCXcodeAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCXcodeAppManager.swift; sourceTree = "<group>"; };
+		E4BEC9E523B9A4B000C785A5 /* BAXCInfoPlistAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCInfoPlistAnalyzer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,8 +149,9 @@
 		E497EE2C23B74F3300D9212E /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */,
 				E497EE3423B7523F00D9212E /* BAXCXcodePathManager.swift */,
+				E497EE3023B74FEF00D9212E /* BAXCDerivedDataManager.swift */,
+				E4BEC9E323B9A40C00C785A5 /* BAXCXcodeAppManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -158,7 +161,7 @@
 			children = (
 				E497EE3623B75E2C00D9212E /* Extensions */,
 				E497EE2E23B74F7900D9212E /* BAXCFileUtil.swift */,
-				E497EE3923B75F1400D9212E /* BAXCError.swift */,
+				E4BEC9E523B9A4B000C785A5 /* BAXCInfoPlistAnalyzer.swift */,
 			);
 			path = BaseUtils;
 			sourceTree = "<group>";
@@ -301,12 +304,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E493A94D23B3056E00F8FE78 /* BAXCMainVC.swift in Sources */,
+				E4BEC9E423B9A40C00C785A5 /* BAXCXcodeAppManager.swift in Sources */,
 				E497EE3823B75E5500D9212E /* String+Extension.swift in Sources */,
-				E497EE3A23B75F1400D9212E /* BAXCError.swift in Sources */,
 				E497EE2F23B74F7900D9212E /* BAXCFileUtil.swift in Sources */,
 				E493A94B23B3056E00F8FE78 /* AppDelegate.swift in Sources */,
 				E497EE2723B7365300D9212E /* main.swift in Sources */,
 				E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */,
+				E4BEC9E623B9A4B000C785A5 /* BAXCInfoPlistAnalyzer.swift in Sources */,
 				E497EE3123B74FEF00D9212E /* BAXCDerivedDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
