@@ -1,5 +1,5 @@
 //
-//  BAXCInfoPlistAnalyzer.swift
+//  BAXCPlistAnalyzer.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/30.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class BAXCInfoPlistAnalyzer {
+public class BAXCPlistAnalyzer {
     public class func read(path: String?, key: String?) -> Any? {
         if path == nil || path!.isEmpty || key == nil || key!.isEmpty {
             return nil

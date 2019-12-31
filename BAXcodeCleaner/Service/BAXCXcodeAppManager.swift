@@ -17,11 +17,11 @@ public class BAXCXcodeAppManager {
         var result: [(String, String?)]? = nil
         for pathItem in appPaths! {
             let infoPlistPath: String? = BAXCXcodeInfoManager.appPlistPath(pathItem)
-            let bundleID: String? = BAXCInfoPlistAnalyzer.read(path: infoPlistPath, key: "CFBundleIdentifier") as? String
+            let bundleID: String? = BAXCPlistAnalyzer.read(path: infoPlistPath, key: "CFBundleIdentifier") as? String
             if bundleID == nil || bundleID! != BAXCXcodeInfoManagerConstants.bundleID {
                 continue
             }
-            let version: String? = BAXCInfoPlistAnalyzer.read(path: infoPlistPath, key: "CFBundleShortVersionString") as? String
+            let version: String? = BAXCPlistAnalyzer.read(path: infoPlistPath, key: "CFBundleShortVersionString") as? String
             if result == nil {
                 result = []
             }

@@ -57,4 +57,12 @@ extension AppDelegate {
     @objc func minimizeAction() {
         self.window!.miniaturize(self)
     }
+    
+    @objc func refreshAction() {
+        self.rootVC!.onRefreshBtnSelected(nil)
+    }
+    
+    @objc func deleteAction() {
+        self.rootVC!.onCleanBtnSelected(nil)
+    }
 }
