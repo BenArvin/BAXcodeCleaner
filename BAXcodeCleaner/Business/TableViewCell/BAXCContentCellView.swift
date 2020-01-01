@@ -12,7 +12,7 @@ public struct BAXCContentCellViewConstants {
     static let identifier: String = "BAXCContentCellView"
 }
 
-public class BAXCContentCellView: NSTableCellView {
+public class BAXCContentCellView: BAXCTableViewCell {
     public var text: String? {
         set {
             self._contentTextField.stringValue = newValue == nil ? "" : newValue!
@@ -29,7 +29,7 @@ public class BAXCContentCellView: NSTableCellView {
         result.backgroundColor = NSColor.clear
         result.textColor = NSColor.white
         result.alignment = NSTextAlignment.left
-        result.maximumNumberOfLines = 0
+        result.maximumNumberOfLines = 1
         result.lineBreakMode = NSLineBreakMode.byCharWrapping
         result.font = NSFont.systemFont(ofSize: 18)
         return result

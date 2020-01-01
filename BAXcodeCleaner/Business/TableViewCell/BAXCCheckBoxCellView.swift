@@ -13,10 +13,10 @@ public struct BAXCCheckBoxCellViewConstants {
 }
 
 public protocol BAXCCheckBoxCellViewDelegate: class {
-    func onCheckBoxSelected(selected: Bool)
+    func onCheckBoxSelected(cell: BAXCCheckBoxCellView)
 }
 
-public class BAXCCheckBoxCellView: NSTableCellView {
+public class BAXCCheckBoxCellView: BAXCTableViewCell {
     
     public var delegate: BAXCCheckBoxCellViewDelegate?
     
@@ -64,7 +64,7 @@ public class BAXCCheckBoxCellView: NSTableCellView {
 extension BAXCCheckBoxCellView {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
         if self.delegate != nil {
-            self.delegate!.onCheckBoxSelected(selected: self.selected)
+            self.delegate!.onCheckBoxSelected(cell: self)
         }
     }
 }

@@ -151,6 +151,10 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
     func onDatasChanged() {
         self._tableView.reloadData()
     }
+    
+    func onSelectStateChanged(isAllSelected: Bool) {
+        self._selAllCheckBox.state = isAllSelected == true ? NSControl.StateValue.on : NSControl.StateValue.off
+    }
 }
 
 // MARK: - UI setting

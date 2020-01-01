@@ -1,20 +1,20 @@
 //
-//  BAXCApplicationsSubDataSource.swift
+//  BAXCArchivesSubDataSource.swift
 //  BAXcodeCleaner
 //
-//  Created by BenArvin on 2019/12/31.
-//  Copyright © 2019 BenArvin. All rights reserved.
+//  Created by BenArvin on 2020/1/1.
+//  Copyright © 2020 BenArvin. All rights reserved.
 //
 
 import Cocoa
 
-public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
-    var appInfos: [(String, String?, Bool)]? = nil
+public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
+    var archiveInfos: [(String, String?, String?, Bool)]? = nil
 }
 
-extension BAXCApplicationsSubDataSource {
+extension BAXCArchivesSubDataSource {
     public override func numberOfRows() -> Int {
-        return self.appInfos == nil ? 1 : self.appInfos!.count + 1
+        return self.archiveInfos == nil ? 1 : self.archiveInfos!.count + 1
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -23,21 +23,21 @@ extension BAXCApplicationsSubDataSource {
                 if column == 0 {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
-                        sectiontitleCell!.text = "Xcode Applications"
+                        sectiontitleCell!.text = "Archives"
                     }
                 }
             } else {
                 let realRow: Int = row - 1
-                let (path, version, state) = self.appInfos![realRow]
+                let (_, name, inners, state) = self.archiveInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
                     if titleCell != nil {
-                        titleCell!.text = version
+                        titleCell!.text = name
                     }
                 } else if column == 1 {
                     let contentCell: BAXCContentCellView? = cell as? BAXCContentCellView
                     if contentCell != nil {
-                        contentCell!.text = path
+                        contentCell!.text = inners
                     }
                 } else if column == 2 {
                     let checkboxCell: BAXCCheckBoxCellView? = cell as? BAXCCheckBoxCellView
@@ -50,33 +50,33 @@ extension BAXCApplicationsSubDataSource {
     }
     
     public override func refresh() {
-        let apps: [(String, String?)]? = BAXCXcodeAppManager.xcodes()
-        if apps == nil {
-            self.appInfos = nil
+        let devices: [(String, String?, String?)]? = BAXCArchivesManager.archives()
+        if devices == nil {
+            self.archiveInfos = nil
         } else {
-            var newAppInfos: [(String, String?, Bool)] = []
-            for (path, version) in apps! {
+            var newAppInfos: [(String, String?, String?, Bool)] = []
+            for (path, name, inners) in devices! {
                 var finded: Bool = false
-                if self.appInfos != nil {
-                    for (oldPath, _, oldState) in self.appInfos! {
+                if self.archiveInfos != nil {
+                    for (oldPath, _, _, oldState) in self.archiveInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, version, oldState))
+                            newAppInfos.append((path, name, inners, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, version, false))
+                    newAppInfos.append((path, name, inners, false))
                 }
             }
-            self.appInfos = newAppInfos
+            self.archiveInfos = newAppInfos
         }
     }
     
     public override func isAllSelected() -> Bool {
         var allSelected: Bool = true
-        for (_, _, state) in self.appInfos! {
+        for (_, _, _, state) in self.archiveInfos! {
             if state == false {
                 allSelected = false
             }
@@ -85,49 +85,46 @@ extension BAXCApplicationsSubDataSource {
     }
     
     public override func selectAll() {
-        if self.appInfos == nil {
+        if self.archiveInfos == nil {
             return
         }
         var index: Int = 0
-        for (path, version, _) in self.appInfos! {
-            self.appInfos![index] = (path, version, true)
+        for (path, name, inners, _) in self.archiveInfos! {
+            self.archiveInfos![index] = (path, name, inners, true)
             index = index + 1
         }
     }
     
     public override func unselectAll() {
-        if self.appInfos == nil {
+        if self.archiveInfos == nil {
             return
         }
         var index: Int = 0
-        for (path, version, _) in self.appInfos! {
-            self.appInfos![index] = (path, version, false)
+        for (path, name, inners, _) in self.archiveInfos! {
+            self.archiveInfos![index] = (path, name, inners, false)
             index = index + 1
         }
     }
     
     public override func cleanCheck() -> String? {
-        if self.isAllSelected() == true {
-            return "Can't delete all Xcode applications, please keep one at least."
-        } else {
-            return nil
-        }
+        return nil
     }
     
     public override func clean() {
     }
 }
 
-extension BAXCApplicationsSubDataSource {
+extension BAXCArchivesSubDataSource {
     public override func onCheckBoxSelected(cell: BAXCCheckBoxCellView) {
         let realIndex = cell.index - 1
-        if realIndex < 0 || self.appInfos == nil || realIndex >= self.appInfos!.count {
+        if realIndex < 0 || self.archiveInfos == nil || realIndex >= self.archiveInfos!.count {
             return
         }
-        let (path, version, _) = self.appInfos![realIndex]
-        self.appInfos![realIndex] = (path, version, cell.selected)
+        let (path, name, inners, _) = self.archiveInfos![realIndex]
+        self.archiveInfos![realIndex] = (path, name, inners, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
         }
     }
 }
+

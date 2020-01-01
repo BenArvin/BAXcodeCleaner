@@ -1,20 +1,20 @@
 //
-//  BAXCApplicationsSubDataSource.swift
+//  BAXCSimulatorSubDataSource.swift
 //  BAXcodeCleaner
 //
-//  Created by BenArvin on 2019/12/31.
-//  Copyright © 2019 BenArvin. All rights reserved.
+//  Created by BenArvin on 2020/1/1.
+//  Copyright © 2020 BenArvin. All rights reserved.
 //
 
 import Cocoa
 
-public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
-    var appInfos: [(String, String?, Bool)]? = nil
+public class BAXCSimulatorSubDataSource: BAXCTableViewSubDataSource {
+    var simulatoInfos: [(String, String?, String?, String?, Bool)]? = nil
 }
 
-extension BAXCApplicationsSubDataSource {
+extension BAXCSimulatorSubDataSource {
     public override func numberOfRows() -> Int {
-        return self.appInfos == nil ? 1 : self.appInfos!.count + 1
+        return self.simulatoInfos == nil ? 1 : self.simulatoInfos!.count + 1
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -23,16 +23,16 @@ extension BAXCApplicationsSubDataSource {
                 if column == 0 {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
-                        sectiontitleCell!.text = "Xcode Applications"
+                        sectiontitleCell!.text = "Simulator Devices"
                     }
                 }
             } else {
                 let realRow: Int = row - 1
-                let (path, version, state) = self.appInfos![realRow]
+                let (path, name, model, version, state) = self.simulatoInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
                     if titleCell != nil {
-                        titleCell!.text = version
+                        titleCell!.text = (model != nil && version != nil) ? (String.init(format: "%@(%@)", model!, version!)) : name
                     }
                 } else if column == 1 {
                     let contentCell: BAXCContentCellView? = cell as? BAXCContentCellView
@@ -50,33 +50,33 @@ extension BAXCApplicationsSubDataSource {
     }
     
     public override func refresh() {
-        let apps: [(String, String?)]? = BAXCXcodeAppManager.xcodes()
-        if apps == nil {
-            self.appInfos = nil
+        let devices: [(String, String?, String?, String?)]? = BAXCSimulatorManager.simulators()
+        if devices == nil {
+            self.simulatoInfos = nil
         } else {
-            var newAppInfos: [(String, String?, Bool)] = []
-            for (path, version) in apps! {
+            var newAppInfos: [(String, String?, String?, String?, Bool)] = []
+            for (path, name, model, version) in devices! {
                 var finded: Bool = false
-                if self.appInfos != nil {
-                    for (oldPath, _, oldState) in self.appInfos! {
+                if self.simulatoInfos != nil {
+                    for (oldPath, _, _, _, oldState) in self.simulatoInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, version, oldState))
+                            newAppInfos.append((path, name, model, version, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, version, false))
+                    newAppInfos.append((path, name, model, version, false))
                 }
             }
-            self.appInfos = newAppInfos
+            self.simulatoInfos = newAppInfos
         }
     }
     
     public override func isAllSelected() -> Bool {
         var allSelected: Bool = true
-        for (_, _, state) in self.appInfos! {
+        for (_, _, _, _, state) in self.simulatoInfos! {
             if state == false {
                 allSelected = false
             }
@@ -85,49 +85,47 @@ extension BAXCApplicationsSubDataSource {
     }
     
     public override func selectAll() {
-        if self.appInfos == nil {
+        if self.simulatoInfos == nil {
             return
         }
         var index: Int = 0
-        for (path, version, _) in self.appInfos! {
-            self.appInfos![index] = (path, version, true)
+        for (path, name, model, version, _) in self.simulatoInfos! {
+            self.simulatoInfos![index] = (path, name, model, version, true)
             index = index + 1
         }
     }
     
     public override func unselectAll() {
-        if self.appInfos == nil {
+        if self.simulatoInfos == nil {
             return
         }
         var index: Int = 0
-        for (path, version, _) in self.appInfos! {
-            self.appInfos![index] = (path, version, false)
+        for (path, name, model, version, _) in self.simulatoInfos! {
+            self.simulatoInfos![index] = (path, name, model, version, false)
             index = index + 1
         }
     }
     
     public override func cleanCheck() -> String? {
-        if self.isAllSelected() == true {
-            return "Can't delete all Xcode applications, please keep one at least."
-        } else {
-            return nil
-        }
+        return nil
     }
     
     public override func clean() {
     }
 }
 
-extension BAXCApplicationsSubDataSource {
+extension BAXCSimulatorSubDataSource {
     public override func onCheckBoxSelected(cell: BAXCCheckBoxCellView) {
         let realIndex = cell.index - 1
-        if realIndex < 0 || self.appInfos == nil || realIndex >= self.appInfos!.count {
+        if realIndex < 0 || self.simulatoInfos == nil || realIndex >= self.simulatoInfos!.count {
             return
         }
-        let (path, version, _) = self.appInfos![realIndex]
-        self.appInfos![realIndex] = (path, version, cell.selected)
+        let (path, name, model, version, _) = self.simulatoInfos![realIndex]
+        self.simulatoInfos![realIndex] = (path, name, model, version, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
         }
     }
 }
+
+

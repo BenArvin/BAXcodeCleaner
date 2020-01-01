@@ -47,7 +47,7 @@ extension AppDelegate: NSWindowDelegate {
 // MARK: - main menu actions
 extension AppDelegate {
     @objc func introductionAction() {
-        
+        BAXCSelfIntroduction.shared.show()
     }
     
     @objc func quitAction() {

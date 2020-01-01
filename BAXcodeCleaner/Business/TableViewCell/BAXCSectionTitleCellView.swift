@@ -12,7 +12,7 @@ public struct BAXCSectionTitleCellViewConstants {
     static let identifier: String = "BAXCSectionTitleCellView"
 }
 
-public class BAXCSectionTitleCellView: NSTableCellView {
+public class BAXCSectionTitleCellView: BAXCTableViewCell {
     public var text: String? {
         set {
             self._titleTextField.stringValue = newValue == nil ? "" : newValue!
@@ -29,7 +29,7 @@ public class BAXCSectionTitleCellView: NSTableCellView {
         result.backgroundColor = NSColor.clear
         result.textColor = NSColor.white
         result.alignment = NSTextAlignment.left
-        result.maximumNumberOfLines = 0
+        result.maximumNumberOfLines = 1
         result.lineBreakMode = NSLineBreakMode.byCharWrapping
         result.font = NSFont.systemFont(ofSize: 24, weight: NSFont.Weight.bold)
         return result
@@ -53,6 +53,6 @@ public class BAXCSectionTitleCellView: NSTableCellView {
     
     public override func layout() {
         super.layout()
-        self._titleTextField.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+        self._titleTextField.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: 30)
     }
 }

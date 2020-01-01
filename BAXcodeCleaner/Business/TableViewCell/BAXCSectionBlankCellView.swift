@@ -12,7 +12,7 @@ public struct BAXCSectionBlankCellViewConstants {
     static let identifier: String = "BAXCSectionBlankCellView"
 }
 
-public class BAXCSectionBlankCellView: NSTableCellView {
+public class BAXCSectionBlankCellView: BAXCTableViewCell {
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         self.wantsLayer = true

@@ -10,6 +10,7 @@ import Cocoa
 
 public protocol BAXCTableViewDataSourceProtocol: class {
     func onDatasChanged()
+    func onSelectStateChanged(isAllSelected: Bool)
 }
 
 public class BAXCTableViewDataSource {
@@ -17,12 +18,37 @@ public class BAXCTableViewDataSource {
     public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSourceProtocol] = {
-        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS]
+        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDS]
         return result
     }()
     
     private lazy var _applicationDS: BAXCApplicationsSubDataSource = {
         let result: BAXCApplicationsSubDataSource = BAXCApplicationsSubDataSource()
+        result.onSelected = self._onSubDSSelected
+        return result
+    }()
+    
+    private lazy var _derivedDataDS: BAXCDerivedDataSubDataSource = {
+        let result: BAXCDerivedDataSubDataSource = BAXCDerivedDataSubDataSource()
+        result.onSelected = self._onSubDSSelected
+        return result
+    }()
+    
+    private lazy var _deviceSupportDS: BAXCDeviceSupportSubDataSource = {
+        let result: BAXCDeviceSupportSubDataSource = BAXCDeviceSupportSubDataSource()
+        result.onSelected = self._onSubDSSelected
+        return result
+    }()
+    
+    private lazy var _archivesDS: BAXCArchivesSubDataSource = {
+        let result: BAXCArchivesSubDataSource = BAXCArchivesSubDataSource()
+        result.onSelected = self._onSubDSSelected
+        return result
+    }()
+    
+    private lazy var _simulatorDS: BAXCSimulatorSubDataSource = {
+        let result: BAXCSimulatorSubDataSource = BAXCSimulatorSubDataSource()
+        result.onSelected = self._onSubDSSelected
         return result
     }()
     
@@ -34,7 +60,11 @@ public class BAXCTableViewDataSource {
 // MARK: - public methods
 extension BAXCTableViewDataSource {
     public func numberOfRows() -> Int {
-        return self._applicationDS.numberOfRows()
+        var result: Int = 0
+        for subDSItem in self._subDS {
+            result = result + subDSItem.numberOfRows()
+        }
+        return result
     }
     
     public func height(for row: Int) -> CGFloat {
@@ -73,6 +103,17 @@ extension BAXCTableViewDataSource {
         self._callDelegateDatasChangedFunc()
     }
     
+    public func isAllSelected() -> Bool {
+        var allSelected: Bool = true
+        for subDSItem in self._subDS {
+            if subDSItem.isAllSelected() == false {
+                allSelected = false
+                break
+            }
+        }
+        return allSelected
+    }
+    
     public func selectAll() {
         for subDSItem in self._subDS {
             subDSItem.selectAll()
@@ -88,6 +129,10 @@ extension BAXCTableViewDataSource {
     }
     
     public func clean() {
+        let cleanEnable: Bool = self._cleanCheck()
+        if cleanEnable == false {
+            return
+        }
         for subDSItem in self._subDS {
             subDSItem.clean()
         }
@@ -113,5 +158,27 @@ extension BAXCTableViewDataSource {
             rowOffset = rowOffset + countTmp
         }
         return (nil, 0)
+    }
+    
+    public func _cleanCheck() -> Bool {
+        for subDSItem in self._subDS {
+            let errorMsg = subDSItem.cleanCheck()
+            if errorMsg != nil {
+                let alert: NSAlert = NSAlert.init()
+                alert.alertStyle = NSAlert.Style.critical
+                alert.messageText = "Clean check failed!"
+                alert.informativeText = errorMsg!
+                alert.addButton(withTitle: "OK")
+                alert.runModal()
+                return false
+            }
+        }
+        return true
+    }
+    
+    private func _onSubDSSelected() {
+        if self.delegate != nil {
+            self.delegate!.onSelectStateChanged(isAllSelected: self.isAllSelected())
+        }
     }
 }
