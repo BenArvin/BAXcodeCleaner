@@ -9,7 +9,7 @@
 import Cocoa
 
 public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
-    var archiveInfos: [(String, String?, String?, Bool)]? = nil
+    var archiveInfos: [(String, String?, String?, Int, Bool)]? = nil
 }
 
 extension BAXCArchivesSubDataSource {
@@ -28,7 +28,7 @@ extension BAXCArchivesSubDataSource {
                 }
             } else {
                 let realRow: Int = row - 1
-                let (_, name, inners, state) = self.archiveInfos![realRow]
+                let (_, name, inners, size, state) = self.archiveInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
                     if titleCell != nil {
@@ -40,6 +40,11 @@ extension BAXCArchivesSubDataSource {
                         contentCell!.text = inners
                     }
                 } else if column == 2 {
+                    let sizeCell: BAXCFileSizeCellView? = cell as? BAXCFileSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = size
+                    }
+                } else if column == 3 {
                     let checkboxCell: BAXCCheckBoxCellView? = cell as? BAXCCheckBoxCellView
                     if checkboxCell != nil {
                         checkboxCell!.selected = state
@@ -54,20 +59,21 @@ extension BAXCArchivesSubDataSource {
         if devices == nil {
             self.archiveInfos = nil
         } else {
-            var newAppInfos: [(String, String?, String?, Bool)] = []
+            var newAppInfos: [(String, String?, String?, Int, Bool)] = []
             for (path, name, inners) in devices! {
+                let size: Int = BAXCFileUtil.size(path)
                 var finded: Bool = false
                 if self.archiveInfos != nil {
-                    for (oldPath, _, _, oldState) in self.archiveInfos! {
+                    for (oldPath, _, _, _, oldState) in self.archiveInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, name, inners, oldState))
+                            newAppInfos.append((path, name, inners, size, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, name, inners, false))
+                    newAppInfos.append((path, name, inners, size, false))
                 }
             }
             self.archiveInfos = newAppInfos
@@ -76,7 +82,7 @@ extension BAXCArchivesSubDataSource {
     
     public override func isAllSelected() -> Bool {
         var allSelected: Bool = true
-        for (_, _, _, state) in self.archiveInfos! {
+        for (_, _, _, _, state) in self.archiveInfos! {
             if state == false {
                 allSelected = false
             }
@@ -89,8 +95,8 @@ extension BAXCArchivesSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, name, inners, _) in self.archiveInfos! {
-            self.archiveInfos![index] = (path, name, inners, true)
+        for (path, name, inners, size, _) in self.archiveInfos! {
+            self.archiveInfos![index] = (path, name, inners, size, true)
             index = index + 1
         }
     }
@@ -100,8 +106,8 @@ extension BAXCArchivesSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, name, inners, _) in self.archiveInfos! {
-            self.archiveInfos![index] = (path, name, inners, false)
+        for (path, name, inners, size, _) in self.archiveInfos! {
+            self.archiveInfos![index] = (path, name, inners, size, false)
             index = index + 1
         }
     }
@@ -120,8 +126,8 @@ extension BAXCArchivesSubDataSource {
         if realIndex < 0 || self.archiveInfos == nil || realIndex >= self.archiveInfos!.count {
             return
         }
-        let (path, name, inners, _) = self.archiveInfos![realIndex]
-        self.archiveInfos![realIndex] = (path, name, inners, cell.selected)
+        let (path, name, inners, size, _) = self.archiveInfos![realIndex]
+        self.archiveInfos![realIndex] = (path, name, inners, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
         }

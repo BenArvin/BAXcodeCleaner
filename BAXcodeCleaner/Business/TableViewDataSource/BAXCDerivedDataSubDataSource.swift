@@ -9,7 +9,7 @@
 import Cocoa
 
 public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
-    var derivedDataInfos: [(String, String?, String?, Bool)]? = nil
+    var derivedDataInfos: [(String, String?, String?, Int, Bool)]? = nil
 }
 
 extension BAXCDerivedDataSubDataSource {
@@ -28,7 +28,7 @@ extension BAXCDerivedDataSubDataSource {
                 }
             } else {
                 let realRow: Int = row - 1
-                let (_, name, targetPath, state) = self.derivedDataInfos![realRow]
+                let (_, name, targetPath, size, state) = self.derivedDataInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
                     if titleCell != nil {
@@ -43,6 +43,11 @@ extension BAXCDerivedDataSubDataSource {
                         }
                     }
                 } else if column == 2 {
+                    let sizeCell: BAXCFileSizeCellView? = cell as? BAXCFileSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = size
+                    }
+                } else if column == 3 {
                     let checkboxCell: BAXCCheckBoxCellView? = cell as? BAXCCheckBoxCellView
                     if checkboxCell != nil {
                         checkboxCell!.selected = state
@@ -57,20 +62,21 @@ extension BAXCDerivedDataSubDataSource {
         if derivedDatas == nil {
             self.derivedDataInfos = nil
         } else {
-            var newAppInfos: [(String, String?, String?, Bool)] = []
+            var newAppInfos: [(String, String?, String?, Int, Bool)] = []
             for (path, name, targetPath) in derivedDatas! {
+                let size: Int = BAXCFileUtil.size(path)
                 var finded: Bool = false
                 if self.derivedDataInfos != nil {
-                    for (oldPath, _, _, oldState) in self.derivedDataInfos! {
+                    for (oldPath, _, _, _, oldState) in self.derivedDataInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, name, targetPath, oldState))
+                            newAppInfos.append((path, name, targetPath, size, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, name, targetPath, false))
+                    newAppInfos.append((path, name, targetPath, size, false))
                 }
             }
             self.derivedDataInfos = newAppInfos
@@ -79,7 +85,7 @@ extension BAXCDerivedDataSubDataSource {
     
     public override func isAllSelected() -> Bool {
         var allSelected: Bool = true
-        for (_, _, _, state) in self.derivedDataInfos! {
+        for (_, _, _, _, state) in self.derivedDataInfos! {
             if state == false {
                 allSelected = false
             }
@@ -92,8 +98,8 @@ extension BAXCDerivedDataSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, name, targetPath, _) in self.derivedDataInfos! {
-            self.derivedDataInfos![index] = (path, name, targetPath, true)
+        for (path, name, targetPath, size, _) in self.derivedDataInfos! {
+            self.derivedDataInfos![index] = (path, name, targetPath, size, true)
             index = index + 1
         }
     }
@@ -103,8 +109,8 @@ extension BAXCDerivedDataSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, name, targetPath, _) in self.derivedDataInfos! {
-            self.derivedDataInfos![index] = (path, name, targetPath, false)
+        for (path, name, targetPath, size, _) in self.derivedDataInfos! {
+            self.derivedDataInfos![index] = (path, name, targetPath, size, false)
             index = index + 1
         }
     }
@@ -123,8 +129,8 @@ extension BAXCDerivedDataSubDataSource {
         if realIndex < 0 || self.derivedDataInfos == nil || realIndex >= self.derivedDataInfos!.count {
             return
         }
-        let (path, name, targetPath, _) = self.derivedDataInfos![realIndex]
-        self.derivedDataInfos![realIndex] = (path, name, targetPath, cell.selected)
+        let (path, name, targetPath, size, _) = self.derivedDataInfos![realIndex]
+        self.derivedDataInfos![realIndex] = (path, name, targetPath, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
         }

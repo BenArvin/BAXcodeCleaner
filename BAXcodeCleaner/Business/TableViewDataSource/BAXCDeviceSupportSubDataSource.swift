@@ -9,7 +9,7 @@
 import Cocoa
 
 public class BAXCDeviceSupportSubDataSource: BAXCTableViewSubDataSource {
-    var deviceSupportInfos: [(String, String?, Bool)]? = nil
+    var deviceSupportInfos: [(String, String?, Int, Bool)]? = nil
 }
 
 extension BAXCDeviceSupportSubDataSource {
@@ -28,7 +28,7 @@ extension BAXCDeviceSupportSubDataSource {
                 }
             } else {
                 let realRow: Int = row - 1
-                let (path, name, state) = self.deviceSupportInfos![realRow]
+                let (path, name, size, state) = self.deviceSupportInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
                     if titleCell != nil {
@@ -40,6 +40,11 @@ extension BAXCDeviceSupportSubDataSource {
                         contentCell!.text = path
                     }
                 } else if column == 2 {
+                    let sizeCell: BAXCFileSizeCellView? = cell as? BAXCFileSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = size
+                    }
+                } else if column == 3 {
                     let checkboxCell: BAXCCheckBoxCellView? = cell as? BAXCCheckBoxCellView
                     if checkboxCell != nil {
                         checkboxCell!.selected = state
@@ -54,20 +59,21 @@ extension BAXCDeviceSupportSubDataSource {
         if devices == nil {
             self.deviceSupportInfos = nil
         } else {
-            var newAppInfos: [(String, String?, Bool)] = []
+            var newAppInfos: [(String, String?, Int, Bool)] = []
             for (path, name) in devices! {
+                let size: Int = BAXCFileUtil.size(path)
                 var finded: Bool = false
                 if self.deviceSupportInfos != nil {
-                    for (oldPath, _, oldState) in self.deviceSupportInfos! {
+                    for (oldPath, _, _, oldState) in self.deviceSupportInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, name, oldState))
+                            newAppInfos.append((path, name, size, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, name, false))
+                    newAppInfos.append((path, name, size, false))
                 }
             }
             self.deviceSupportInfos = newAppInfos
@@ -76,7 +82,7 @@ extension BAXCDeviceSupportSubDataSource {
     
     public override func isAllSelected() -> Bool {
         var allSelected: Bool = true
-        for (_, _, state) in self.deviceSupportInfos! {
+        for (_, _, _, state) in self.deviceSupportInfos! {
             if state == false {
                 allSelected = false
             }
@@ -89,8 +95,8 @@ extension BAXCDeviceSupportSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, name, _) in self.deviceSupportInfos! {
-            self.deviceSupportInfos![index] = (path, name, true)
+        for (path, name, size, _) in self.deviceSupportInfos! {
+            self.deviceSupportInfos![index] = (path, name, size, true)
             index = index + 1
         }
     }
@@ -100,8 +106,8 @@ extension BAXCDeviceSupportSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, name, _) in self.deviceSupportInfos! {
-            self.deviceSupportInfos![index] = (path, name, false)
+        for (path, name, size, _) in self.deviceSupportInfos! {
+            self.deviceSupportInfos![index] = (path, name, size, false)
             index = index + 1
         }
     }
@@ -120,8 +126,8 @@ extension BAXCDeviceSupportSubDataSource {
         if realIndex < 0 || self.deviceSupportInfos == nil || realIndex >= self.deviceSupportInfos!.count {
             return
         }
-        let (path, name, _) = self.deviceSupportInfos![realIndex]
-        self.deviceSupportInfos![realIndex] = (path, name, cell.selected)
+        let (path, name, size, _) = self.deviceSupportInfos![realIndex]
+        self.deviceSupportInfos![realIndex] = (path, name, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
         }

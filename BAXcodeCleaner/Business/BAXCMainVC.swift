@@ -24,6 +24,8 @@ class BAXCMainVC: NSViewController {
         return result
     }()
     
+    private var _columnsSetted: Bool = false
+    
     private lazy var _tableViewColumn1: NSTableColumn = {
         let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("0"))
         result.title = " "
@@ -40,6 +42,13 @@ class BAXCMainVC: NSViewController {
     
     private lazy var _tableViewColumn3: NSTableColumn = {
         let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("2"))
+        result.title = " "
+        result.minWidth = 50
+        return result
+    }()
+    
+    private lazy var _tableViewColumn4: NSTableColumn = {
+        let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("3"))
         result.title = " "
         result.minWidth = 30
         result.maxWidth = 30
@@ -108,6 +117,8 @@ class BAXCMainVC: NSViewController {
             self.view.addSubview(self._loadingView)
             
             self._settingTableView()
+            
+            self._refresh()
         }
     }
     
@@ -149,11 +160,21 @@ extension BAXCMainVC: NSTableViewDataSource {
 
 extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
     func onDatasChanged() {
-        self._tableView.reloadData()
+        DispatchQueue.main.async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._tableView.reloadData()
+        }
     }
     
     func onSelectStateChanged(isAllSelected: Bool) {
-        self._selAllCheckBox.state = isAllSelected == true ? NSControl.StateValue.on : NSControl.StateValue.off
+        DispatchQueue.main.async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._selAllCheckBox.state = isAllSelected == true ? NSControl.StateValue.on : NSControl.StateValue.off
+        }
     }
 }
 
@@ -179,14 +200,20 @@ extension BAXCMainVC {
         self._selAllCheckBox.sizeToFit()
         self._selAllCheckBox.frame = CGRect.init(x: self.view.bounds.width - rightMargin - self._selAllCheckBox.bounds.width + 2, y: self._tableContainerView.frame.maxY + 5, width: self._selAllCheckBox.bounds.width, height: self._selAllCheckBox.bounds.height)
         
-        self._tableViewColumn1.width = floor(self._tableContainerView.bounds.width / 3)
-        self._tableViewColumn2.width = floor(self._tableContainerView.bounds.width / 3 * 2) - self._tableViewColumn3.width
+        if self._columnsSetted == false && self.view.bounds.width > 10 {
+            self._columnsSetted = true
+            let width: CGFloat = self.view.bounds.width - leftMargin - rightMargin
+            self._tableViewColumn3.width = 50
+            self._tableViewColumn1.width = floor(width / 3)
+            self._tableViewColumn2.width = floor(width / 3 * 2) - self._tableViewColumn3.width - self._tableViewColumn4.width
+        }
     }
     
     private func _settingTableView() {
         self._tableView.addTableColumn(self._tableViewColumn1)
         self._tableView.addTableColumn(self._tableViewColumn2)
         self._tableView.addTableColumn(self._tableViewColumn3)
+        self._tableView.addTableColumn(self._tableViewColumn4)
         self._tableView.gridStyleMask = [NSTableView.GridLineStyle.solidHorizontalGridLineMask]
     }
 }
@@ -202,10 +229,40 @@ extension BAXCMainVC {
     }
     
     @objc public func onCleanBtnSelected(_ sender: NSButton?) {
-        self._dataSource.clean()
+        self._loadingView.show()
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._dataSource.clean()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(0.5 * 1000))){[weak strongSelf] in
+                guard let strongSelf2 = strongSelf else {
+                    return
+                }
+                strongSelf2._loadingView.hide()
+            }
+        }
     }
     
     @objc public func onRefreshBtnSelected(_ sender: NSButton?) {
-        self._dataSource.refresh()
+        self._refresh()
+    }
+}
+
+// MARK - private methods
+extension BAXCMainVC {
+    private func _refresh() {
+        self._loadingView.show()
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._dataSource.refresh {[weak strongSelf] in
+                guard let strongSelf2 = strongSelf else {
+                    return
+                }
+                strongSelf2._loadingView.hide()
+            }
+        }
     }
 }

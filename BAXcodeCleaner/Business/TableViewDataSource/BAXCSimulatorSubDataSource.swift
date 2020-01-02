@@ -9,7 +9,7 @@
 import Cocoa
 
 public class BAXCSimulatorSubDataSource: BAXCTableViewSubDataSource {
-    var simulatoInfos: [(String, String?, String?, String?, Bool)]? = nil
+    var simulatoInfos: [(String, String?, String?, String?, Int, Bool)]? = nil
 }
 
 extension BAXCSimulatorSubDataSource {
@@ -28,7 +28,7 @@ extension BAXCSimulatorSubDataSource {
                 }
             } else {
                 let realRow: Int = row - 1
-                let (path, name, model, version, state) = self.simulatoInfos![realRow]
+                let (path, name, model, version, size, state) = self.simulatoInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
                     if titleCell != nil {
@@ -40,6 +40,11 @@ extension BAXCSimulatorSubDataSource {
                         contentCell!.text = path
                     }
                 } else if column == 2 {
+                    let sizeCell: BAXCFileSizeCellView? = cell as? BAXCFileSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = size
+                    }
+                } else if column == 3 {
                     let checkboxCell: BAXCCheckBoxCellView? = cell as? BAXCCheckBoxCellView
                     if checkboxCell != nil {
                         checkboxCell!.selected = state
@@ -54,20 +59,24 @@ extension BAXCSimulatorSubDataSource {
         if devices == nil {
             self.simulatoInfos = nil
         } else {
-            var newAppInfos: [(String, String?, String?, String?, Bool)] = []
+            var newAppInfos: [(String, String?, String?, String?, Int, Bool)] = []
             for (path, name, model, version) in devices! {
+                let size: Int = BAXCFileUtil.size(path)
+                if size == 0 {
+                    continue
+                }
                 var finded: Bool = false
                 if self.simulatoInfos != nil {
-                    for (oldPath, _, _, _, oldState) in self.simulatoInfos! {
+                    for (oldPath, _, _, _, _, oldState) in self.simulatoInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, name, model, version, oldState))
+                            newAppInfos.append((path, name, model, version, size, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, name, model, version, false))
+                    newAppInfos.append((path, name, model, version, size, false))
                 }
             }
             self.simulatoInfos = newAppInfos
@@ -76,7 +85,7 @@ extension BAXCSimulatorSubDataSource {
     
     public override func isAllSelected() -> Bool {
         var allSelected: Bool = true
-        for (_, _, _, _, state) in self.simulatoInfos! {
+        for (_, _, _, _, _, state) in self.simulatoInfos! {
             if state == false {
                 allSelected = false
             }
@@ -89,8 +98,8 @@ extension BAXCSimulatorSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, name, model, version, _) in self.simulatoInfos! {
-            self.simulatoInfos![index] = (path, name, model, version, true)
+        for (path, name, model, version, size, _) in self.simulatoInfos! {
+            self.simulatoInfos![index] = (path, name, model, version, size, true)
             index = index + 1
         }
     }
@@ -100,8 +109,8 @@ extension BAXCSimulatorSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, name, model, version, _) in self.simulatoInfos! {
-            self.simulatoInfos![index] = (path, name, model, version, false)
+        for (path, name, model, version, size, _) in self.simulatoInfos! {
+            self.simulatoInfos![index] = (path, name, model, version, size, false)
             index = index + 1
         }
     }
@@ -120,8 +129,8 @@ extension BAXCSimulatorSubDataSource {
         if realIndex < 0 || self.simulatoInfos == nil || realIndex >= self.simulatoInfos!.count {
             return
         }
-        let (path, name, model, version, _) = self.simulatoInfos![realIndex]
-        self.simulatoInfos![realIndex] = (path, name, model, version, cell.selected)
+        let (path, name, model, version, size, _) = self.simulatoInfos![realIndex]
+        self.simulatoInfos![realIndex] = (path, name, model, version, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
         }

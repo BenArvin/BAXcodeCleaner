@@ -50,6 +50,11 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
                 result.index = row
                 return result
             } else if column == 2 {
+                let result: BAXCFileSizeCellView = BAXCFileSizeCellView.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCFileSizeCellViewConstants.identifier)
+                result.index = row
+                return result
+            } else if column == 3 {
                 let result: BAXCCheckBoxCellView = BAXCCheckBoxCellView.init()
                 result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCellViewConstants.identifier)
                 result.index = row

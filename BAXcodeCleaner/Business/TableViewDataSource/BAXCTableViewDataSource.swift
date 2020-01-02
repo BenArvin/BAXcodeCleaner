@@ -53,7 +53,6 @@ public class BAXCTableViewDataSource {
     }()
     
     init() {
-        self.refresh()
     }
 }
 
@@ -96,11 +95,24 @@ extension BAXCTableViewDataSource {
         }
     }
     
-    public func refresh() {
+    public func refresh(_ completion: (() -> ())?) {
+        let group = DispatchGroup.init()
         for subDSItem in self._subDS {
-            subDSItem.refresh()
+            group.enter()
+            DispatchQueue.global().async{
+                subDSItem.refresh()
+                group.leave()
+            }
         }
-        self._callDelegateDatasChangedFunc()
+        group.notify(queue: DispatchQueue.global()) {[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            if completion != nil {
+                completion!()
+            }
+            strongSelf._callDelegateDatasChangedFunc()
+        }
     }
     
     public func isAllSelected() -> Bool {

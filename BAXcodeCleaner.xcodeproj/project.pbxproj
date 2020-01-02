@@ -37,6 +37,7 @@
 		E49FEA7123BB2F6E004F6306 /* BAXCTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49FEA7023BB2F6E004F6306 /* BAXCTableViewDataSource.swift */; };
 		E49FEA7323BB2F83004F6306 /* BAXCTableViewSubDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49FEA7223BB2F83004F6306 /* BAXCTableViewSubDataSourceProtocol.swift */; };
 		E49FEA8123BB4EF5004F6306 /* BAXCSelfIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49FEA8023BB4EF5004F6306 /* BAXCSelfIntroduction.swift */; };
+		E4AA40BB23BE087E005CA901 /* BAXCFileSizeCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AA40BA23BE087E005CA901 /* BAXCFileSizeCellView.swift */; };
 		E4BEC9E423B9A40C00C785A5 /* BAXCXcodeAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BEC9E323B9A40C00C785A5 /* BAXCXcodeAppManager.swift */; };
 		E4BEC9E623B9A4B000C785A5 /* BAXCPlistAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BEC9E523B9A4B000C785A5 /* BAXCPlistAnalyzer.swift */; };
 		E4BECA1623BA027400C785A5 /* BAXCProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BECA1523BA027400C785A5 /* BAXCProgressIndicator.swift */; };
@@ -97,6 +98,7 @@
 		E49FEA7023BB2F6E004F6306 /* BAXCTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTableViewDataSource.swift; sourceTree = "<group>"; };
 		E49FEA7223BB2F83004F6306 /* BAXCTableViewSubDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTableViewSubDataSourceProtocol.swift; sourceTree = "<group>"; };
 		E49FEA8023BB4EF5004F6306 /* BAXCSelfIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCSelfIntroduction.swift; sourceTree = "<group>"; };
+		E4AA40BA23BE087E005CA901 /* BAXCFileSizeCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCFileSizeCellView.swift; sourceTree = "<group>"; };
 		E4BEC9E323B9A40C00C785A5 /* BAXCXcodeAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCXcodeAppManager.swift; sourceTree = "<group>"; };
 		E4BEC9E523B9A4B000C785A5 /* BAXCPlistAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCPlistAnalyzer.swift; sourceTree = "<group>"; };
 		E4BECA1523BA027400C785A5 /* BAXCProgressIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCProgressIndicator.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				E487977C23BA1C1E00087258 /* BAXCSectionBlankCellView.swift */,
 				E487977823BA1BF900087258 /* BAXCTitleCellView.swift */,
 				E487977A23BA1C0700087258 /* BAXCContentCellView.swift */,
+				E4AA40BA23BE087E005CA901 /* BAXCFileSizeCellView.swift */,
 				E487977623BA1BEC00087258 /* BAXCCheckBoxCellView.swift */,
 			);
 			path = TableViewCell;
@@ -397,6 +400,7 @@
 				E497EE2F23B74F7900D9212E /* BAXCFileUtil.swift in Sources */,
 				E493A94B23B3056E00F8FE78 /* AppDelegate.swift in Sources */,
 				E4110F3523BC7F4200C56137 /* BAXCTableViewSubDataSource.swift in Sources */,
+				E4AA40BB23BE087E005CA901 /* BAXCFileSizeCellView.swift in Sources */,
 				E4110F2F23BC787C00C56137 /* BAXCArchivesSubDataSource.swift in Sources */,
 				E497EE2723B7365300D9212E /* main.swift in Sources */,
 				E4110F3323BC7CD500C56137 /* BAXCSimulatorSubDataSource.swift in Sources */,

@@ -9,7 +9,7 @@
 import Cocoa
 
 public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
-    var appInfos: [(String, String?, Bool)]? = nil
+    var appInfos: [(String, String?, Int, Bool)]? = nil
 }
 
 extension BAXCApplicationsSubDataSource {
@@ -28,7 +28,7 @@ extension BAXCApplicationsSubDataSource {
                 }
             } else {
                 let realRow: Int = row - 1
-                let (path, version, state) = self.appInfos![realRow]
+                let (path, version, size, state) = self.appInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
                     if titleCell != nil {
@@ -40,6 +40,11 @@ extension BAXCApplicationsSubDataSource {
                         contentCell!.text = path
                     }
                 } else if column == 2 {
+                    let sizeCell: BAXCFileSizeCellView? = cell as? BAXCFileSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = size
+                    }
+                } else if column == 3 {
                     let checkboxCell: BAXCCheckBoxCellView? = cell as? BAXCCheckBoxCellView
                     if checkboxCell != nil {
                         checkboxCell!.selected = state
@@ -54,20 +59,21 @@ extension BAXCApplicationsSubDataSource {
         if apps == nil {
             self.appInfos = nil
         } else {
-            var newAppInfos: [(String, String?, Bool)] = []
+            var newAppInfos: [(String, String?, Int, Bool)] = []
             for (path, version) in apps! {
+                let size: Int = BAXCFileUtil.size(path)
                 var finded: Bool = false
                 if self.appInfos != nil {
-                    for (oldPath, _, oldState) in self.appInfos! {
+                    for (oldPath, _, _, oldState) in self.appInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, version, oldState))
+                            newAppInfos.append((path, version, size, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, version, false))
+                    newAppInfos.append((path, version, size, false))
                 }
             }
             self.appInfos = newAppInfos
@@ -76,7 +82,7 @@ extension BAXCApplicationsSubDataSource {
     
     public override func isAllSelected() -> Bool {
         var allSelected: Bool = true
-        for (_, _, state) in self.appInfos! {
+        for (_, _, _, state) in self.appInfos! {
             if state == false {
                 allSelected = false
             }
@@ -89,8 +95,8 @@ extension BAXCApplicationsSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, version, _) in self.appInfos! {
-            self.appInfos![index] = (path, version, true)
+        for (path, version, size, _) in self.appInfos! {
+            self.appInfos![index] = (path, version, size, true)
             index = index + 1
         }
     }
@@ -100,8 +106,8 @@ extension BAXCApplicationsSubDataSource {
             return
         }
         var index: Int = 0
-        for (path, version, _) in self.appInfos! {
-            self.appInfos![index] = (path, version, false)
+        for (path, version, size, _) in self.appInfos! {
+            self.appInfos![index] = (path, version, size, false)
             index = index + 1
         }
     }
@@ -124,8 +130,8 @@ extension BAXCApplicationsSubDataSource {
         if realIndex < 0 || self.appInfos == nil || realIndex >= self.appInfos!.count {
             return
         }
-        let (path, version, _) = self.appInfos![realIndex]
-        self.appInfos![realIndex] = (path, version, cell.selected)
+        let (path, version, size, _) = self.appInfos![realIndex]
+        self.appInfos![realIndex] = (path, version, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
         }
