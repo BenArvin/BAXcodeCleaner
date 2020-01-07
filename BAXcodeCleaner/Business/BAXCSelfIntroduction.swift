@@ -37,7 +37,7 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         return result
     }()
     
-    private lazy var _introTextField: NSTextView = {
+    private lazy var _introTextView: NSTextView = {
         let result: NSTextView = NSTextView.init()
         result.isEditable = false
         result.isSelectable = true
@@ -59,7 +59,7 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         if self._titleTextField.superview != self.view {
             self.view.addSubview(self._titleTextField)
             self.view.addSubview(self._versionTextField)
-            self.view.addSubview(self._introTextField)
+            self.view.addSubview(self._introTextView)
         }
     }
     
@@ -71,7 +71,7 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         super.viewWillLayout()
         self._titleTextField.frame = CGRect.init(x: 15, y: self.view.bounds.height - 30, width: self.view.bounds.width - 30, height: 30)
         self._versionTextField.frame = CGRect.init(x: 15, y: self._titleTextField.frame.minY - 20 - 5, width: self.view.bounds.width - 30, height: 20)
-        self._introTextField.frame = CGRect.init(x: 15, y: 15, width: self.view.bounds.width - 30, height: self._versionTextField.frame.minY - 15 - 5)
+        self._introTextView.frame = CGRect.init(x: 15, y: 15, width: self.view.bounds.width - 30, height: self._versionTextField.frame.minY - 15 - 5)
     }
 }
 
@@ -121,6 +121,7 @@ public class BAXCSelfIntroduction: NSObject{
 
 extension BAXCSelfIntroduction: NSWindowDelegate {
     public func windowWillClose(_ notification: Notification) {
+        NSApplication.shared.stopModal()
         self._rootVC = nil
         self._window = nil
         self._rootWC = nil
