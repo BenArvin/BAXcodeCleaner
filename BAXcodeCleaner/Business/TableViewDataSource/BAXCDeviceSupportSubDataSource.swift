@@ -139,6 +139,11 @@ extension BAXCDeviceSupportSubDataSource {
     }
     
     public override func clean() {
+        for (path, _, _, state) in self.deviceSupportInfos! {
+            if state == true {
+                do {try BAXCFileUtil.remove(path)} catch {}
+            }
+        }
     }
 }
 

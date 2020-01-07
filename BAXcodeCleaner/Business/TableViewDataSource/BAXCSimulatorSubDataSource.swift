@@ -142,6 +142,11 @@ extension BAXCSimulatorSubDataSource {
     }
     
     public override func clean() {
+        for (path, _, _, _, _, state) in self.simulatoInfos! {
+            if state == true {
+                do {try BAXCFileUtil.remove(path)} catch {}
+            }
+        }
     }
 }
 

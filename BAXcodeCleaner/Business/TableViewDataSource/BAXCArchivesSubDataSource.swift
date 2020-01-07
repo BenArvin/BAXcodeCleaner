@@ -139,6 +139,11 @@ extension BAXCArchivesSubDataSource {
     }
     
     public override func clean() {
+        for (path, _, _, _, state) in self.archiveInfos! {
+            if state == true {
+                do {try BAXCFileUtil.remove(path)} catch {}
+            }
+        }
     }
 }
 

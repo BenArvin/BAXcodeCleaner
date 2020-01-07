@@ -243,12 +243,21 @@ extension BAXCMainVC {
             guard let strongSelf = self else {
                 return
             }
-            strongSelf._dataSource.clean()
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(0.5 * 1000))){[weak strongSelf] in
+            strongSelf._dataSource.clean {[weak strongSelf] in
                 guard let strongSelf2 = strongSelf else {
                     return
                 }
-                strongSelf2._loadingView.hide()
+                strongSelf2._dataSource.refresh {[weak strongSelf2] in
+                    guard let strongSelf3 = strongSelf2 else {
+                        return
+                    }
+                    DispatchQueue.main.async{[weak strongSelf3] in
+                        guard let strongSelf4 = strongSelf3 else {
+                            return
+                        }
+                        strongSelf4._loadingView.hide()
+                    }
+                }
             }
         }
     }

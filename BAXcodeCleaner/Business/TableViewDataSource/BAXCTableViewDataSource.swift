@@ -19,8 +19,8 @@ public class BAXCTableViewDataSource {
     public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSourceProtocol] = {
-//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDS]
-        let result: [BAXCTableViewSubDataSourceProtocol] = [self._archivesDS, self._simulatorDS]
+        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDS]
+//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._archivesDS]
         return result
     }()
     
@@ -147,15 +147,28 @@ extension BAXCTableViewDataSource {
         self._callDelegateDatasChangedFunc()
     }
     
-    public func clean() {
+    public func clean(_ completion: (() -> ())?) {
         let cleanEnable: Bool = self._cleanCheck()
         if cleanEnable == false {
             return
         }
+        let group = DispatchGroup.init()
         for subDSItem in self._subDS {
-            subDSItem.clean()
+            group.enter()
+            DispatchQueue.global().async{
+                subDSItem.clean()
+                group.leave()
+            }
         }
-        self._callDelegateDatasChangedFunc()
+        group.notify(queue: DispatchQueue.global()) {[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            if completion != nil {
+                completion!()
+            }
+            strongSelf._callDelegateDatasChangedFunc()
+        }
     }
 }
 

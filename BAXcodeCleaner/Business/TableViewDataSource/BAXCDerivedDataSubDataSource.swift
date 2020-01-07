@@ -142,6 +142,11 @@ extension BAXCDerivedDataSubDataSource {
     }
     
     public override func clean() {
+        for (path, _, _, _, state) in self.derivedDataInfos! {
+            if state == true {
+                do {try BAXCFileUtil.remove(path)} catch {}
+            }
+        }
     }
 }
 

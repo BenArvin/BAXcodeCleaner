@@ -143,6 +143,11 @@ extension BAXCApplicationsSubDataSource {
     }
     
     public override func clean() {
+        for (path, _, _, state) in self.appInfos! {
+            if state == true {
+                do {try BAXCFileUtil.remove(path)} catch {}
+            }
+        }
     }
 }
 
