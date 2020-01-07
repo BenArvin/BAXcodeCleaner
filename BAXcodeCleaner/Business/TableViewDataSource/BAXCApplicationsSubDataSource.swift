@@ -9,12 +9,17 @@
 import Cocoa
 
 public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
+    var isFolded: Bool = false
     var appInfos: [(String, String?, Int, Bool)]? = nil
+    var fullSize: Int = 0
 }
 
 extension BAXCApplicationsSubDataSource {
     public override func numberOfRows() -> Int {
-        return self.appInfos == nil ? 1 : self.appInfos!.count + 1
+        if self.appInfos == nil {
+            return 0
+        }
+        return self.isFolded == true ? 1 : self.appInfos!.count + 1
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -24,6 +29,16 @@ extension BAXCApplicationsSubDataSource {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
                         sectiontitleCell!.text = "Xcode Applications"
+                    }
+                } else if column == 2 {
+                    let sizeCell: BAXCSectionSizeCellView? = cell as? BAXCSectionSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = self.fullSize
+                    }
+                } else if column == 3 {
+                    let foldCell: BAXCSectionFoldCellView? = cell as? BAXCSectionFoldCellView
+                    if foldCell != nil {
+                        foldCell!.isFolded = self.isFolded
                     }
                 }
             } else {
@@ -60,6 +75,7 @@ extension BAXCApplicationsSubDataSource {
             self.appInfos = nil
         } else {
             var newAppInfos: [(String, String?, Int, Bool)] = []
+            self.fullSize = 0
             for (path, version) in apps! {
                 let size: Int = BAXCFileUtil.size(path)
                 var finded: Bool = false
@@ -75,6 +91,12 @@ extension BAXCApplicationsSubDataSource {
                 if finded == false {
                     newAppInfos.append((path, version, size, false))
                 }
+                self.fullSize = self.fullSize + size
+            }
+            newAppInfos.sort { (arg0, arg1) -> Bool in
+                let (_, _, size0, _) = arg0
+                let (_, _, size1, _) = arg1
+                return size0 > size1
             }
             self.appInfos = newAppInfos
         }
@@ -134,6 +156,13 @@ extension BAXCApplicationsSubDataSource {
         self.appInfos![realIndex] = (path, version, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
+        }
+    }
+    
+    public override func onFoldBtnSelected(cell: BAXCSectionFoldCellView) {
+        self.isFolded = !self.isFolded
+        if self.onFoldBtnSelected != nil {
+            self.onFoldBtnSelected!()
         }
     }
 }

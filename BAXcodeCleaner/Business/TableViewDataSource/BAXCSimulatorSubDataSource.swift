@@ -9,12 +9,17 @@
 import Cocoa
 
 public class BAXCSimulatorSubDataSource: BAXCTableViewSubDataSource {
+    var isFolded: Bool = false
     var simulatoInfos: [(String, String?, String?, String?, Int, Bool)]? = nil
+    var fullSize: Int = 0
 }
 
 extension BAXCSimulatorSubDataSource {
     public override func numberOfRows() -> Int {
-        return self.simulatoInfos == nil ? 1 : self.simulatoInfos!.count + 1
+        if self.simulatoInfos == nil {
+            return 0
+        }
+        return self.isFolded == true ? 1 : self.simulatoInfos!.count + 1
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -24,6 +29,16 @@ extension BAXCSimulatorSubDataSource {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
                         sectiontitleCell!.text = "Simulator Devices"
+                    }
+                } else if column == 2 {
+                    let sizeCell: BAXCSectionSizeCellView? = cell as? BAXCSectionSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = self.fullSize
+                    }
+                } else if column == 3 {
+                    let foldCell: BAXCSectionFoldCellView? = cell as? BAXCSectionFoldCellView
+                    if foldCell != nil {
+                        foldCell!.isFolded = self.isFolded
                     }
                 }
             } else {
@@ -60,6 +75,7 @@ extension BAXCSimulatorSubDataSource {
             self.simulatoInfos = nil
         } else {
             var newAppInfos: [(String, String?, String?, String?, Int, Bool)] = []
+            self.fullSize = 0
             for (path, name, model, version) in devices! {
                 let size: Int = BAXCFileUtil.size(path)
                 if size == 0 {
@@ -78,6 +94,12 @@ extension BAXCSimulatorSubDataSource {
                 if finded == false {
                     newAppInfos.append((path, name, model, version, size, false))
                 }
+                self.fullSize = self.fullSize + size
+            }
+            newAppInfos.sort { (arg0, arg1) -> Bool in
+                let (_, _, _, _, size0, _) = arg0
+                let (_, _, _, _, size1, _) = arg1
+                return size0 > size1
             }
             self.simulatoInfos = newAppInfos
         }
@@ -133,6 +155,13 @@ extension BAXCSimulatorSubDataSource {
         self.simulatoInfos![realIndex] = (path, name, model, version, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
+        }
+    }
+    
+    public override func onFoldBtnSelected(cell: BAXCSectionFoldCellView) {
+        self.isFolded = !self.isFolded
+        if self.onFoldBtnSelected != nil {
+            self.onFoldBtnSelected!()
         }
     }
 }

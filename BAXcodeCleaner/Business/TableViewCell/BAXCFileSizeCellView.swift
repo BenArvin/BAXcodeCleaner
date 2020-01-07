@@ -17,7 +17,7 @@ public class BAXCFileSizeCellView: BAXCTableViewCell {
     public var size: Int {
         set {
             _size = newValue
-            self._sizeTextField.stringValue = self._convertToStr(_size)
+            self._sizeTextField.stringValue = String.init(fromSize: _size)
         }
         get {
             return _size
@@ -57,20 +57,5 @@ public class BAXCFileSizeCellView: BAXCTableViewCell {
     public override func layout() {
         super.layout()
         self._sizeTextField.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
-    }
-}
-
-extension BAXCFileSizeCellView {
-    private func _convertToStr(_ size: Int) -> String {
-        let size_d: Double = Double(size)
-        if size_d < 1024.0 {
-            return String.init(format: "%ldByte", size)
-        } else if size_d < 1024.0 * 1024.0 {
-            return String.init(format: "%.1fKB", size_d / 1024.0)
-        } else if size_d < 1024.0 * 1024.0 * 1024.0 {
-            return String.init(format: "%.1fMB", size_d / 1024.0 / 1024.0)
-        } else {
-            return String.init(format: "%.1fGB", size_d / 1024.0 / 1024.0 / 1024.0)
-        }
     }
 }

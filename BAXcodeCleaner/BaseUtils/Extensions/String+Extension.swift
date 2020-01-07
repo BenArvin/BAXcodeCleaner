@@ -16,4 +16,17 @@ extension String {
         let result = self[self.index(self.startIndex, offsetBy: fromTmp)..<self.index(self.startIndex, offsetBy: toTmp)]
         return String(result)
     }
+    
+    init(fromSize size: Int) {
+        let size_d: Double = Double(size)
+        if size_d < 1024.0 {
+            self = String.init(format: "%ldByte", size)
+        } else if size_d < 1024.0 * 1024.0 {
+            self = String.init(format: "%.1fKB", size_d / 1024.0)
+        } else if size_d < 1024.0 * 1024.0 * 1024.0 {
+            self = String.init(format: "%.1fMB", size_d / 1024.0 / 1024.0)
+        } else {
+            self = String.init(format: "%.1fGB", size_d / 1024.0 / 1024.0 / 1024.0)
+        }
+    }
 }

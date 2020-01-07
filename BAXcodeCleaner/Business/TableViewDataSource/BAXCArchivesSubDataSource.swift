@@ -9,12 +9,17 @@
 import Cocoa
 
 public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
+    var isFolded: Bool = false
     var archiveInfos: [(String, String?, String?, Int, Bool)]? = nil
+    var fullSize: Int = 0
 }
 
 extension BAXCArchivesSubDataSource {
     public override func numberOfRows() -> Int {
-        return self.archiveInfos == nil ? 1 : self.archiveInfos!.count + 1
+        if self.archiveInfos == nil {
+            return 0
+        }
+        return self.isFolded == true ? 1 : self.archiveInfos!.count + 1
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -24,6 +29,16 @@ extension BAXCArchivesSubDataSource {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
                         sectiontitleCell!.text = "Archives"
+                    }
+                } else if column == 2 {
+                    let sizeCell: BAXCSectionSizeCellView? = cell as? BAXCSectionSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = self.fullSize
+                    }
+                } else if column == 3 {
+                    let foldCell: BAXCSectionFoldCellView? = cell as? BAXCSectionFoldCellView
+                    if foldCell != nil {
+                        foldCell!.isFolded = self.isFolded
                     }
                 }
             } else {
@@ -60,6 +75,7 @@ extension BAXCArchivesSubDataSource {
             self.archiveInfos = nil
         } else {
             var newAppInfos: [(String, String?, String?, Int, Bool)] = []
+            self.fullSize = 0
             for (path, name, inners) in devices! {
                 let size: Int = BAXCFileUtil.size(path)
                 var finded: Bool = false
@@ -75,6 +91,12 @@ extension BAXCArchivesSubDataSource {
                 if finded == false {
                     newAppInfos.append((path, name, inners, size, false))
                 }
+                self.fullSize = self.fullSize + size
+            }
+            newAppInfos.sort { (arg0, arg1) -> Bool in
+                let (_, _, _, size0, _) = arg0
+                let (_, _, _, size1, _) = arg1
+                return size0 > size1
             }
             self.archiveInfos = newAppInfos
         }
@@ -130,6 +152,13 @@ extension BAXCArchivesSubDataSource {
         self.archiveInfos![realIndex] = (path, name, inners, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
+        }
+    }
+    
+    public override func onFoldBtnSelected(cell: BAXCSectionFoldCellView) {
+        self.isFolded = !self.isFolded
+        if self.onFoldBtnSelected != nil {
+            self.onFoldBtnSelected!()
         }
     }
 }

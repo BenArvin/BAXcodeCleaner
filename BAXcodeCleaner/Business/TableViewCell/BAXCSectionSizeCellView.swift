@@ -8,21 +8,23 @@
 
 import Cocoa
 
-public struct BAXCSectionTitleCellViewConstants {
-    static let identifier: String = "BAXCSectionTitleCellView"
+public struct BAXCSectionSizeCellViewConstants {
+    static let identifier: String = "BAXCSectionSizeCellView"
 }
 
-public class BAXCSectionTitleCellView: BAXCTableViewCell {
-    public var text: String? {
+public class BAXCSectionSizeCellView: BAXCTableViewCell {
+    private var _size: Int = 0
+    public var size: Int {
         set {
-            self._titleTextField.stringValue = newValue == nil ? "" : newValue!
+            _size = newValue
+            self._sizeTextField.stringValue = String.init(fromSize: _size)
         }
         get {
-            return self._titleTextField.stringValue
+            return _size
         }
     }
     
-    private lazy var _titleTextField: NSTextField = {
+    private lazy var _sizeTextField: NSTextField = {
         let result: NSTextField = NSTextField.init()
         result.isEditable = false
         result.isBordered = false
@@ -31,7 +33,7 @@ public class BAXCSectionTitleCellView: BAXCTableViewCell {
         result.alignment = NSTextAlignment.left
         result.maximumNumberOfLines = 1
         result.lineBreakMode = NSLineBreakMode.byCharWrapping
-        result.font = NSFont.systemFont(ofSize: 24, weight: NSFont.Weight.bold)
+        result.font = NSFont.systemFont(ofSize: 18)
         return result
     }()
     
@@ -39,7 +41,7 @@ public class BAXCSectionTitleCellView: BAXCTableViewCell {
         super.init(frame: frameRect)
         self.wantsLayer = true
         self.layer!.backgroundColor = NSColor.clear.cgColor
-        self.addSubview(self._titleTextField)
+        self.addSubview(self._sizeTextField)
     }
     
     required init?(coder: NSCoder) {
@@ -48,11 +50,12 @@ public class BAXCSectionTitleCellView: BAXCTableViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        self.text = nil
+        self.size = 0
+        self._sizeTextField.stringValue = ""
     }
     
     public override func layout() {
         super.layout()
-        self._titleTextField.frame = CGRect.init(x: 0, y: 5, width: self.bounds.width, height: 30)
+        self._sizeTextField.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: 24)
     }
 }

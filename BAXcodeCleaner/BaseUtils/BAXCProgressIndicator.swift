@@ -22,7 +22,7 @@ public class BAXCProgressIndicator: NSView {
     private lazy var _bgView: BAXCBlockView = {
         let result: BAXCBlockView = BAXCBlockView()
         result.wantsLayer = true
-        result.isEnabled = true
+        result.isEnabled = false
         result.layer!.backgroundColor = NSColor.init(calibratedRed: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         return result
     }()

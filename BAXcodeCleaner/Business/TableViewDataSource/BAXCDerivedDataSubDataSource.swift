@@ -9,12 +9,17 @@
 import Cocoa
 
 public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
+    var isFolded: Bool = false
     var derivedDataInfos: [(String, String?, String?, Int, Bool)]? = nil
+    var fullSize: Int = 0
 }
 
 extension BAXCDerivedDataSubDataSource {
     public override func numberOfRows() -> Int {
-        return self.derivedDataInfos == nil ? 1 : self.derivedDataInfos!.count + 1
+        if self.derivedDataInfos == nil {
+            return 0
+        }
+        return self.isFolded == true ? 1 : self.derivedDataInfos!.count + 1
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -24,6 +29,16 @@ extension BAXCDerivedDataSubDataSource {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
                         sectiontitleCell!.text = "Derived Data"
+                    }
+                } else if column == 2 {
+                    let sizeCell: BAXCSectionSizeCellView? = cell as? BAXCSectionSizeCellView
+                    if sizeCell != nil {
+                        sizeCell!.size = self.fullSize
+                    }
+                } else if column == 3 {
+                    let foldCell: BAXCSectionFoldCellView? = cell as? BAXCSectionFoldCellView
+                    if foldCell != nil {
+                        foldCell!.isFolded = self.isFolded
                     }
                 }
             } else {
@@ -63,6 +78,7 @@ extension BAXCDerivedDataSubDataSource {
             self.derivedDataInfos = nil
         } else {
             var newAppInfos: [(String, String?, String?, Int, Bool)] = []
+            self.fullSize = 0
             for (path, name, targetPath) in derivedDatas! {
                 let size: Int = BAXCFileUtil.size(path)
                 var finded: Bool = false
@@ -78,6 +94,12 @@ extension BAXCDerivedDataSubDataSource {
                 if finded == false {
                     newAppInfos.append((path, name, targetPath, size, false))
                 }
+                self.fullSize = self.fullSize + size
+            }
+            newAppInfos.sort { (arg0, arg1) -> Bool in
+                let (_, _, _, size0, _) = arg0
+                let (_, _, _, size1, _) = arg1
+                return size0 > size1
             }
             self.derivedDataInfos = newAppInfos
         }
@@ -133,6 +155,13 @@ extension BAXCDerivedDataSubDataSource {
         self.derivedDataInfos![realIndex] = (path, name, targetPath, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
+        }
+    }
+    
+    public override func onFoldBtnSelected(cell: BAXCSectionFoldCellView) {
+        self.isFolded = !self.isFolded
+        if self.onFoldBtnSelected != nil {
+            self.onFoldBtnSelected!()
         }
     }
 }

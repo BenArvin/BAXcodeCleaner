@@ -10,6 +10,7 @@ import Cocoa
 
 public class BAXCTableViewSubDataSource {
     var onSelected: (() -> ())? = nil
+    var onFoldBtnSelected: (() -> ())? = nil
 }
 
 extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
@@ -19,7 +20,7 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
     
     @objc public func height(for row: Int) -> CGFloat {
         if row == 0 {
-            return 50
+            return 55
         } else {
             return 20
         }
@@ -31,6 +32,17 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
                 let result: BAXCSectionTitleCellView = BAXCSectionTitleCellView.init()
                 result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionTitleCellViewConstants.identifier)
                 result.index = row
+                return result
+            } else if column == 2 {
+                let result: BAXCSectionSizeCellView = BAXCSectionSizeCellView.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionSizeCellViewConstants.identifier)
+                result.index = row
+                return result
+            } else if column == 3 {
+                let result: BAXCSectionFoldCellView = BAXCSectionFoldCellView.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionFoldCellViewConstants.identifier)
+                result.index = row
+                result.delegate = self
                 return result
             } else {
                 let result: BAXCSectionBlankCellView = BAXCSectionBlankCellView.init()
@@ -98,5 +110,7 @@ extension BAXCTableViewSubDataSource: BAXCCheckBoxCellViewDelegate {
     }
 }
 
-
-
+extension BAXCTableViewSubDataSource: BAXCSectionFoldCellViewDelegate {
+    @objc public func onFoldBtnSelected(cell: BAXCSectionFoldCellView) {
+    }
+}

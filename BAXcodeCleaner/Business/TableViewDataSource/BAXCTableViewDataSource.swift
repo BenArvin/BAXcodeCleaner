@@ -11,6 +11,7 @@ import Cocoa
 public protocol BAXCTableViewDataSourceProtocol: class {
     func onDatasChanged()
     func onSelectStateChanged(isAllSelected: Bool)
+    func onFoldStateChanged()
 }
 
 public class BAXCTableViewDataSource {
@@ -18,37 +19,43 @@ public class BAXCTableViewDataSource {
     public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSourceProtocol] = {
-        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDS]
+//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDS]
+        let result: [BAXCTableViewSubDataSourceProtocol] = [self._archivesDS, self._simulatorDS]
         return result
     }()
     
     private lazy var _applicationDS: BAXCApplicationsSubDataSource = {
         let result: BAXCApplicationsSubDataSource = BAXCApplicationsSubDataSource()
         result.onSelected = self._onSubDSSelected
+        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
         return result
     }()
     
     private lazy var _derivedDataDS: BAXCDerivedDataSubDataSource = {
         let result: BAXCDerivedDataSubDataSource = BAXCDerivedDataSubDataSource()
         result.onSelected = self._onSubDSSelected
+        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
         return result
     }()
     
     private lazy var _deviceSupportDS: BAXCDeviceSupportSubDataSource = {
         let result: BAXCDeviceSupportSubDataSource = BAXCDeviceSupportSubDataSource()
         result.onSelected = self._onSubDSSelected
+        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
         return result
     }()
     
     private lazy var _archivesDS: BAXCArchivesSubDataSource = {
         let result: BAXCArchivesSubDataSource = BAXCArchivesSubDataSource()
         result.onSelected = self._onSubDSSelected
+        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
         return result
     }()
     
     private lazy var _simulatorDS: BAXCSimulatorSubDataSource = {
         let result: BAXCSimulatorSubDataSource = BAXCSimulatorSubDataSource()
         result.onSelected = self._onSubDSSelected
+        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
         return result
     }()
     
@@ -191,6 +198,12 @@ extension BAXCTableViewDataSource {
     private func _onSubDSSelected() {
         if self.delegate != nil {
             self.delegate!.onSelectStateChanged(isAllSelected: self.isAllSelected())
+        }
+    }
+    
+    private func _onSubDSFoldBtnSelected() {
+        if self.delegate != nil {
+            self.delegate!.onFoldStateChanged()
         }
     }
 }

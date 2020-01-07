@@ -176,6 +176,15 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
             strongSelf._selAllCheckBox.state = isAllSelected == true ? NSControl.StateValue.on : NSControl.StateValue.off
         }
     }
+    
+    func onFoldStateChanged() {
+        DispatchQueue.main.async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._tableView.reloadData()
+        }
+    }
 }
 
 // MARK: - UI setting
@@ -203,7 +212,7 @@ extension BAXCMainVC {
         if self._columnsSetted == false && self.view.bounds.width > 10 {
             self._columnsSetted = true
             let width: CGFloat = self.view.bounds.width - leftMargin - rightMargin
-            self._tableViewColumn3.width = 50
+            self._tableViewColumn3.width = 100
             self._tableViewColumn1.width = floor(width / 3)
             self._tableViewColumn2.width = floor(width / 3 * 2) - self._tableViewColumn3.width - self._tableViewColumn4.width
         }
@@ -261,7 +270,12 @@ extension BAXCMainVC {
                 guard let strongSelf2 = strongSelf else {
                     return
                 }
-                strongSelf2._loadingView.hide()
+                DispatchQueue.main.async{[weak strongSelf2] in
+                    guard let strongSelf3 = strongSelf2 else {
+                        return
+                    }
+                    strongSelf3._loadingView.hide()
+                }
             }
         }
     }
