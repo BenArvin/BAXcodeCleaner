@@ -54,6 +54,6 @@ public class BAXCTitleCellView: BAXCTableViewCell {
     
     public override func layout() {
         super.layout()
-        self._titleTextField.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+        self._titleTextField.frame = CGRect.init(x: 5, y: 0, width: self.bounds.width - 5, height: self.bounds.height)
     }
 }
