@@ -6,7 +6,7 @@
 //  Copyright © 2019 BenArvin. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 public enum BAXCFileError: Error {
     public enum RemoveFailedReason {
@@ -56,6 +56,22 @@ extension BAXCFileUtil {
         } catch {
             throw error
         }
+    }
+    
+    public class func recycle(_ path: String) {
+        if path.isEmpty {
+            return
+        }
+        let (existed, _) = self.isPathExisted(path)
+        if existed == false {
+            return
+        }
+        let url: URL = URL.init(fileURLWithPath: path)
+        let sema: DispatchSemaphore = DispatchSemaphore.init(value: 0)
+        NSWorkspace.shared.recycle([url], completionHandler: { (urls, error) in
+            sema.signal()
+        })
+        sema.wait()
     }
     
     public class func contentsOfDir(_ path: String) -> [String]? {

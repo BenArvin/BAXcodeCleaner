@@ -141,9 +141,25 @@ extension BAXCDerivedDataSubDataSource {
     public override func clean() {
         for (path, _, _, _, state) in self.derivedDataInfos! {
             if state == true {
-                do {try BAXCFileUtil.remove(path)} catch {}
+                BAXCFileUtil.recycle(path)
             }
         }
+    }
+    
+    public override func contentForCopy(at row: Int) -> String? {
+        if row <= 0 || self.derivedDataInfos == nil || row > self.derivedDataInfos!.count {
+            return nil
+        }
+        let (path, name, _, size, _) = self.derivedDataInfos![row - 1]
+        return String.init(format: "%@  %@  %@", name ?? "", path, String.init(fromSize: size))
+    }
+    
+    public override func pathForOpen(at row: Int) -> String? {
+        if row <= 0 || self.derivedDataInfos == nil || row > self.derivedDataInfos!.count {
+            return nil
+        }
+        let (path, _, _, _, _) = self.derivedDataInfos![row - 1]
+        return path
     }
 }
 

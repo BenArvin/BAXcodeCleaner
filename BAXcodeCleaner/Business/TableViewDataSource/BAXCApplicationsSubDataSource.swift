@@ -142,9 +142,25 @@ extension BAXCApplicationsSubDataSource {
     public override func clean() {
         for (path, _, _, state) in self.appInfos! {
             if state == true {
-                do {try BAXCFileUtil.remove(path)} catch {}
+                BAXCFileUtil.recycle(path)
             }
         }
+    }
+    
+    public override func contentForCopy(at row: Int) -> String? {
+        if row <= 0 || self.appInfos == nil || row > self.appInfos!.count {
+            return nil
+        }
+        let (path, version, size, _) = self.appInfos![row - 1]
+        return String.init(format: "%@  %@  %@", version ?? "", path, String.init(fromSize: size))
+    }
+    
+    public override func pathForOpen(at row: Int) -> String? {
+        if row <= 0 || self.appInfos == nil || row > self.appInfos!.count {
+            return nil
+        }
+        let (path, _, _, _) = self.appInfos![row - 1]
+        return path
     }
 }
 

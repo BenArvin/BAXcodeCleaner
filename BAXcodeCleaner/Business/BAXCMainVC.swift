@@ -21,6 +21,14 @@ class BAXCMainVC: NSViewController {
         let result: NSTableView = NSTableView.init()
         result.delegate = self
         result.dataSource = self
+        result.menu = self._tableViewMenu
+        return result
+    }()
+    
+    private lazy var _tableViewMenu: NSMenu = {
+        let result: NSMenu = NSMenu.init()
+        result.addItem(NSMenuItem.init(title: "Copy", action: #selector(_onCopyMenuItemSelected), keyEquivalent: ""))
+        result.addItem(NSMenuItem.init(title: "Show in Finder", action: #selector(_onShowInFinderMenuItemSelected), keyEquivalent: ""))
         return result
     }()
     
@@ -264,6 +272,20 @@ extension BAXCMainVC {
     
     @objc public func onRefreshBtnSelected(_ sender: NSButton?) {
         self._refresh()
+    }
+    
+    @objc private func _onCopyMenuItemSelected() {
+        let content: String? = self._dataSource.contentForCopy(at: self._tableView.clickedRow)
+        if content == nil {
+            return
+        }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.writeObjects([content! as NSString])
+    }
+    
+    @objc private func _onShowInFinderMenuItemSelected() {
+        let path: String? = self._dataSource.pathForOpen(at: self._tableView.clickedRow)
+        NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
     }
 }
 

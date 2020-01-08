@@ -103,6 +103,14 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
     
     @objc public func clean() {
     }
+    
+    @objc public func contentForCopy(at row: Int) -> String? {
+        return nil
+    }
+    
+    @objc public func pathForOpen(at row: Int) -> String? {
+        return nil
+    }
 }
 
 extension BAXCTableViewSubDataSource: BAXCSectionTitleCellViewDelegate {

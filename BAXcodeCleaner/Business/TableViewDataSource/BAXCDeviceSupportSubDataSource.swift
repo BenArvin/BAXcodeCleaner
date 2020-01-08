@@ -138,9 +138,25 @@ extension BAXCDeviceSupportSubDataSource {
     public override func clean() {
         for (path, _, _, state) in self.deviceSupportInfos! {
             if state == true {
-                do {try BAXCFileUtil.remove(path)} catch {}
+                BAXCFileUtil.recycle(path)
             }
         }
+    }
+    
+    public override func contentForCopy(at row: Int) -> String? {
+        if row <= 0 || self.deviceSupportInfos == nil || row > self.deviceSupportInfos!.count {
+            return nil
+        }
+        let (path, name, size, _) = self.deviceSupportInfos![row - 1]
+        return String.init(format: "%@  %@  %@", name ?? "", path, String.init(fromSize: size))
+    }
+    
+    public override func pathForOpen(at row: Int) -> String? {
+        if row <= 0 || self.deviceSupportInfos == nil || row > self.deviceSupportInfos!.count {
+            return nil
+        }
+        let (path, _, _, _) = self.deviceSupportInfos![row - 1]
+        return path
     }
 }
 

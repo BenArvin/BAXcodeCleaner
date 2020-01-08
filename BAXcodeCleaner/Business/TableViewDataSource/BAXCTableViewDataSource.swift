@@ -20,7 +20,7 @@ public class BAXCTableViewDataSource {
     
     private lazy var _subDS: [BAXCTableViewSubDataSourceProtocol] = {
         let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDeviceDS, self._simulatorCacheDS]
-//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._simulatorDeviceDS, self._simulatorCacheDS]
+//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._archivesDS]
         return result
     }()
     
@@ -175,6 +175,24 @@ extension BAXCTableViewDataSource {
                 completion!()
             }
             strongSelf._callDelegateDatasChangedFunc()
+        }
+    }
+    
+    public func contentForCopy(at row: Int) -> String? {
+        let (subDS, realRow) = self._subDataSource(for: row)
+        if subDS != nil {
+            return subDS!.contentForCopy(at: realRow)
+        } else {
+            return nil
+        }
+    }
+    
+    public func pathForOpen(at row: Int) -> String? {
+        let (subDS, realRow) = self._subDataSource(for: row)
+        if subDS != nil {
+            return subDS!.pathForOpen(at: realRow)
+        } else {
+            return nil
         }
     }
 }

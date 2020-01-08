@@ -143,10 +143,26 @@ extension BAXCSimulatorDeviceSubDataSource {
             if state == true {
                 let dataPath = BAXCFileUtil.assemblePath(path, "data")
                 if dataPath != nil && !dataPath!.isEmpty {
-                    do {try BAXCFileUtil.remove(dataPath!)} catch {}
+                    BAXCFileUtil.recycle(dataPath!)
                 }
             }
         }
+    }
+    
+    public override func contentForCopy(at row: Int) -> String? {
+        if row <= 0 || self.simulatoInfos == nil || row > self.simulatoInfos!.count {
+            return nil
+        }
+        let (path, name, _, _, size, _) = self.simulatoInfos![row - 1]
+        return String.init(format: "%@  %@  %@", name ?? "", path, String.init(fromSize: size))
+    }
+    
+    public override func pathForOpen(at row: Int) -> String? {
+        if row <= 0 || self.simulatoInfos == nil || row > self.simulatoInfos!.count {
+            return nil
+        }
+        let (path, _, _, _, _, _) = self.simulatoInfos![row - 1]
+        return path
     }
 }
 

@@ -20,4 +20,7 @@ public protocol BAXCTableViewSubDataSourceProtocol: class {
     func onSelected(closure: @escaping () -> ())
     func cleanCheck() -> String?
     func clean()
+    
+    func contentForCopy(at row: Int) -> String?
+    func pathForOpen(at row: Int) -> String?
 }

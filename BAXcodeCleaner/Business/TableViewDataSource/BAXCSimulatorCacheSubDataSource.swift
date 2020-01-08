@@ -143,10 +143,26 @@ extension BAXCSimulatorCacheSubDataSource {
             if state == true {
                 let dataPath = BAXCFileUtil.assemblePath(path, "data")
                 if dataPath != nil && !dataPath!.isEmpty {
-                    do {try BAXCFileUtil.remove(dataPath!)} catch {}
+                    BAXCFileUtil.recycle(dataPath!)
                 }
             }
         }
+    }
+    
+    public override func contentForCopy(at row: Int) -> String? {
+        if row <= 0 || self.cacheInfos == nil || row > self.cacheInfos!.count {
+            return nil
+        }
+        let (path, name, _, size, _) = self.cacheInfos![row - 1]
+        return String.init(format: "%@  %@  %@", name ?? "", path, String.init(fromSize: size))
+    }
+    
+    public override func pathForOpen(at row: Int) -> String? {
+        if row <= 0 || self.cacheInfos == nil || row > self.cacheInfos!.count {
+            return nil
+        }
+        let (path, _, _, _, _) = self.cacheInfos![row - 1]
+        return path
     }
 }
 
