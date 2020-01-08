@@ -29,6 +29,7 @@ extension BAXCDeviceSupportSubDataSource {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
                         sectiontitleCell!.text = "Device Support"
+                        sectiontitleCell!.isFolded = self.isFolded
                     }
                 } else if column == 2 {
                     let sizeCell: BAXCSectionSizeCellView? = cell as? BAXCSectionSizeCellView

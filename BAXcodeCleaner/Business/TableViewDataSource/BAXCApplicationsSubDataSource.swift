@@ -29,6 +29,7 @@ extension BAXCApplicationsSubDataSource {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
                         sectiontitleCell!.text = "Xcode Applications"
+                        sectiontitleCell!.isFolded = self.isFolded
                     }
                 } else if column == 2 {
                     let sizeCell: BAXCSectionSizeCellView? = cell as? BAXCSectionSizeCellView
