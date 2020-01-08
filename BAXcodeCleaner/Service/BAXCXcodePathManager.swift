@@ -52,4 +52,8 @@ public class BAXCXcodeInfoManager {
     public class func simulatorCachesPath() -> String {
         return BAXCFileUtil.assemblePath(self.libraryPath(), "Developer/CoreSimulator/Caches")!
     }
+    
+    public class func simulatorCachesDyldPath() -> String {
+        return BAXCFileUtil.assemblePath(self.simulatorCachesPath(), "dyld")!
+    }
 }

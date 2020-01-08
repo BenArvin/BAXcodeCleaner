@@ -19,8 +19,8 @@ public class BAXCTableViewDataSource {
     public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSourceProtocol] = {
-        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDS]
-//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._archivesDS]
+        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDeviceDS, self._simulatorCacheDS]
+//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._simulatorDeviceDS, self._simulatorCacheDS]
         return result
     }()
     
@@ -52,8 +52,15 @@ public class BAXCTableViewDataSource {
         return result
     }()
     
-    private lazy var _simulatorDS: BAXCSimulatorSubDataSource = {
-        let result: BAXCSimulatorSubDataSource = BAXCSimulatorSubDataSource()
+    private lazy var _simulatorDeviceDS: BAXCSimulatorDeviceSubDataSource = {
+        let result: BAXCSimulatorDeviceSubDataSource = BAXCSimulatorDeviceSubDataSource()
+        result.onSelected = self._onSubDSSelected
+        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
+        return result
+    }()
+    
+    private lazy var _simulatorCacheDS: BAXCSimulatorCacheSubDataSource = {
+        let result: BAXCSimulatorCacheSubDataSource = BAXCSimulatorCacheSubDataSource()
         result.onSelected = self._onSubDSSelected
         result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
         return result

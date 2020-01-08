@@ -1,5 +1,5 @@
 //
-//  BAXCSimulatorSubDataSource.swift
+//  BAXCSimulatorCacheSubDataSource.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2020/1/1.
@@ -8,18 +8,18 @@
 
 import Cocoa
 
-public class BAXCSimulatorSubDataSource: BAXCTableViewSubDataSource {
+public class BAXCSimulatorCacheSubDataSource: BAXCTableViewSubDataSource {
     var isFolded: Bool = false
-    var simulatoInfos: [(String, String?, String?, String?, Int, Bool)]? = nil
+    var cacheInfos: [(String, String?, String?, Int, Bool)]? = nil
     var fullSize: Int = 0
 }
 
-extension BAXCSimulatorSubDataSource {
+extension BAXCSimulatorCacheSubDataSource {
     public override func numberOfRows() -> Int {
-        if self.simulatoInfos == nil {
+        if self.cacheInfos == nil {
             return 0
         }
-        return self.isFolded == true ? 1 : self.simulatoInfos!.count + 1
+        return self.isFolded == true ? 1 : self.cacheInfos!.count + 1
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -28,7 +28,7 @@ extension BAXCSimulatorSubDataSource {
                 if column == 0 {
                     let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
                     if sectiontitleCell != nil {
-                        sectiontitleCell!.text = "Simulator Devices"
+                        sectiontitleCell!.text = "Simulator Caches (dyld)"
                         sectiontitleCell!.isFolded = self.isFolded
                     }
                 } else if column == 2 {
@@ -40,11 +40,11 @@ extension BAXCSimulatorSubDataSource {
                 }
             } else {
                 let realRow: Int = row - 1
-                let (path, name, model, version, size, state) = self.simulatoInfos![realRow]
+                let (path, _, abname, size, state) = self.cacheInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
                     if titleCell != nil {
-                        titleCell!.text = (model != nil && version != nil) ? (String.init(format: "%@(%@)", model!, version!)) : name
+                        titleCell!.text = abname
                     }
                 } else if column == 1 {
                     let contentCell: BAXCContentCellView? = cell as? BAXCContentCellView
@@ -67,44 +67,44 @@ extension BAXCSimulatorSubDataSource {
     }
     
     public override func refresh() {
-        let devices: [(String, String?, String?, String?)]? = BAXCSimulatorManager.simulators()
-        if devices == nil {
-            self.simulatoInfos = nil
+        let caches: [(String, String?, String?)]? = BAXCSimulatorManager.caches()
+        if caches == nil {
+            self.cacheInfos = nil
         } else {
-            var newAppInfos: [(String, String?, String?, String?, Int, Bool)] = []
+            var newCacheInfos: [(String, String?, String?, Int, Bool)] = []
             self.fullSize = 0
-            for (path, name, model, version) in devices! {
+            for (path, name, abname) in caches! {
                 let size: Int = BAXCFileUtil.size(path)
                 if size == 0 {
                     continue
                 }
                 var finded: Bool = false
-                if self.simulatoInfos != nil {
-                    for (oldPath, _, _, _, _, oldState) in self.simulatoInfos! {
+                if self.cacheInfos != nil {
+                    for (oldPath, _, _, _, oldState) in self.cacheInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, name, model, version, size, oldState))
+                            newCacheInfos.append((path, name, abname, size, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, name, model, version, size, false))
+                    newCacheInfos.append((path, name, abname, size, false))
                 }
                 self.fullSize = self.fullSize + size
             }
-            newAppInfos.sort { (arg0, arg1) -> Bool in
-                let (_, _, _, _, size0, _) = arg0
-                let (_, _, _, _, size1, _) = arg1
+            newCacheInfos.sort { (arg0, arg1) -> Bool in
+                let (_, _, _, size0, _) = arg0
+                let (_, _, _, size1, _) = arg1
                 return size0 > size1
             }
-            self.simulatoInfos = newAppInfos
+            self.cacheInfos = newCacheInfos
         }
     }
     
     public override func isAllSelected() -> Bool {
         var allSelected: Bool = true
-        for (_, _, _, _, _, state) in self.simulatoInfos! {
+        for (_, _, _, _, state) in self.cacheInfos! {
             if state == false {
                 allSelected = false
             }
@@ -113,23 +113,23 @@ extension BAXCSimulatorSubDataSource {
     }
     
     public override func selectAll() {
-        if self.simulatoInfos == nil {
+        if self.cacheInfos == nil {
             return
         }
         var index: Int = 0
-        for (path, name, model, version, size, _) in self.simulatoInfos! {
-            self.simulatoInfos![index] = (path, name, model, version, size, true)
+        for (path, name, abname, size, _) in self.cacheInfos! {
+            self.cacheInfos![index] = (path, name, abname, size, true)
             index = index + 1
         }
     }
     
     public override func unselectAll() {
-        if self.simulatoInfos == nil {
+        if self.cacheInfos == nil {
             return
         }
         var index: Int = 0
-        for (path, name, model, version, size, _) in self.simulatoInfos! {
-            self.simulatoInfos![index] = (path, name, model, version, size, false)
+        for (path, name, abname, size, _) in self.cacheInfos! {
+            self.cacheInfos![index] = (path, name, abname, size, false)
             index = index + 1
         }
     }
@@ -139,7 +139,7 @@ extension BAXCSimulatorSubDataSource {
     }
     
     public override func clean() {
-        for (path, _, _, _, _, state) in self.simulatoInfos! {
+        for (path, _, _, _, state) in self.cacheInfos! {
             if state == true {
                 let dataPath = BAXCFileUtil.assemblePath(path, "data")
                 if dataPath != nil && !dataPath!.isEmpty {
@@ -150,14 +150,14 @@ extension BAXCSimulatorSubDataSource {
     }
 }
 
-extension BAXCSimulatorSubDataSource {
+extension BAXCSimulatorCacheSubDataSource {
     public override func onCheckBoxSelected(cell: BAXCCheckBoxCellView) {
         let realIndex = cell.index - 1
-        if realIndex < 0 || self.simulatoInfos == nil || realIndex >= self.simulatoInfos!.count {
+        if realIndex < 0 || self.cacheInfos == nil || realIndex >= self.cacheInfos!.count {
             return
         }
-        let (path, name, model, version, size, _) = self.simulatoInfos![realIndex]
-        self.simulatoInfos![realIndex] = (path, name, model, version, size, cell.selected)
+        let (path, name, abname, size, _) = self.cacheInfos![realIndex]
+        self.cacheInfos![realIndex] = (path, name, abname, size, cell.selected)
         if self.onSelected != nil {
             self.onSelected!()
         }
