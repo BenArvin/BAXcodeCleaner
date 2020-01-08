@@ -32,6 +32,7 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
                 let result: BAXCSectionTitleCellView = BAXCSectionTitleCellView.init()
                 result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionTitleCellViewConstants.identifier)
                 result.index = row
+                result.delegate = self
                 return result
             } else if column == 2 {
                 let result: BAXCSectionSizeCellView = BAXCSectionSizeCellView.init()
@@ -39,10 +40,9 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
                 result.index = row
                 return result
             } else if column == 3 {
-                let result: BAXCSectionFoldCellView = BAXCSectionFoldCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionFoldCellViewConstants.identifier)
+                let result: BAXCSectionBlankCellView = BAXCSectionBlankCellView.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionBlankCellViewConstants.identifier)
                 result.index = row
-                result.delegate = self
                 return result
             } else {
                 let result: BAXCSectionBlankCellView = BAXCSectionBlankCellView.init()
@@ -105,12 +105,12 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
     }
 }
 
-extension BAXCTableViewSubDataSource: BAXCCheckBoxCellViewDelegate {
-    @objc public func onCheckBoxSelected(cell: BAXCCheckBoxCellView) {
+extension BAXCTableViewSubDataSource: BAXCSectionTitleCellViewDelegate {
+    @objc public func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCellView) {
     }
 }
 
-extension BAXCTableViewSubDataSource: BAXCSectionFoldCellViewDelegate {
-    @objc public func onFoldBtnSelected(cell: BAXCSectionFoldCellView) {
+extension BAXCTableViewSubDataSource: BAXCCheckBoxCellViewDelegate {
+    @objc public func onCheckBoxSelected(cell: BAXCCheckBoxCellView) {
     }
 }

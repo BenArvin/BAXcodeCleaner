@@ -36,10 +36,6 @@ extension BAXCArchivesSubDataSource {
                         sizeCell!.size = self.fullSize
                     }
                 } else if column == 3 {
-                    let foldCell: BAXCSectionFoldCellView? = cell as? BAXCSectionFoldCellView
-                    if foldCell != nil {
-                        foldCell!.isFolded = self.isFolded
-                    }
                 }
             } else {
                 let realRow: Int = row - 1
@@ -160,7 +156,7 @@ extension BAXCArchivesSubDataSource {
         }
     }
     
-    public override func onFoldBtnSelected(cell: BAXCSectionFoldCellView) {
+    public override func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCellView) {
         self.isFolded = !self.isFolded
         if self.onFoldBtnSelected != nil {
             self.onFoldBtnSelected!()

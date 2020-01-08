@@ -10,4 +10,8 @@ import Cocoa
 
 public class BAXCTableViewCell: NSTableCellView {
     public var index: Int = 0
+    
+    public override func layout() {
+        super.layout()
+    }
 }

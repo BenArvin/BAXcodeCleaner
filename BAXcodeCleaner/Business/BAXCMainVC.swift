@@ -100,7 +100,7 @@ class BAXCMainVC: NSViewController {
     }()
     
     override func loadView() {
-      self.view = NSView()
+        self.view = NSView()
     }
     
     override func viewDidLoad() {
