@@ -142,8 +142,15 @@ extension BAXCSimulatorDeviceSubDataSource {
         for (path, _, _, _, _, state) in self.simulatoInfos! {
             if state == true {
                 let dataPath = BAXCFileUtil.assemblePath(path, "data")
-                if dataPath != nil && !dataPath!.isEmpty {
-                    BAXCFileUtil.recycle(dataPath!)
+                if dataPath != nil {
+                    continue
+                }
+                let innerPaths: [String]? = BAXCFileUtil.contentsOfDir(dataPath!)
+                if innerPaths == nil {
+                    continue
+                }
+                for innerPathItem in innerPaths! {
+                    BAXCFileUtil.recycle(innerPathItem)
                 }
             }
         }
