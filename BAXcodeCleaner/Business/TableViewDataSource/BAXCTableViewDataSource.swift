@@ -23,7 +23,7 @@ public class BAXCTableViewDataSource {
     public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSourceProtocol] = {
-        let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDeviceDS, self._simulatorCacheDS]
+        let result: [BAXCTableViewSubDataSourceProtocol] = [self._derivedDataDS, self._archivesDS, self._applicationDS, self._deviceSupportDS, self._simulatorDeviceDS, self._simulatorCacheDS]
 //        let result: [BAXCTableViewSubDataSourceProtocol] = [self._simulatorCacheDS, self._archivesDS]
         return result
     }()
