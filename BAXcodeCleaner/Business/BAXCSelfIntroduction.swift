@@ -50,6 +50,19 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         return result
     }()
     
+    private lazy var _licenseTextView: NSTextView = {
+        let result: NSTextView = NSTextView.init()
+        result.isEditable = false
+        result.isSelectable = true
+        result.backgroundColor = NSColor.clear
+        result.alignment = NSTextAlignment.center
+        let attrStr: NSMutableAttributedString = NSMutableAttributedString.init()
+        attrStr.append(NSAttributedString.init(string: "License: ", attributes: [NSAttributedString.Key.foregroundColor: NSColor.white, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18)]))
+        attrStr.append(NSAttributedString.init(string: "GNU GPL", attributes: [NSAttributedString.Key.link : "https://github.com/BenArvin/BAXcodeCleaner/blob/master/LICENSE", NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18)]))
+        result.textStorage?.setAttributedString(attrStr)
+        return result
+    }()
+    
     override func loadView() {
       self.view = NSView()
     }
@@ -60,6 +73,7 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
             self.view.addSubview(self._titleTextField)
             self.view.addSubview(self._versionTextField)
             self.view.addSubview(self._introTextView)
+            self.view.addSubview(self._licenseTextView)
         }
     }
     
@@ -71,7 +85,8 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         super.viewWillLayout()
         self._titleTextField.frame = CGRect.init(x: 15, y: self.view.bounds.height - 30, width: self.view.bounds.width - 30, height: 30)
         self._versionTextField.frame = CGRect.init(x: 15, y: self._titleTextField.frame.minY - 20 - 5, width: self.view.bounds.width - 30, height: 20)
-        self._introTextView.frame = CGRect.init(x: 15, y: 15, width: self.view.bounds.width - 30, height: self._versionTextField.frame.minY - 15 - 5)
+        self._licenseTextView.frame = CGRect.init(x: 15, y: 10, width: self.view.bounds.width - 30, height: 20)
+        self._introTextView.frame = CGRect.init(x: 15, y: self._licenseTextView.frame.maxY + 10, width: self.view.bounds.width - 30, height: self._versionTextField.frame.minY - 15 - self._licenseTextView.frame.maxY - 10)
     }
 }
 
