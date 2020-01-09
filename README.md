@@ -21,7 +21,7 @@ BAXcodeCleaner is trash cleaner for Xcode. You can detect and clean trash files 
 
 ## Contact
 
-Please create a issue for this repository, if there is any problem or question.
+Please create an issue for this repository, if there is any problem or question.
 
 ## License
 
