@@ -19,6 +19,7 @@ public protocol BAXCTableViewSubDataSourceProtocol: class {
     func selectAll()
     func unselectAll()
     func onSelected(closure: @escaping () -> ())
+    func onSectionSelected(closure: @escaping () -> ())
     func cleanCheck() -> String?
     func clean()
     

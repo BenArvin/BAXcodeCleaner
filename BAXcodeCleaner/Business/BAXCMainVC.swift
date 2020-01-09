@@ -168,15 +168,6 @@ extension BAXCMainVC: NSTableViewDataSource {
 
 extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
     func onDatasChanged() {
-        DispatchQueue.main.async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf._tableView.reloadData()
-        }
-    }
-    
-    func onSelectStateChanged() {
         var newState = BAXCTPCheckBox.State.Part
         if self._dataSource.isAllSelected() == true {
             newState = BAXCTPCheckBox.State.Check
@@ -187,16 +178,8 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
             guard let strongSelf = self else {
                 return
             }
-            strongSelf._selAllCheckBox.state = newState
-        }
-    }
-    
-    func onFoldStateChanged() {
-        DispatchQueue.main.async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
             strongSelf._tableView.reloadData()
+            strongSelf._selAllCheckBox.state = newState
         }
     }
 }
@@ -220,7 +203,7 @@ extension BAXCMainVC {
         
         self._tableContainerView.frame = CGRect.init(x: leftMargin, y: self._cleanBtn.frame.maxY + 10, width: self.view.bounds.width - leftMargin - rightMargin, height: self._refreshBtn.frame.minY - self._cleanBtn.frame.maxY - 10 - 5)
         
-        self._selAllCheckBox.frame = CGRect.init(x: self.view.bounds.width - rightMargin - 16 - 2, y: self._tableContainerView.frame.maxY + 5, width: 16, height: 16)
+        self._selAllCheckBox.frame = CGRect.init(x: self.view.bounds.width - rightMargin - 16 - 10, y: self._tableContainerView.frame.maxY + 5, width: 16, height: 16)
         
         if self._columnsSetted == false && self.view.bounds.width > 10 {
             self._columnsSetted = true

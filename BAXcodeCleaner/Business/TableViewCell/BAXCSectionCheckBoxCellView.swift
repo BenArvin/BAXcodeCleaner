@@ -1,5 +1,5 @@
 //
-//  BAXCCheckBoxCellView.swift
+//  BAXCSectionCheckBoxCellView.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/30.
@@ -8,26 +8,23 @@
 
 import Cocoa
 
-public struct BAXCCheckBoxCellViewConstants {
-    static let identifier: String = "BAXCCheckBoxCellView"
+public struct BAXCSectionCheckBoxCellViewConstants {
+    static let identifier: String = "BAXCSectionCheckBoxCellView"
 }
 
-public protocol BAXCCheckBoxCellViewDelegate: class {
-    func onCheckBoxSelected(cell: BAXCCheckBoxCellView)
+public protocol BAXCSectionCheckBoxCellViewDelegate: class {
+    func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCellView)
 }
 
-public class BAXCCheckBoxCellView: BAXCTableViewCell {
+public class BAXCSectionCheckBoxCellView: BAXCTableViewCell {
+    public var delegate: BAXCSectionCheckBoxCellViewDelegate?
     
-    public var delegate: BAXCCheckBoxCellViewDelegate?
-    
-    private var _selected: Bool = false
-    public var selected: Bool {
+    public var state: BAXCTPCheckBox.State {
         set {
-            self._selected = newValue
-            self._checkBox.state = newValue == true ? BAXCTPCheckBox.State.Check : BAXCTPCheckBox.State.Uncheck
+            self._checkBox.state = newValue
         }
         get {
-            return self._selected
+            return self._checkBox.state
         }
     }
     
@@ -50,27 +47,27 @@ public class BAXCCheckBoxCellView: BAXCTableViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        self.selected = false
+        self.state = BAXCTPCheckBox.State.Uncheck
     }
     
     public override func layout() {
         super.layout()
         self._checkBox.frame = CGRect.init(x: floor((self.bounds.width - 16) / 2),
-                                           y: floor((self.bounds.height - 16) / 2),
+                                           y: 5,
                                            width: 16,
                                            height: 16)
     }
 }
 
-extension BAXCCheckBoxCellView {
+extension BAXCSectionCheckBoxCellView {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
         if self._checkBox.state == BAXCTPCheckBox.State.Uncheck {
-            self.selected = true
+            self._checkBox.state = BAXCTPCheckBox.State.Check
         } else {
-            self.selected = false
+            self._checkBox.state = BAXCTPCheckBox.State.Uncheck
         }
         if self.delegate != nil {
-            self.delegate!.onCheckBoxSelected(cell: self)
+            self.delegate!.onSectionCheckBoxSelected(cell: self)
         }
     }
 }

@@ -10,6 +10,7 @@ import Cocoa
 
 public class BAXCTableViewSubDataSource {
     var onSelected: (() -> ())? = nil
+    var onSectionSelected: (() -> ())? = nil
     var onFoldBtnSelected: (() -> ())? = nil
 }
 
@@ -40,9 +41,10 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
                 result.index = row
                 return result
             } else if column == 3 {
-                let result: BAXCSectionBlankCellView = BAXCSectionBlankCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionBlankCellViewConstants.identifier)
+                let result: BAXCSectionCheckBoxCellView = BAXCSectionCheckBoxCellView.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionCheckBoxCellViewConstants.identifier)
                 result.index = row
+                result.delegate = self
                 return result
             } else {
                 let result: BAXCSectionBlankCellView = BAXCSectionBlankCellView.init()
@@ -101,6 +103,10 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
         self.onSelected = closure
     }
     
+    @objc public func onSectionSelected(closure: @escaping () -> ()) {
+        self.onSectionSelected = closure
+    }
+    
     @objc public func cleanCheck() -> String? {
         return nil
     }
@@ -124,5 +130,10 @@ extension BAXCTableViewSubDataSource: BAXCSectionTitleCellViewDelegate {
 
 extension BAXCTableViewSubDataSource: BAXCCheckBoxCellViewDelegate {
     @objc public func onCheckBoxSelected(cell: BAXCCheckBoxCellView) {
+    }
+}
+
+extension BAXCTableViewSubDataSource: BAXCSectionCheckBoxCellViewDelegate {
+    @objc public func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCellView) {
     }
 }

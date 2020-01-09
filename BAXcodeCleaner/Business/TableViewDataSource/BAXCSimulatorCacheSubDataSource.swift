@@ -37,6 +37,16 @@ extension BAXCSimulatorCacheSubDataSource {
                         sizeCell!.size = self.fullSize
                     }
                 } else if column == 3 {
+                    let checkBox: BAXCSectionCheckBoxCellView? = cell as? BAXCSectionCheckBoxCellView
+                    if checkBox != nil {
+                        if self.isAllSelected() == true {
+                            checkBox!.state = BAXCTPCheckBox.State.Check
+                        } else if self.isNoneSelected() == true {
+                            checkBox!.state = BAXCTPCheckBox.State.Uncheck
+                        } else {
+                            checkBox!.state = BAXCTPCheckBox.State.Part
+                        }
+                    }
                 }
             } else {
                 let realRow: Int = row - 1
@@ -193,6 +203,17 @@ extension BAXCSimulatorCacheSubDataSource {
         self.isFolded = !self.isFolded
         if self.onFoldBtnSelected != nil {
             self.onFoldBtnSelected!()
+        }
+    }
+    
+    public override func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCellView) {
+        if self.isNoneSelected() {
+            self.selectAll()
+        } else {
+            self.unselectAll()
+        }
+        if self.onSectionSelected != nil {
+            self.onSectionSelected!()
         }
     }
 }
