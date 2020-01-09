@@ -1,18 +1,18 @@
 //
-//  BAXCSectionTitleCellView.swift
+//  BAXCFileSizeCell.swift
 //  BAXcodeCleaner
 //
-//  Created by BenArvin on 2019/12/30.
-//  Copyright © 2019 BenArvin. All rights reserved.
+//  Created by BenArvin on 2020/1/2.
+//  Copyright © 2020 BenArvin. All rights reserved.
 //
 
 import Cocoa
 
-public struct BAXCSectionSizeCellViewConstants {
-    static let identifier: String = "BAXCSectionSizeCellView"
+public struct BAXCFileSizeCellConstants {
+    static let identifier: String = "BAXCFileSizeCell"
 }
 
-public class BAXCSectionSizeCellView: BAXCTableViewCell {
+public class BAXCFileSizeCell: BAXCTableViewCell {
     private var _size: Int = 0
     public var size: Int {
         set {
@@ -56,6 +56,6 @@ public class BAXCSectionSizeCellView: BAXCTableViewCell {
     
     public override func layout() {
         super.layout()
-        self._sizeTextField.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: 24)
+        self._sizeTextField.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
     }
 }

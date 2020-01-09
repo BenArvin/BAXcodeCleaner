@@ -30,47 +30,47 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
     @objc public func cell(for row: Int, column: Int) -> NSTableCellView? {
         if row == 0 {
             if column == 0 {
-                let result: BAXCSectionTitleCellView = BAXCSectionTitleCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionTitleCellViewConstants.identifier)
+                let result: BAXCSectionTitleCell = BAXCSectionTitleCell.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionTitleCellConstants.identifier)
                 result.index = row
                 result.delegate = self
                 return result
             } else if column == 2 {
-                let result: BAXCSectionSizeCellView = BAXCSectionSizeCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionSizeCellViewConstants.identifier)
+                let result: BAXCSectionSizeCell = BAXCSectionSizeCell.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionSizeCellConstants.identifier)
                 result.index = row
                 return result
             } else if column == 3 {
-                let result: BAXCSectionCheckBoxCellView = BAXCSectionCheckBoxCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionCheckBoxCellViewConstants.identifier)
+                let result: BAXCSectionCheckBoxCell = BAXCSectionCheckBoxCell.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionCheckBoxCellConstants.identifier)
                 result.index = row
                 result.delegate = self
                 return result
             } else {
-                let result: BAXCSectionBlankCellView = BAXCSectionBlankCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionBlankCellViewConstants.identifier)
+                let result: BAXCSectionBlankCell = BAXCSectionBlankCell.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionBlankCellConstants.identifier)
                 result.index = row
                 return result
             }
         } else {
             if column == 0 {
-                let result: BAXCTitleCellView = BAXCTitleCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCTitleCellViewConstants.identifier)
+                let result: BAXCTitleCell = BAXCTitleCell.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCTitleCellConstants.identifier)
                 result.index = row
                 return result
             } else if column == 1 {
-                let result: BAXCContentCellView = BAXCContentCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCContentCellViewConstants.identifier)
+                let result: BAXCContentCell = BAXCContentCell.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCContentCellConstants.identifier)
                 result.index = row
                 return result
             } else if column == 2 {
-                let result: BAXCFileSizeCellView = BAXCFileSizeCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCFileSizeCellViewConstants.identifier)
+                let result: BAXCFileSizeCell = BAXCFileSizeCell.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCFileSizeCellConstants.identifier)
                 result.index = row
                 return result
             } else if column == 3 {
-                let result: BAXCCheckBoxCellView = BAXCCheckBoxCellView.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCellViewConstants.identifier)
+                let result: BAXCCheckBoxCell = BAXCCheckBoxCell.init()
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCellConstants.identifier)
                 result.index = row
                 result.delegate = self
                 return result
@@ -123,17 +123,17 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
     }
 }
 
-extension BAXCTableViewSubDataSource: BAXCSectionTitleCellViewDelegate {
-    @objc public func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCellView) {
+extension BAXCTableViewSubDataSource: BAXCSectionTitleCellDelegate {
+    @objc public func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell) {
     }
 }
 
-extension BAXCTableViewSubDataSource: BAXCCheckBoxCellViewDelegate {
-    @objc public func onCheckBoxSelected(cell: BAXCCheckBoxCellView) {
+extension BAXCTableViewSubDataSource: BAXCCheckBoxCellDelegate {
+    @objc public func onCheckBoxSelected(cell: BAXCCheckBoxCell) {
     }
 }
 
-extension BAXCTableViewSubDataSource: BAXCSectionCheckBoxCellViewDelegate {
-    @objc public func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCellView) {
+extension BAXCTableViewSubDataSource: BAXCSectionCheckBoxCellDelegate {
+    @objc public func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCell) {
     }
 }

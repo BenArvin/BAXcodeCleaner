@@ -1,5 +1,5 @@
 //
-//  BAXCSectionBlankCellView.swift
+//  BAXCSectionBlankCell.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/30.
@@ -8,11 +8,11 @@
 
 import Cocoa
 
-public struct BAXCSectionBlankCellViewConstants {
-    static let identifier: String = "BAXCSectionBlankCellView"
+public struct BAXCSectionBlankCellConstants {
+    static let identifier: String = "BAXCSectionBlankCell"
 }
 
-public class BAXCSectionBlankCellView: BAXCTableViewCell {
+public class BAXCSectionBlankCell: BAXCTableViewCell {
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         self.wantsLayer = true

@@ -1,5 +1,5 @@
 //
-//  BAXCCheckBoxCellView.swift
+//  BAXCCheckBoxCell.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/30.
@@ -8,17 +8,17 @@
 
 import Cocoa
 
-public struct BAXCCheckBoxCellViewConstants {
-    static let identifier: String = "BAXCCheckBoxCellView"
+public struct BAXCCheckBoxCellConstants {
+    static let identifier: String = "BAXCCheckBoxCell"
 }
 
-public protocol BAXCCheckBoxCellViewDelegate: class {
-    func onCheckBoxSelected(cell: BAXCCheckBoxCellView)
+public protocol BAXCCheckBoxCellDelegate: class {
+    func onCheckBoxSelected(cell: BAXCCheckBoxCell)
 }
 
-public class BAXCCheckBoxCellView: BAXCTableViewCell {
+public class BAXCCheckBoxCell: BAXCTableViewCell {
     
-    public var delegate: BAXCCheckBoxCellViewDelegate?
+    public var delegate: BAXCCheckBoxCellDelegate?
     
     private var _selected: Bool = false
     public var selected: Bool {
@@ -62,7 +62,7 @@ public class BAXCCheckBoxCellView: BAXCTableViewCell {
     }
 }
 
-extension BAXCCheckBoxCellView {
+extension BAXCCheckBoxCell {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
         if self._checkBox.state == BAXCTPCheckBox.State.Uncheck {
             self.selected = true

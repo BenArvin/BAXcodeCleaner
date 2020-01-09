@@ -1,5 +1,5 @@
 //
-//  BAXCContentCellView.swift
+//  BAXCTitleCell.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/30.
@@ -8,21 +8,21 @@
 
 import Cocoa
 
-public struct BAXCContentCellViewConstants {
-    static let identifier: String = "BAXCContentCellView"
+public struct BAXCTitleCellConstants {
+    static let identifier: String = "BAXCTitleCell"
 }
 
-public class BAXCContentCellView: BAXCTableViewCell {
+public class BAXCTitleCell: BAXCTableViewCell {
     public var text: String? {
         set {
-            self._contentTextField.stringValue = newValue == nil ? "" : newValue!
+            self._titleTextField.stringValue = newValue == nil ? "" : newValue!
         }
         get {
-            return self._contentTextField.stringValue
+            return self._titleTextField.stringValue
         }
     }
     
-    private lazy var _contentTextField: NSTextField = {
+    private lazy var _titleTextField: NSTextField = {
         let result: NSTextField = NSTextField.init()
         result.isEditable = false
         result.isBordered = false
@@ -40,8 +40,7 @@ public class BAXCContentCellView: BAXCTableViewCell {
         super.init(frame: frameRect)
         self.wantsLayer = true
         self.layer!.backgroundColor = NSColor.clear.cgColor
-        self.addSubview(self._contentTextField)
-        
+        self.addSubview(self._titleTextField)
     }
     
     required init?(coder: NSCoder) {
@@ -55,6 +54,6 @@ public class BAXCContentCellView: BAXCTableViewCell {
     
     public override func layout() {
         super.layout()
-        self._contentTextField.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+        self._titleTextField.frame = CGRect.init(x: 5, y: 0, width: self.bounds.width - 5, height: self.bounds.height)
     }
 }

@@ -26,18 +26,18 @@ extension BAXCSimulatorDeviceSubDataSource {
         if row >= 0 || row < self.numberOfRows() {
             if row == 0 {
                 if column == 0 {
-                    let sectiontitleCell: BAXCSectionTitleCellView? = cell as? BAXCSectionTitleCellView
+                    let sectiontitleCell: BAXCSectionTitleCell? = cell as? BAXCSectionTitleCell
                     if sectiontitleCell != nil {
                         sectiontitleCell!.text = "Simulator Devices"
                         sectiontitleCell!.isFolded = self.isFolded
                     }
                 } else if column == 2 {
-                    let sizeCell: BAXCSectionSizeCellView? = cell as? BAXCSectionSizeCellView
+                    let sizeCell: BAXCSectionSizeCell? = cell as? BAXCSectionSizeCell
                     if sizeCell != nil {
                         sizeCell!.size = self.fullSize
                     }
                 } else if column == 3 {
-                    let checkBox: BAXCSectionCheckBoxCellView? = cell as? BAXCSectionCheckBoxCellView
+                    let checkBox: BAXCSectionCheckBoxCell? = cell as? BAXCSectionCheckBoxCell
                     if checkBox != nil {
                         if self.isAllSelected() == true {
                             checkBox!.state = BAXCTPCheckBox.State.Check
@@ -52,22 +52,22 @@ extension BAXCSimulatorDeviceSubDataSource {
                 let realRow: Int = row - 1
                 let (path, name, model, version, size, state) = self.simulatoInfos![realRow]
                 if column == 0 {
-                    let titleCell: BAXCTitleCellView? = cell as? BAXCTitleCellView
+                    let titleCell: BAXCTitleCell? = cell as? BAXCTitleCell
                     if titleCell != nil {
                         titleCell!.text = (model != nil && version != nil) ? (String.init(format: "%@(%@)", model!, version!)) : name
                     }
                 } else if column == 1 {
-                    let contentCell: BAXCContentCellView? = cell as? BAXCContentCellView
+                    let contentCell: BAXCContentCell? = cell as? BAXCContentCell
                     if contentCell != nil {
                         contentCell!.text = path
                     }
                 } else if column == 2 {
-                    let sizeCell: BAXCFileSizeCellView? = cell as? BAXCFileSizeCellView
+                    let sizeCell: BAXCFileSizeCell? = cell as? BAXCFileSizeCell
                     if sizeCell != nil {
                         sizeCell!.size = size
                     }
                 } else if column == 3 {
-                    let checkboxCell: BAXCCheckBoxCellView? = cell as? BAXCCheckBoxCellView
+                    let checkboxCell: BAXCCheckBoxCell? = cell as? BAXCCheckBoxCell
                     if checkboxCell != nil {
                         checkboxCell!.selected = state
                     }
@@ -194,7 +194,7 @@ extension BAXCSimulatorDeviceSubDataSource {
 }
 
 extension BAXCSimulatorDeviceSubDataSource {
-    public override func onCheckBoxSelected(cell: BAXCCheckBoxCellView) {
+    public override func onCheckBoxSelected(cell: BAXCCheckBoxCell) {
         let realIndex = cell.index - 1
         if realIndex < 0 || self.simulatoInfos == nil || realIndex >= self.simulatoInfos!.count {
             return
@@ -206,14 +206,14 @@ extension BAXCSimulatorDeviceSubDataSource {
         }
     }
     
-    public override func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCellView) {
+    public override func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell) {
         self.isFolded = !self.isFolded
         if self.onFoldBtnSelected != nil {
             self.onFoldBtnSelected!()
         }
     }
     
-    public override func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCellView) {
+    public override func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCell) {
         if self.isNoneSelected() {
             self.selectAll()
         } else {

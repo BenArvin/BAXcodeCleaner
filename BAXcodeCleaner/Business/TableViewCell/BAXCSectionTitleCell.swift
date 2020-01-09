@@ -1,5 +1,5 @@
 //
-//  BAXCSectionTitleCellView.swift
+//  BAXCSectionTitleCell.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/30.
@@ -8,17 +8,17 @@
 
 import Cocoa
 
-public struct BAXCSectionTitleCellViewConstants {
-    static let identifier: String = "BAXCSectionTitleCellView"
+public struct BAXCSectionTitleCellConstants {
+    static let identifier: String = "BAXCSectionTitleCell"
 }
 
-public protocol BAXCSectionTitleCellViewDelegate: class {
-    func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCellView)
+public protocol BAXCSectionTitleCellDelegate: class {
+    func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell)
 }
 
-public class BAXCSectionTitleCellView: BAXCTableViewCell {
+public class BAXCSectionTitleCell: BAXCTableViewCell {
     
-    public var delegate: BAXCSectionTitleCellViewDelegate?
+    public var delegate: BAXCSectionTitleCellDelegate?
     
     public var isFolded: Bool = false
     
@@ -79,7 +79,7 @@ public class BAXCSectionTitleCellView: BAXCTableViewCell {
     }
 }
 
-extension BAXCSectionTitleCellView {
+extension BAXCSectionTitleCell {
     @objc public func onFoldBtnSelected(_ sender: NSButton?) {
         if self.delegate != nil {
             self.delegate!.onSectionTitleCellFoldBtnSelected(cell: self)
