@@ -112,6 +112,16 @@ extension BAXCSimulatorDeviceSubDataSource {
         return allSelected
     }
     
+    public override func isNoneSelected() -> Bool {
+        var noneSelected: Bool = true
+        for (_, _, _, _, _, state) in self.simulatoInfos! {
+            if state == true {
+                noneSelected = false
+            }
+        }
+        return noneSelected
+    }
+    
     public override func selectAll() {
         if self.simulatoInfos == nil {
             return

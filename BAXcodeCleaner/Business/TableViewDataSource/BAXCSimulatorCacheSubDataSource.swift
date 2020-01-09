@@ -112,6 +112,16 @@ extension BAXCSimulatorCacheSubDataSource {
         return allSelected
     }
     
+    public override func isNoneSelected() -> Bool {
+        var noneSelected: Bool = true
+        for (_, _, _, _, state) in self.cacheInfos! {
+            if state == true {
+                noneSelected = false
+            }
+        }
+        return noneSelected
+    }
+    
     public override func selectAll() {
         if self.cacheInfos == nil {
             return

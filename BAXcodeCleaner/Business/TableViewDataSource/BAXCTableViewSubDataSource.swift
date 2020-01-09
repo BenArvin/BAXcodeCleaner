@@ -87,6 +87,10 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
         return false
     }
     
+    @objc public func isNoneSelected() -> Bool {
+        return false
+    }
+    
     @objc public func selectAll() {
     }
     

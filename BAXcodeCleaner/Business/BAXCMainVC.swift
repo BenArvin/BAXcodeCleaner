@@ -82,9 +82,9 @@ class BAXCMainVC: NSViewController {
         return result
     }()
     
-    private lazy var _selAllCheckBox: NSButton = {
-        let result: NSButton = NSButton.init(checkboxWithTitle: "", target: self, action: #selector(_onSelAllCheckBoxSelected(_:)))
-        result.state = NSControl.StateValue.off
+    private lazy var _selAllCheckBox: BAXCTPCheckBox = {
+        let result: BAXCTPCheckBox = BAXCTPCheckBox.init(target: self, action: #selector(_onSelAllCheckBoxSelected(_:)))
+        result.state = BAXCTPCheckBox.State.Uncheck
         return result
     }()
     
@@ -176,12 +176,18 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
         }
     }
     
-    func onSelectStateChanged(isAllSelected: Bool) {
+    func onSelectStateChanged() {
+        var newState = BAXCTPCheckBox.State.Part
+        if self._dataSource.isAllSelected() == true {
+            newState = BAXCTPCheckBox.State.Check
+        } else if self._dataSource.isNoneSelected() == true {
+            newState = BAXCTPCheckBox.State.Uncheck
+        }
         DispatchQueue.main.async{[weak self] in
             guard let strongSelf = self else {
                 return
             }
-            strongSelf._selAllCheckBox.state = isAllSelected == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            strongSelf._selAllCheckBox.state = newState
         }
     }
     
@@ -214,8 +220,7 @@ extension BAXCMainVC {
         
         self._tableContainerView.frame = CGRect.init(x: leftMargin, y: self._cleanBtn.frame.maxY + 10, width: self.view.bounds.width - leftMargin - rightMargin, height: self._refreshBtn.frame.minY - self._cleanBtn.frame.maxY - 10 - 5)
         
-        self._selAllCheckBox.sizeToFit()
-        self._selAllCheckBox.frame = CGRect.init(x: self.view.bounds.width - rightMargin - self._selAllCheckBox.bounds.width + 2, y: self._tableContainerView.frame.maxY + 5, width: self._selAllCheckBox.bounds.width, height: self._selAllCheckBox.bounds.height)
+        self._selAllCheckBox.frame = CGRect.init(x: self.view.bounds.width - rightMargin - 16 - 2, y: self._tableContainerView.frame.maxY + 5, width: 16, height: 16)
         
         if self._columnsSetted == false && self.view.bounds.width > 10 {
             self._columnsSetted = true
@@ -238,9 +243,11 @@ extension BAXCMainVC {
 // MARK: - selector methods
 extension BAXCMainVC {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
-        if self._selAllCheckBox.state == NSControl.StateValue.on {
+        if self._selAllCheckBox.state == BAXCTPCheckBox.State.Uncheck {
+            self._selAllCheckBox.state = BAXCTPCheckBox.State.Check
             self._dataSource.selectAll()
         } else {
+            self._selAllCheckBox.state = BAXCTPCheckBox.State.Uncheck
             self._dataSource.unselectAll()
         }
     }

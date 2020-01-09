@@ -10,17 +10,23 @@ import Cocoa
 
 public protocol BAXCTableViewDataSourceProtocol: class {
     func onDatasChanged()
-    func onSelectStateChanged(isAllSelected: Bool)
+    func onSelectStateChanged()
     func onFoldStateChanged()
 }
 
 public class BAXCTableViewDataSource {
     
+    public enum SelectState: Int {
+        case None = 0
+        case Part = 1
+        case All = 2
+    }
+    
     public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSourceProtocol] = {
         let result: [BAXCTableViewSubDataSourceProtocol] = [self._applicationDS, self._derivedDataDS, self._deviceSupportDS, self._archivesDS, self._simulatorDeviceDS, self._simulatorCacheDS]
-//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._archivesDS]
+//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._simulatorCacheDS]
         return result
     }()
     
@@ -140,6 +146,17 @@ extension BAXCTableViewDataSource {
         return allSelected
     }
     
+    public func isNoneSelected() -> Bool {
+        var noneSelected: Bool = true
+        for subDSItem in self._subDS {
+            if subDSItem.isNoneSelected() == false {
+                noneSelected = false
+                break
+            }
+        }
+        return noneSelected
+    }
+    
     public func selectAll() {
         for subDSItem in self._subDS {
             subDSItem.selectAll()
@@ -235,7 +252,7 @@ extension BAXCTableViewDataSource {
     
     private func _onSubDSSelected() {
         if self.delegate != nil {
-            self.delegate!.onSelectStateChanged(isAllSelected: self.isAllSelected())
+            self.delegate!.onSelectStateChanged()
         }
     }
     

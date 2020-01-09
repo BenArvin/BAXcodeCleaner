@@ -109,6 +109,16 @@ extension BAXCApplicationsSubDataSource {
         return allSelected
     }
     
+    public override func isNoneSelected() -> Bool {
+        var noneSelected: Bool = true
+        for (_, _, _, state) in self.appInfos! {
+            if state == true {
+                noneSelected = false
+            }
+        }
+        return noneSelected
+    }
+    
     public override func selectAll() {
         if self.appInfos == nil {
             return

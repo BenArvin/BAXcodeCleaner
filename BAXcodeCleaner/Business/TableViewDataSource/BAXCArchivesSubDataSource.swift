@@ -109,6 +109,16 @@ extension BAXCArchivesSubDataSource {
         return allSelected
     }
     
+    public override func isNoneSelected() -> Bool {
+        var noneSelected: Bool = true
+        for (_, _, _, _, state) in self.archiveInfos! {
+            if state == true {
+                noneSelected = false
+            }
+        }
+        return noneSelected
+    }
+    
     public override func selectAll() {
         if self.archiveInfos == nil {
             return

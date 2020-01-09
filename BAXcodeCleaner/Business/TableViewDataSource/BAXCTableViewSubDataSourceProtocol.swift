@@ -15,6 +15,7 @@ public protocol BAXCTableViewSubDataSourceProtocol: class {
     func setContent(for cell: NSTableCellView, row: Int, column: Int)
     func refresh()
     func isAllSelected() -> Bool
+    func isNoneSelected() -> Bool
     func selectAll()
     func unselectAll()
     func onSelected(closure: @escaping () -> ())
