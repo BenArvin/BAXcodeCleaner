@@ -236,6 +236,19 @@ extension BAXCMainVC {
     }
     
     @objc public func onCleanBtnSelected(_ sender: NSButton?) {
+        if self._dataSource.isNoneSelected() == true {
+            return
+        }
+        let alert: NSAlert = NSAlert.init()
+        alert.alertStyle = NSAlert.Style.critical
+        alert.messageText = "Are you sure to clean those files?"
+        alert.informativeText = "Take it easy, you can find and retrive those files from Trash🗑 if you regret it. The world won't be destroyed."
+        alert.addButton(withTitle: "Continue")
+        alert.addButton(withTitle: "Cancel")
+        let res: NSApplication.ModalResponse = alert.runModal()
+        if res != NSApplication.ModalResponse.alertFirstButtonReturn {
+            return
+        }
         self._loadingView.show()
         DispatchQueue.global().async{[weak self] in
             guard let strongSelf = self else {

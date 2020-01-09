@@ -23,7 +23,7 @@ autoreleasepool {
     
     let actionMenu: NSMenu = NSMenu.init(title: "Action")
     actionMenu.addItem(NSMenuItem.init(title: "Refresh", action: #selector(AppDelegate.refreshAction), keyEquivalent: "r"))
-    actionMenu.addItem(NSMenuItem.init(title: "Delete", action: #selector(AppDelegate.refreshAction), keyEquivalent: "d"))
+    actionMenu.addItem(NSMenuItem.init(title: "Delete", action: #selector(AppDelegate.deleteAction), keyEquivalent: "d"))
 
     let actionMenuItem: NSMenuItem = NSMenuItem.init()
     actionMenuItem.submenu = actionMenu

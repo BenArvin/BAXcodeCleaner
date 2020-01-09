@@ -62,6 +62,8 @@ extension BAXCDerivedDataSubDataSource {
                         if targetPath != nil {
                             let (isExisted, _) = BAXCFileUtil.isPathExisted(targetPath!)
                             contentCell!.text = String.init(format: "%@%@", isExisted == true ? "" : "⚠️", targetPath!)
+                        } else {
+                            contentCell!.text = "⚠️"
                         }
                     }
                 } else if column == 2 {
