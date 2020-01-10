@@ -110,6 +110,9 @@ extension BAXCArchivesSubDataSource {
     }
     
     public override func isAllSelected() -> Bool {
+        if self.archiveInfos == nil {
+            return true
+        }
         var allSelected: Bool = true
         for (_, _, _, _, state) in self.archiveInfos! {
             if state == false {
@@ -120,6 +123,9 @@ extension BAXCArchivesSubDataSource {
     }
     
     public override func isNoneSelected() -> Bool {
+        if self.archiveInfos == nil {
+            return true
+        }
         var noneSelected: Bool = true
         for (_, _, _, _, state) in self.archiveInfos! {
             if state == true {
@@ -156,6 +162,9 @@ extension BAXCArchivesSubDataSource {
     }
     
     public override func clean() {
+        if self.archiveInfos == nil {
+            return
+        }
         for (path, _, _, _, state) in self.archiveInfos! {
             if state == true {
                 BAXCFileUtil.recycle(path)

@@ -115,6 +115,9 @@ extension BAXCDerivedDataSubDataSource {
     }
     
     public override func isAllSelected() -> Bool {
+        if self.derivedDataInfos == nil {
+            return true
+        }
         var allSelected: Bool = true
         for (_, _, _, _, state) in self.derivedDataInfos! {
             if state == false {
@@ -125,6 +128,9 @@ extension BAXCDerivedDataSubDataSource {
     }
     
     public override func isNoneSelected() -> Bool {
+        if self.derivedDataInfos == nil {
+            return true
+        }
         var noneSelected: Bool = true
         for (_, _, _, _, state) in self.derivedDataInfos! {
             if state == true {
@@ -161,6 +167,9 @@ extension BAXCDerivedDataSubDataSource {
     }
     
     public override func clean() {
+        if self.derivedDataInfos == nil {
+            return
+        }
         for (path, _, _, _, state) in self.derivedDataInfos! {
             if state == true {
                 BAXCFileUtil.recycle(path)

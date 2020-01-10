@@ -113,6 +113,9 @@ extension BAXCSimulatorCacheSubDataSource {
     }
     
     public override func isAllSelected() -> Bool {
+        if self.cacheInfos == nil {
+            return true
+        }
         var allSelected: Bool = true
         for (_, _, _, _, state) in self.cacheInfos! {
             if state == false {
@@ -123,6 +126,9 @@ extension BAXCSimulatorCacheSubDataSource {
     }
     
     public override func isNoneSelected() -> Bool {
+        if self.cacheInfos == nil {
+            return true
+        }
         var noneSelected: Bool = true
         for (_, _, _, _, state) in self.cacheInfos! {
             if state == true {
@@ -159,12 +165,12 @@ extension BAXCSimulatorCacheSubDataSource {
     }
     
     public override func clean() {
+        if self.cacheInfos == nil {
+            return
+        }
         for (path, _, _, _, state) in self.cacheInfos! {
             if state == true {
-                let dataPath = BAXCFileUtil.assemblePath(path, "data")
-                if dataPath != nil && !dataPath!.isEmpty {
-                    BAXCFileUtil.recycle(dataPath!)
-                }
+                BAXCFileUtil.recycle(path)
             }
         }
     }

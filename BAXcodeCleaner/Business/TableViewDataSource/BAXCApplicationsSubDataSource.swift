@@ -110,6 +110,9 @@ extension BAXCApplicationsSubDataSource {
     }
     
     public override func isAllSelected() -> Bool {
+        if self.appInfos == nil {
+            return true
+        }
         var allSelected: Bool = true
         for (_, _, _, state) in self.appInfos! {
             if state == false {
@@ -120,6 +123,9 @@ extension BAXCApplicationsSubDataSource {
     }
     
     public override func isNoneSelected() -> Bool {
+        if self.appInfos == nil {
+            return true
+        }
         var noneSelected: Bool = true
         for (_, _, _, state) in self.appInfos! {
             if state == true {
@@ -160,6 +166,9 @@ extension BAXCApplicationsSubDataSource {
     }
     
     public override func clean() {
+        if self.appInfos == nil {
+            return
+        }
         for (path, _, _, state) in self.appInfos! {
             if state == true {
                 BAXCFileUtil.recycle(path)

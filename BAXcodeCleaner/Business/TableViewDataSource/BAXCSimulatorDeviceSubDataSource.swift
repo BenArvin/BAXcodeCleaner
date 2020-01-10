@@ -113,6 +113,9 @@ extension BAXCSimulatorDeviceSubDataSource {
     }
     
     public override func isAllSelected() -> Bool {
+        if self.simulatoInfos == nil {
+            return true
+        }
         var allSelected: Bool = true
         for (_, _, _, _, _, state) in self.simulatoInfos! {
             if state == false {
@@ -123,6 +126,9 @@ extension BAXCSimulatorDeviceSubDataSource {
     }
     
     public override func isNoneSelected() -> Bool {
+        if self.simulatoInfos == nil {
+            return true
+        }
         var noneSelected: Bool = true
         for (_, _, _, _, _, state) in self.simulatoInfos! {
             if state == true {
@@ -159,10 +165,13 @@ extension BAXCSimulatorDeviceSubDataSource {
     }
     
     public override func clean() {
+        if self.simulatoInfos == nil {
+            return
+        }
         for (path, _, _, _, _, state) in self.simulatoInfos! {
             if state == true {
                 let dataPath = BAXCFileUtil.assemblePath(path, "data")
-                if dataPath != nil {
+                if dataPath == nil {
                     continue
                 }
                 let innerPaths: [String]? = BAXCFileUtil.contentsOfDir(dataPath!)

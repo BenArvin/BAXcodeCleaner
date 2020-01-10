@@ -110,6 +110,9 @@ extension BAXCDeviceSupportSubDataSource {
     }
     
     public override func isAllSelected() -> Bool {
+        if self.deviceSupportInfos == nil {
+            return true
+        }
         var allSelected: Bool = true
         for (_, _, _, state) in self.deviceSupportInfos! {
             if state == false {
@@ -120,6 +123,9 @@ extension BAXCDeviceSupportSubDataSource {
     }
     
     public override func isNoneSelected() -> Bool {
+        if self.deviceSupportInfos == nil {
+            return true
+        }
         var noneSelected: Bool = true
         for (_, _, _, state) in self.deviceSupportInfos! {
             if state == true {
@@ -156,6 +162,9 @@ extension BAXCDeviceSupportSubDataSource {
     }
     
     public override func clean() {
+        if self.deviceSupportInfos == nil {
+            return
+        }
         for (path, _, _, state) in self.deviceSupportInfos! {
             if state == true {
                 BAXCFileUtil.recycle(path)
