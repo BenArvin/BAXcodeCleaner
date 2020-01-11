@@ -97,14 +97,6 @@ public class BAXCTableViewSubDataSource {
     public func unselectAll() {
     }
     
-    public func onSelected(closure: @escaping () -> ()) {
-        self.onSelected = closure
-    }
-    
-    public func onSectionSelected(closure: @escaping () -> ()) {
-        self.onSectionSelected = closure
-    }
-    
     public func cleanCheck() -> String? {
         return nil
     }
