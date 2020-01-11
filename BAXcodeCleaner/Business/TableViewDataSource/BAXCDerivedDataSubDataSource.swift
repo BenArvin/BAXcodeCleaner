@@ -192,6 +192,30 @@ extension BAXCDerivedDataSubDataSource {
         let (path, _, _, _, _) = self.derivedDataInfos![row - 1]
         return path
     }
+    
+    public override func totalSize() -> Int {
+        if self.derivedDataInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, _, size, _) in self.derivedDataInfos! {
+            result = result + size
+        }
+        return result
+    }
+    
+    public override func selectedSize() -> Int {
+        if self.derivedDataInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, _, size, state) in self.derivedDataInfos! {
+            if state == true {
+                result = result + size
+            }
+        }
+        return result
+    }
 }
 
 extension BAXCDerivedDataSubDataSource {

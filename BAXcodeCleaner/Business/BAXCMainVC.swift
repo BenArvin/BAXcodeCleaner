@@ -73,6 +73,11 @@ class BAXCMainVC: NSViewController {
         return result
     }()
     
+    private lazy var _topBar: NSView = {
+        let result: NSView = NSView.init()
+        return result
+    }()
+    
     private lazy var _refreshBtn: NSButton = {
         let result: NSButton = NSButton.init(title: "", target: self, action: #selector(onRefreshBtnSelected(_:)))
         result.bezelStyle = NSButton.BezelStyle.regularSquare
@@ -85,6 +90,19 @@ class BAXCMainVC: NSViewController {
     private lazy var _selAllCheckBox: BAXCTPCheckBox = {
         let result: BAXCTPCheckBox = BAXCTPCheckBox.init(target: self, action: #selector(_onSelAllCheckBoxSelected(_:)))
         result.state = BAXCTPCheckBox.State.Uncheck
+        return result
+    }()
+    
+    private lazy var _sizeTextField: NSTextField = {
+        let result: NSTextField = NSTextField.init()
+        result.isEditable = false
+        result.isBordered = false
+        result.backgroundColor = NSColor.clear
+        result.textColor = NSColor.lightGray
+        result.alignment = NSTextAlignment.center
+        result.maximumNumberOfLines = 1
+        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.font = NSFont.systemFont(ofSize: 16)
         return result
     }()
     
@@ -118,8 +136,10 @@ class BAXCMainVC: NSViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
         if self._tableContainerView.superview != self.view {
-            self.view.addSubview(self._refreshBtn)
-            self.view.addSubview(self._selAllCheckBox)
+            self.view.addSubview(self._topBar)
+            self._topBar.addSubview(self._refreshBtn)
+            self._topBar.addSubview(self._selAllCheckBox)
+            self._topBar.addSubview(self._sizeTextField)
             self.view.addSubview(self._tableContainerView)
             self.view.addSubview(self._cleanBtn)
             self.view.addSubview(self._loadingView)
@@ -174,12 +194,15 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
         } else if self._dataSource.isNoneSelected() == true {
             newState = BAXCTPCheckBox.State.Uncheck
         }
+        let totalSize = self._dataSource.totalSize()
+        let selectedSize = self._dataSource.selectedSize()
         DispatchQueue.main.async{[weak self] in
             guard let strongSelf = self else {
                 return
             }
             strongSelf._tableView.reloadData()
             strongSelf._selAllCheckBox.state = newState
+            strongSelf._updateSizeTextField(total: totalSize, selected: selectedSize)
         }
     }
 }
@@ -199,11 +222,13 @@ extension BAXCMainVC {
         
         self._cleanBtn.frame = CGRect.init(x: floor((self.view.bounds.width - cleanBtnWidth) / 2), y: topMargin, width: cleanBtnWidth, height: cleanBtnHeight)
         
-        self._refreshBtn.frame = CGRect.init(x: leftMargin, y: self.view.bounds.height - bottomMargin - 30, width: 30, height: 30)
+        self._topBar.frame = CGRect.init(x: leftMargin, y: self.view.bounds.height - bottomMargin - 30, width: self.view.bounds.width - leftMargin - rightMargin, height: 30)
         
-        self._tableContainerView.frame = CGRect.init(x: leftMargin, y: self._cleanBtn.frame.maxY + 10, width: self.view.bounds.width - leftMargin - rightMargin, height: self._refreshBtn.frame.minY - self._cleanBtn.frame.maxY - 10 - 5)
+        self._tableContainerView.frame = CGRect.init(x: leftMargin, y: self._cleanBtn.frame.maxY + 10, width: self.view.bounds.width - leftMargin - rightMargin, height: self._topBar.frame.minY - self._cleanBtn.frame.maxY - 10 - 5)
         
-        self._selAllCheckBox.frame = CGRect.init(x: self.view.bounds.width - rightMargin - 16 - 10, y: self._tableContainerView.frame.maxY + 5, width: 16, height: 16)
+        self._refreshBtn.frame = CGRect.init(x: leftMargin, y: 0, width: 30, height: 30)
+        self._selAllCheckBox.frame = CGRect.init(x: self._topBar.bounds.width - 16 - 10, y: 4, width: 16, height: 16)
+        self._sizeTextField.frame = CGRect.init(x: self._refreshBtn.frame.maxX + 15, y: 3, width: self._topBar.frame.width - self._refreshBtn.frame.maxX * 2 - 30, height: 18)
         
         if self._columnsSetted == false && self.view.bounds.width > 10 {
             self._columnsSetted = true
@@ -311,6 +336,14 @@ extension BAXCMainVC {
                     strongSelf3._loadingView.hide()
                 }
             }
+        }
+    }
+    
+    private func _updateSizeTextField(total: Int, selected: Int) {
+        if selected == 0 {
+            self._sizeTextField.stringValue = String.init(format: "total: %@", String.init(fromSize: total))
+        } else {
+            self._sizeTextField.stringValue = String.init(format: "total: %@ / selected: %@", String.init(fromSize: total), String.init(fromSize: selected))
         }
     }
 }

@@ -13,16 +13,22 @@ public protocol BAXCTableViewSubDataSourceProtocol: class {
     func height(for row: Int) -> CGFloat
     func cell(for row: Int, column: Int) -> NSTableCellView?
     func setContent(for cell: NSTableCellView, row: Int, column: Int)
+    
     func refresh()
+    
     func isAllSelected() -> Bool
     func isNoneSelected() -> Bool
     func selectAll()
     func unselectAll()
     func onSelected(closure: @escaping () -> ())
     func onSectionSelected(closure: @escaping () -> ())
+    
     func cleanCheck() -> String?
     func clean()
     
     func contentForCopy(at row: Int) -> String?
     func pathForOpen(at row: Int) -> String?
+    
+    func totalSize() -> Int
+    func selectedSize() -> Int
 }

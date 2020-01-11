@@ -187,6 +187,30 @@ extension BAXCDeviceSupportSubDataSource {
         let (path, _, _, _) = self.deviceSupportInfos![row - 1]
         return path
     }
+    
+    public override func totalSize() -> Int {
+        if self.deviceSupportInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, size, _) in self.deviceSupportInfos! {
+            result = result + size
+        }
+        return result
+    }
+    
+    public override func selectedSize() -> Int {
+        if self.deviceSupportInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, size, state) in self.deviceSupportInfos! {
+            if state == true {
+                result = result + size
+            }
+        }
+        return result
+    }
 }
 
 extension BAXCDeviceSupportSubDataSource {

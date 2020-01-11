@@ -225,6 +225,22 @@ extension BAXCTableViewDataSource {
             return false
         }
     }
+    
+    public func totalSize() -> Int {
+        var result: Int = 0
+        for subDSItem in self._subDS {
+            result = result + subDSItem.totalSize()
+        }
+        return result
+    }
+    
+    public func selectedSize() -> Int {
+        var result: Int = 0
+        for subDSItem in self._subDS {
+            result = result + subDSItem.selectedSize()
+        }
+        return result
+    }
 }
 
 // MARK: - private methods

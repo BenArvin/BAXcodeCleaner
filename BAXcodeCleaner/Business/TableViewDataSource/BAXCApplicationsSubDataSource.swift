@@ -191,6 +191,30 @@ extension BAXCApplicationsSubDataSource {
         let (path, _, _, _) = self.appInfos![row - 1]
         return path
     }
+    
+    public override func totalSize() -> Int {
+        if self.appInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, size, _) in self.appInfos! {
+            result = result + size
+        }
+        return result
+    }
+    
+    public override func selectedSize() -> Int {
+        if self.appInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, size, state) in self.appInfos! {
+            if state == true {
+                result = result + size
+            }
+        }
+        return result
+    }
 }
 
 extension BAXCApplicationsSubDataSource {

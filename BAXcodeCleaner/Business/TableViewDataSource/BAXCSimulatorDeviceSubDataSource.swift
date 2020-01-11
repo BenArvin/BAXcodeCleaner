@@ -200,6 +200,30 @@ extension BAXCSimulatorDeviceSubDataSource {
         let (path, _, _, _, _, _) = self.simulatoInfos![row - 1]
         return path
     }
+    
+    public override func totalSize() -> Int {
+        if self.simulatoInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, _, _, size, _) in self.simulatoInfos! {
+            result = result + size
+        }
+        return result
+    }
+    
+    public override func selectedSize() -> Int {
+        if self.simulatoInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, _, _, size, state) in self.simulatoInfos! {
+            if state == true {
+                result = result + size
+            }
+        }
+        return result
+    }
 }
 
 extension BAXCSimulatorDeviceSubDataSource {

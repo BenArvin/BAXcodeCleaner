@@ -187,6 +187,30 @@ extension BAXCArchivesSubDataSource {
         let (path, _, _, _, _) = self.archiveInfos![row - 1]
         return path
     }
+    
+    public override func totalSize() -> Int {
+        if self.archiveInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, _, size, _) in self.archiveInfos! {
+            result = result + size
+        }
+        return result
+    }
+    
+    public override func selectedSize() -> Int {
+        if self.archiveInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, _, size, state) in self.archiveInfos! {
+            if state == true {
+                result = result + size
+            }
+        }
+        return result
+    }
 }
 
 extension BAXCArchivesSubDataSource {

@@ -190,6 +190,30 @@ extension BAXCSimulatorCacheSubDataSource {
         let (path, _, _, _, _) = self.cacheInfos![row - 1]
         return path
     }
+    
+    public override func totalSize() -> Int {
+        if self.cacheInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, _, size, _) in self.cacheInfos! {
+            result = result + size
+        }
+        return result
+    }
+    
+    public override func selectedSize() -> Int {
+        if self.cacheInfos == nil {
+            return 0
+        }
+        var result = 0
+        for (_, _, _, size, state) in self.cacheInfos! {
+            if state == true {
+                result = result + size
+            }
+        }
+        return result
+    }
 }
 
 extension BAXCSimulatorCacheSubDataSource {

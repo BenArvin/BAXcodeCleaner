@@ -121,6 +121,14 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
     @objc public func pathForOpen(at row: Int) -> String? {
         return nil
     }
+    
+    @objc public func totalSize() -> Int {
+        return 0
+    }
+    
+    @objc public func selectedSize() -> Int {
+        return 0
+    }
 }
 
 extension BAXCTableViewSubDataSource: BAXCSectionTitleCellDelegate {
