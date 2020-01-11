@@ -134,6 +134,9 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
 extension BAXCTableViewSubDataSource: BAXCSectionTitleCellDelegate {
     @objc public func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell) {
     }
+    
+    @objc public func onSectionTitleCellTipsBtnSelected(cell: BAXCSectionTitleCell) {
+    }
 }
 
 extension BAXCTableViewSubDataSource: BAXCCheckBoxCellDelegate {

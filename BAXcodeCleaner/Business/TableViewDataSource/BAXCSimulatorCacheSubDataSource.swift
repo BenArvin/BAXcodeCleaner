@@ -28,7 +28,7 @@ extension BAXCSimulatorCacheSubDataSource {
                 if column == 0 {
                     let sectiontitleCell: BAXCSectionTitleCell? = cell as? BAXCSectionTitleCell
                     if sectiontitleCell != nil {
-                        sectiontitleCell!.text = "Simulator Caches (dyld)"
+                        sectiontitleCell!.text = "Simulator Caches"
                         sectiontitleCell!.isFolded = self.isFolded
                     }
                 } else if column == 2 {

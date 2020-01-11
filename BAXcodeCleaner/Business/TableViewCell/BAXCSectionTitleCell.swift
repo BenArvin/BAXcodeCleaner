@@ -14,6 +14,7 @@ public struct BAXCSectionTitleCellConstants {
 
 public protocol BAXCSectionTitleCellDelegate: class {
     func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell)
+    func onSectionTitleCellTipsBtnSelected(cell: BAXCSectionTitleCell)
 }
 
 public class BAXCSectionTitleCell: BAXCTableViewCell {
@@ -52,12 +53,21 @@ public class BAXCSectionTitleCell: BAXCTableViewCell {
         return result
     }()
     
+    private lazy var _tipsBtn: NSButton = {
+        let result: NSButton = NSButton.init(title: "", target: self, action: #selector(onTipsBtnSelected(_:)))
+        result.bezelStyle = NSButton.BezelStyle.helpButton
+        result.imageScaling = NSImageScaling.scaleAxesIndependently
+        result.imagePosition = NSControl.ImagePosition.imageOnly
+        return result
+    }()
+    
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         self.wantsLayer = true
         self.layer!.backgroundColor = NSColor.clear.cgColor
         self.addSubview(self._foldBtn)
         self.addSubview(self._titleTextField)
+        self.addSubview(self._tipsBtn)
     }
     
     required init?(coder: NSCoder) {
@@ -75,7 +85,14 @@ public class BAXCSectionTitleCell: BAXCTableViewCell {
         super.layout()
         self._foldBtn.frame = CGRect.init(x: 5, y: 7, width: 25, height: 25)
         self._foldBtn.image = self.isFolded == true ? NSImage(named: NSImage.Name("triangle-right-white")) : NSImage(named: NSImage.Name("triangle-down-white"))
-        self._titleTextField.frame = CGRect.init(x: self._foldBtn.frame.maxX + 5, y: 5, width: self.bounds.width - self._foldBtn.frame.maxX - 5, height: 30)
+        
+        let tipsBtnSize: CGFloat = 25
+        
+        let maxWidth: CGFloat = self.bounds.width - self._foldBtn.frame.maxX - tipsBtnSize - 5 - 10
+        let idealWidth: CGFloat = ceil(self._titleTextField.sizeThatFits(NSSize.init(width: 0, height: 0)).width)
+        self._titleTextField.frame = CGRect.init(x: self._foldBtn.frame.maxX + 5, y: 5, width: idealWidth > maxWidth ? maxWidth : idealWidth, height: 30)
+        
+        self._tipsBtn.frame = CGRect.init(x: self._titleTextField.frame.maxX + 5, y: 5, width: tipsBtnSize, height: tipsBtnSize)
     }
 }
 
@@ -83,6 +100,12 @@ extension BAXCSectionTitleCell {
     @objc public func onFoldBtnSelected(_ sender: NSButton?) {
         if self.delegate != nil {
             self.delegate!.onSectionTitleCellFoldBtnSelected(cell: self)
+        }
+    }
+    
+    @objc public func onTipsBtnSelected(_ sender: NSButton?) {
+        if self.delegate != nil {
+            self.delegate!.onSectionTitleCellTipsBtnSelected(cell: self)
         }
     }
 }

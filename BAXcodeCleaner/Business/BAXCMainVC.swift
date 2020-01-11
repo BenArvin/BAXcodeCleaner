@@ -340,7 +340,9 @@ extension BAXCMainVC {
     }
     
     private func _updateSizeTextField(total: Int, selected: Int) {
-        if selected == 0 {
+        if total == 0 && selected == 0 {
+            self._sizeTextField.stringValue = ""
+        } else if selected == 0 {
             self._sizeTextField.stringValue = String.init(format: "total: %@", String.init(fromSize: total))
         } else {
             self._sizeTextField.stringValue = String.init(format: "total: %@ / selected: %@", String.init(fromSize: total), String.init(fromSize: selected))
