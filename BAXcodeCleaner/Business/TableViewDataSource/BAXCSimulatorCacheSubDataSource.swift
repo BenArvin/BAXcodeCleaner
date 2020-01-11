@@ -224,4 +224,8 @@ public class BAXCSimulatorCacheSubDataSource: BAXCTableViewSubDataSource {
         }
         return (total, selected)
     }
+    
+    public override func tipsForHelp() -> (String?, String?) {
+        return ("Simulator Caches", "Caches for simulator devices, currently it means dyld file only, you can clean it if you don't need it.")
+    }
 }

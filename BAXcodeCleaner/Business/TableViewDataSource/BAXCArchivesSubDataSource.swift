@@ -221,5 +221,9 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         }
         return (total, selected)
     }
+    
+    public override func tipsForHelp() -> (String?, String?) {
+        return ("Archives", "History archive files for your project, you can clean it if you don't need it anymore.")
+    }
 }
 

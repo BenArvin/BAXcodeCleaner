@@ -226,4 +226,8 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
         }
         return (total, selected)
     }
+    
+    public override func tipsForHelp() -> (String?, String?) {
+        return ("Derived Data", "Temporary data for your projects, it will regenerated again when you build project next time, but it also means your next build action will be a long journey.")
+    }
 }

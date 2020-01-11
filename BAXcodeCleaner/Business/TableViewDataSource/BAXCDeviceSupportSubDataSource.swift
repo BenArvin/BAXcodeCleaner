@@ -221,4 +221,8 @@ public class BAXCDeviceSupportSubDataSource: BAXCTableViewSubDataSource {
         }
         return (total, selected)
     }
+    
+    public override func tipsForHelp() -> (String?, String?) {
+        return ("Device Support", "Device support files for iPhone device ever connected to your computer. It will regenerated again when you connect iPhone device next time, but it might be a long journey too.")
+    }
 }

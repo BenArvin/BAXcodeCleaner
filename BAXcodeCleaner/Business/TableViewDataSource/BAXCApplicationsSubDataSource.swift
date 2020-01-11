@@ -225,4 +225,8 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
         }
         return (total, selected)
     }
+    
+    public override func tipsForHelp() -> (String?, String?) {
+        return ("Xcode Applications", "There might be several Xcode applications in your computer, you can clean old versions if you don't it anymore.")
+    }
 }

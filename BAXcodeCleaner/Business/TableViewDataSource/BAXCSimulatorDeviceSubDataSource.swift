@@ -238,6 +238,10 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
         }
         return (total, selected)
     }
+    
+    public override func tipsForHelp() -> (String?, String?) {
+        return ("Simulator Devices", "Simulator devices for Xcode, you can clean it if you don't need it.")
+    }
 }
 
 extension BAXCSimulatorDeviceSubDataSource {
