@@ -146,7 +146,7 @@ extension BAXCMainVC: NSTableViewDelegate {
     }
     
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-        return false
+        return !self._dataSource.isSectionRow(row)
     }
 }
 

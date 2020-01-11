@@ -216,6 +216,15 @@ extension BAXCTableViewDataSource {
             return nil
         }
     }
+    
+    public func isSectionRow(_ row: Int) -> Bool {
+        let (subDS, realRow) = self._subDataSource(for: row)
+        if subDS != nil {
+            return realRow == 0 ? true : false
+        } else {
+            return false
+        }
+    }
 }
 
 // MARK: - private methods

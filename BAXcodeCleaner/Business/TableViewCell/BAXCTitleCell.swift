@@ -26,7 +26,7 @@ public class BAXCTitleCell: BAXCTableViewCell {
         let result: NSTextField = NSTextField.init()
         result.isEditable = false
         result.isBordered = false
-        result.isSelectable = true
+        result.isSelectable = false
         result.backgroundColor = NSColor.clear
         result.textColor = NSColor.white
         result.alignment = NSTextAlignment.left
