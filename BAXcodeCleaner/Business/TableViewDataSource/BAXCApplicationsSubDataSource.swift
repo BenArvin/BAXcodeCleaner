@@ -176,11 +176,11 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
         }
     }
     
-    public override func cleanCheck() -> String? {
+    public override func cleanCheck() -> (Bool, String?) {
         if self.isAllChecked() == true {
-            return "Can't delete all Xcode applications, please keep one at least."
+            return (false, "Can't delete all Xcode applications, please keep one at least.")
         } else {
-            return nil
+            return (true, nil)
         }
     }
     

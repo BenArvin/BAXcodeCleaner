@@ -107,8 +107,8 @@ public class BAXCTableViewSubDataSource {
     public func uncheckAll() {
     }
     
-    public func cleanCheck() -> String? {
-        return nil
+    public func cleanCheck() -> (Bool, String?) {
+        return (false, nil)
     }
     
     public func clean() {
@@ -124,6 +124,10 @@ public class BAXCTableViewSubDataSource {
     
     public func size() -> (Int, Int) {
         return (0, 0)
+    }
+    
+    public func tipsForHelp() -> (String?, String?) {
+        return (nil, nil)
     }
 }
 

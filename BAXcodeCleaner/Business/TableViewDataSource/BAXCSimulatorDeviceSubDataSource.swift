@@ -82,7 +82,11 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
             var newAppInfos: [(String, String?, String?, String?, Int, Bool)] = []
             self.fullSize = 0
             for (path, name, model, version) in devices! {
-                let size: Int = BAXCFileUtil.size(path)
+                var size: Int = 0
+                let dataPath = self._buildDataPath(path)
+                if dataPath != nil {
+                    size = BAXCFileUtil.size(dataPath)
+                }
                 if size == 0 {
                     continue
                 }
@@ -179,8 +183,8 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
         }
     }
     
-    public override func cleanCheck() -> String? {
-        return nil
+    public override func cleanCheck() -> (Bool, String?) {
+        return (true, nil)
     }
     
     public override func clean() {
@@ -189,7 +193,7 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
         }
         for (path, _, _, _, _, state) in self.simulatoInfos! {
             if state == true {
-                let dataPath = BAXCFileUtil.assemblePath(path, "data")
+                let dataPath = self._buildDataPath(path)
                 if dataPath == nil {
                     continue
                 }
@@ -233,5 +237,14 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
             }
         }
         return (total, selected)
+    }
+}
+
+extension BAXCSimulatorDeviceSubDataSource {
+    private func _buildDataPath(_ path: String?) -> String? {
+        if path == nil {
+            return nil
+        }
+        return BAXCFileUtil.assemblePath(path!, "data")
     }
 }

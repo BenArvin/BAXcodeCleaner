@@ -176,8 +176,8 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         }
     }
     
-    public override func cleanCheck() -> String? {
-        return nil
+    public override func cleanCheck() -> (Bool, String?) {
+        return (true, nil)
     }
     
     public override func clean() {

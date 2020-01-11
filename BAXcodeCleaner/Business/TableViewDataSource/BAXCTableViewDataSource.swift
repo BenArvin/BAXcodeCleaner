@@ -33,7 +33,7 @@ public class BAXCTableViewDataSource {
                                                     BAXCDeviceSupportSubDataSource(),
                                                     BAXCSimulatorDeviceSubDataSource(),
                                                     BAXCSimulatorCacheSubDataSource()]
-//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(),BAXCSimulatorCacheSubDataSource()]
+//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(), BAXCSimulatorCacheSubDataSource()]
         for subDSItem in result {
             subDSItem.onRowCheckBtnSelected = self._onSubDSRowCheckBtnSelected
             subDSItem.onSectionCheckBtnSelected = self._onSubDSSectionCheckBtnSelected
@@ -169,9 +169,12 @@ extension BAXCTableViewDataSource {
         self._callDelegateDatasChangedFunc()
     }
     
-    public func clean(_ completion: (() -> ())?) {
-        let cleanEnable: Bool = self._cleanCheck()
+    public func clean(_ completion: ((_: Bool, _: String?) -> ())?) {
+        let (cleanEnable, errorMsg) = self._cleanCheck()
         if cleanEnable == false {
+            if completion != nil {
+                completion!(false, errorMsg)
+            }
             return
         }
         let group = DispatchGroup.init()
@@ -187,7 +190,7 @@ extension BAXCTableViewDataSource {
                 return
             }
             if completion != nil {
-                completion!()
+                completion!(true, nil)
             }
             strongSelf._callDelegateDatasChangedFunc()
         }
@@ -230,6 +233,15 @@ extension BAXCTableViewDataSource {
         }
         return (total, selected)
     }
+    
+    public func tipsForHelp(_ row: Int) -> (String?, String?) {
+        let (subDS, _) = self._subDataSource(for: row)
+        if subDS != nil {
+            return subDS!.tipsForHelp()
+        } else {
+            return (nil, nil)
+        }
+    }
 }
 
 // MARK: - private methods
@@ -252,20 +264,14 @@ extension BAXCTableViewDataSource {
         return (nil, 0)
     }
     
-    public func _cleanCheck() -> Bool {
+    public func _cleanCheck() -> (Bool, String?) {
         for subDSItem in self._subDS {
-            let errorMsg = subDSItem.cleanCheck()
-            if errorMsg != nil {
-                let alert: NSAlert = NSAlert.init()
-                alert.alertStyle = NSAlert.Style.critical
-                alert.messageText = "Clean check failed!"
-                alert.informativeText = errorMsg!
-                alert.addButton(withTitle: "OK")
-                alert.runModal()
-                return false
+            let (valid, errorMsg) = subDSItem.cleanCheck()
+            if valid == false {
+                return (false, errorMsg)
             }
         }
-        return true
+        return (true, nil)
     }
     
     private func _onSubDSRowCheckBtnSelected(cell: NSTableCellView) {

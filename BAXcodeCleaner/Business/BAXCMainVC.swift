@@ -206,19 +206,51 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
     }
     
     func onRowCheckBtnSelected(cell: NSTableCellView) {
-        self._dataSource.onCheckEventForRow(self._tableView.row(for: cell))
+        let row = self._tableView.row(for: cell)
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._dataSource.onCheckEventForRow(row)
+        }
     }
     
     func onSectionCheckBtnSelected(cell: NSTableCellView) {
-        self._dataSource.onCheckEventForSection(self._tableView.row(for: cell))
+        let row = self._tableView.row(for: cell)
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._dataSource.onCheckEventForSection(row)
+        }
     }
     
     func onFoldBtnSelected(cell: NSTableCellView) {
-        self._dataSource.onFoldEvent(self._tableView.row(for: cell))
+        let row = self._tableView.row(for: cell)
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._dataSource.onFoldEvent(row)
+        }
     }
     
     func onTipsBtnSelected(cell: NSTableCellView) {
-        
+        let row = self._tableView.row(for: cell)
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            let (title, content): (String?, String?) = strongSelf._dataSource.tipsForHelp(row)
+            DispatchQueue.main.async{
+                let alert: NSAlert = NSAlert.init()
+                alert.alertStyle = NSAlert.Style.informational
+                alert.messageText = title == nil ? "Unknown" : title!
+                alert.informativeText = content == nil ? "Unknown" : content!
+                alert.addButton(withTitle: "OK")
+                alert.runModal()
+            }
+        }
     }
 }
 
@@ -268,45 +300,80 @@ extension BAXCMainVC {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
         if self._selAllCheckBox.state == BAXCTPCheckBox.State.Uncheck {
             self._selAllCheckBox.state = BAXCTPCheckBox.State.Check
-            self._dataSource.checkAll()
+            DispatchQueue.global().async{[weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf._dataSource.checkAll()
+            }
         } else {
             self._selAllCheckBox.state = BAXCTPCheckBox.State.Uncheck
-            self._dataSource.uncheckAll()
+            DispatchQueue.global().async{[weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf._dataSource.uncheckAll()
+            }
         }
     }
     
     @objc public func onCleanBtnSelected(_ sender: NSButton?) {
-        if self._dataSource.isNoneChecked() == true {
-            return
-        }
-        let alert: NSAlert = NSAlert.init()
-        alert.alertStyle = NSAlert.Style.critical
-        alert.messageText = "Are you sure to clean those files?"
-        alert.informativeText = "Take it easy, you can find and retrive those files from Trash🗑 if you regret it. The world won't be destroyed."
-        alert.addButton(withTitle: "Continue")
-        alert.addButton(withTitle: "Cancel")
-        let res: NSApplication.ModalResponse = alert.runModal()
-        if res != NSApplication.ModalResponse.alertFirstButtonReturn {
-            return
-        }
-        self._loadingView.show()
         DispatchQueue.global().async{[weak self] in
             guard let strongSelf = self else {
                 return
             }
-            strongSelf._dataSource.clean {[weak strongSelf] in
+            if strongSelf._dataSource.isNoneChecked() == true {
+                return
+            }
+            DispatchQueue.main.async{[weak strongSelf] in
                 guard let strongSelf2 = strongSelf else {
                     return
                 }
-                strongSelf2._dataSource.refresh {[weak strongSelf2] in
+                let alert: NSAlert = NSAlert.init()
+                alert.alertStyle = NSAlert.Style.critical
+                alert.messageText = "Are you sure to clean those files?"
+                alert.informativeText = "Take it easy, you can find and retrive those files from Trash🗑 if you regret it. The world won't be destroyed."
+                alert.addButton(withTitle: "Continue")
+                alert.addButton(withTitle: "Cancel")
+                let res: NSApplication.ModalResponse = alert.runModal()
+                if res != NSApplication.ModalResponse.alertFirstButtonReturn {
+                    return
+                }
+                strongSelf2._loadingView.show()
+                DispatchQueue.global().async{[weak strongSelf2] in
                     guard let strongSelf3 = strongSelf2 else {
                         return
                     }
-                    DispatchQueue.main.async{[weak strongSelf3] in
+                    strongSelf3._dataSource.clean { [weak strongSelf3] (successed, errorMsg) in
                         guard let strongSelf4 = strongSelf3 else {
                             return
                         }
-                        strongSelf4._loadingView.hide()
+                        if successed == false {
+                            DispatchQueue.main.async{ [weak strongSelf4] in
+                                guard let strongSelf5 = strongSelf4 else {
+                                    return
+                                }
+                                strongSelf5._loadingView.hide()
+                                let alert: NSAlert = NSAlert.init()
+                                alert.alertStyle = NSAlert.Style.critical
+                                alert.messageText = "Clean failed!"
+                                alert.informativeText = errorMsg == nil ? "unknown" : errorMsg!
+                                alert.addButton(withTitle: "OK")
+                                alert.runModal()
+                            }
+                            return
+                        }
+                        strongSelf4._dataSource.refresh {[weak strongSelf4] in
+                            guard let strongSelf5 = strongSelf4 else {
+                                return
+                            }
+                            DispatchQueue.main.async{[weak strongSelf5] in
+                                guard let strongSelf6 = strongSelf5 else {
+                                    return
+                                }
+                                strongSelf6._loadingView.hide()
+                            }
+                        }
                     }
                 }
             }
@@ -318,17 +385,36 @@ extension BAXCMainVC {
     }
     
     @objc private func _onCopyMenuItemSelected() {
-        let content: String? = self._dataSource.contentForCopy(at: self._tableView.clickedRow)
-        if content == nil {
-            return
+        let row = self._tableView.clickedRow
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            let content: String? = strongSelf._dataSource.contentForCopy(at: row)
+            if content == nil {
+                return
+            }
+            DispatchQueue.main.async{
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.writeObjects([content! as NSString])
+            }
         }
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.writeObjects([content! as NSString])
     }
     
     @objc private func _onShowInFinderMenuItemSelected() {
-        let path: String? = self._dataSource.pathForOpen(at: self._tableView.clickedRow)
-        NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
+        let row = self._tableView.clickedRow
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            let path: String? = strongSelf._dataSource.pathForOpen(at: row)
+            if path == nil {
+                return
+            }
+            DispatchQueue.main.async{
+                NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
+            }
+        }
     }
 }
 
