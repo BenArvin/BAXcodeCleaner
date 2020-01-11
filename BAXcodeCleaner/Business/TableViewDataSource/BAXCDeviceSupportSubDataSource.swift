@@ -133,6 +133,27 @@ public class BAXCDeviceSupportSubDataSource: BAXCTableViewSubDataSource {
         return noneSelected
     }
     
+    public override func onCheckEventForSection() {
+        if self.isNoneSelected() == true {
+            self.selectAll()
+        } else {
+            self.unselectAll()
+        }
+    }
+    
+    public override func onCheckEventForRow(_ row: Int) {
+        let realIndex = row - 1
+        if realIndex < 0 || self.deviceSupportInfos == nil || realIndex >= self.deviceSupportInfos!.count {
+            return
+        }
+        let (path, name, size, state) = self.deviceSupportInfos![realIndex]
+        self.deviceSupportInfos![realIndex] = (path, name, size, !state)
+    }
+    
+    public override func onFoldEvent() {
+        self.isFolded = !self.isFolded
+    }
+    
     public override func selectAll() {
         if self.deviceSupportInfos == nil {
             return
@@ -199,37 +220,5 @@ public class BAXCDeviceSupportSubDataSource: BAXCTableViewSubDataSource {
             }
         }
         return (total, selected)
-    }
-}
-
-extension BAXCDeviceSupportSubDataSource {
-    public override func onCheckBoxSelected(cell: BAXCCheckBoxCell) {
-        let realIndex = cell.index - 1
-        if realIndex < 0 || self.deviceSupportInfos == nil || realIndex >= self.deviceSupportInfos!.count {
-            return
-        }
-        let (path, name, size, _) = self.deviceSupportInfos![realIndex]
-        self.deviceSupportInfos![realIndex] = (path, name, size, cell.selected)
-        if self.onSelected != nil {
-            self.onSelected!()
-        }
-    }
-    
-    public override func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell) {
-        self.isFolded = !self.isFolded
-        if self.onFoldBtnSelected != nil {
-            self.onFoldBtnSelected!()
-        }
-    }
-    
-    public override func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCell) {
-        if self.isNoneSelected() {
-            self.selectAll()
-        } else {
-            self.unselectAll()
-        }
-        if self.onSectionSelected != nil {
-            self.onSectionSelected!()
-        }
     }
 }

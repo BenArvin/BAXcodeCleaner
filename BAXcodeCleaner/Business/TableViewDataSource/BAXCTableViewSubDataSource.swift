@@ -9,9 +9,10 @@
 import Cocoa
 
 public class BAXCTableViewSubDataSource {
-    var onSelected: (() -> ())? = nil
-    var onSectionSelected: (() -> ())? = nil
-    var onFoldBtnSelected: (() -> ())? = nil
+    var onRowCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    var onSectionCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    var onFoldBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    var onTipsBtnSelected: ((_: NSTableCellView) -> ())? = nil
 
     public func numberOfRows() -> Int {
         return 0
@@ -91,6 +92,15 @@ public class BAXCTableViewSubDataSource {
         return false
     }
     
+    public func onCheckEventForSection() {
+    }
+    
+    public func onCheckEventForRow(_ row: Int) {
+    }
+    
+    public func onFoldEvent() {
+    }
+    
     public func selectAll() {
     }
     
@@ -119,18 +129,30 @@ public class BAXCTableViewSubDataSource {
 
 extension BAXCTableViewSubDataSource: BAXCSectionTitleCellDelegate {
     @objc public func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell) {
+        if self.onFoldBtnSelected != nil {
+            self.onFoldBtnSelected!(cell)
+        }
     }
     
     @objc public func onSectionTitleCellTipsBtnSelected(cell: BAXCSectionTitleCell) {
+        if self.onTipsBtnSelected != nil {
+            self.onTipsBtnSelected!(cell)
+        }
     }
 }
 
 extension BAXCTableViewSubDataSource: BAXCCheckBoxCellDelegate {
     @objc public func onCheckBoxSelected(cell: BAXCCheckBoxCell) {
+        if self.onRowCheckBtnSelected != nil {
+            self.onRowCheckBtnSelected!(cell)
+        }
     }
 }
 
 extension BAXCTableViewSubDataSource: BAXCSectionCheckBoxCellDelegate {
     @objc public func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCell) {
+        if self.onSectionCheckBtnSelected != nil {
+            self.onSectionCheckBtnSelected!(cell)
+        }
     }
 }

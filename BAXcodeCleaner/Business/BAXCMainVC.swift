@@ -204,6 +204,22 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
             strongSelf._updateSizeTextField(total: totalSize, selected: selectedSize)
         }
     }
+    
+    func onRowCheckBtnSelected(cell: NSTableCellView) {
+        self._dataSource.onCheckEventForRow(self._tableView.row(for: cell))
+    }
+    
+    func onSectionCheckBtnSelected(cell: NSTableCellView) {
+        self._dataSource.onCheckEventForSection(self._tableView.row(for: cell))
+    }
+    
+    func onFoldBtnSelected(cell: NSTableCellView) {
+        self._dataSource.onFoldEvent(self._tableView.row(for: cell))
+    }
+    
+    func onTipsBtnSelected(cell: NSTableCellView) {
+        
+    }
 }
 
 // MARK: - UI setting

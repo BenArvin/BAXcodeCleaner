@@ -10,6 +10,10 @@ import Cocoa
 
 public protocol BAXCTableViewDataSourceProtocol: class {
     func onDatasChanged()
+    func onRowCheckBtnSelected(cell: NSTableCellView)
+    func onSectionCheckBtnSelected(cell: NSTableCellView)
+    func onFoldBtnSelected(cell: NSTableCellView)
+    func onTipsBtnSelected(cell: NSTableCellView)
 }
 
 public class BAXCTableViewDataSource {
@@ -23,56 +27,19 @@ public class BAXCTableViewDataSource {
     public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSource] = {
-        let result: [BAXCTableViewSubDataSource] = [self._derivedDataDS, self._archivesDS, self._applicationDS, self._deviceSupportDS, self._simulatorDeviceDS, self._simulatorCacheDS]
-//        let result: [BAXCTableViewSubDataSource] = [self._simulatorCacheDS, self._archivesDS]
-        return result
-    }()
-    
-    private lazy var _applicationDS: BAXCApplicationsSubDataSource = {
-        let result: BAXCApplicationsSubDataSource = BAXCApplicationsSubDataSource()
-        result.onSelected = self._onSubDSSelected
-        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
-        result.onSectionSelected = self._onSubDSSectionSelected
-        return result
-    }()
-    
-    private lazy var _derivedDataDS: BAXCDerivedDataSubDataSource = {
-        let result: BAXCDerivedDataSubDataSource = BAXCDerivedDataSubDataSource()
-        result.onSelected = self._onSubDSSelected
-        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
-        result.onSectionSelected = self._onSubDSSectionSelected
-        return result
-    }()
-    
-    private lazy var _deviceSupportDS: BAXCDeviceSupportSubDataSource = {
-        let result: BAXCDeviceSupportSubDataSource = BAXCDeviceSupportSubDataSource()
-        result.onSelected = self._onSubDSSelected
-        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
-        result.onSectionSelected = self._onSubDSSectionSelected
-        return result
-    }()
-    
-    private lazy var _archivesDS: BAXCArchivesSubDataSource = {
-        let result: BAXCArchivesSubDataSource = BAXCArchivesSubDataSource()
-        result.onSelected = self._onSubDSSelected
-        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
-        result.onSectionSelected = self._onSubDSSectionSelected
-        return result
-    }()
-    
-    private lazy var _simulatorDeviceDS: BAXCSimulatorDeviceSubDataSource = {
-        let result: BAXCSimulatorDeviceSubDataSource = BAXCSimulatorDeviceSubDataSource()
-        result.onSelected = self._onSubDSSelected
-        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
-        result.onSectionSelected = self._onSubDSSectionSelected
-        return result
-    }()
-    
-    private lazy var _simulatorCacheDS: BAXCSimulatorCacheSubDataSource = {
-        let result: BAXCSimulatorCacheSubDataSource = BAXCSimulatorCacheSubDataSource()
-        result.onSelected = self._onSubDSSelected
-        result.onFoldBtnSelected = self._onSubDSFoldBtnSelected
-        result.onSectionSelected = self._onSubDSSectionSelected
+        let result: [BAXCTableViewSubDataSource] = [BAXCDerivedDataSubDataSource(),
+                                                    BAXCArchivesSubDataSource(),
+                                                    BAXCApplicationsSubDataSource(),
+                                                    BAXCDeviceSupportSubDataSource(),
+                                                    BAXCSimulatorDeviceSubDataSource(),
+                                                    BAXCSimulatorCacheSubDataSource()]
+//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(),BAXCSimulatorCacheSubDataSource()]
+        for subDSItem in result {
+            subDSItem.onRowCheckBtnSelected = self._onSubDSRowCheckBtnSelected
+            subDSItem.onSectionCheckBtnSelected = self._onSubDSSectionCheckBtnSelected
+            subDSItem.onFoldBtnSelected = self._onSubDSFoldBtnSelected
+            subDSItem.onTipsBtnSelected = self._onSubDStipsBtnSelected
+        }
         return result
     }()
     
@@ -159,6 +126,33 @@ extension BAXCTableViewDataSource {
             }
         }
         return noneSelected
+    }
+    
+    public func onCheckEventForSection(_ row: Int) {
+        let (subDS, _) = self._subDataSource(for: row)
+        if subDS == nil {
+            return
+        }
+        subDS!.onCheckEventForSection()
+        self._callDelegateDatasChangedFunc()
+    }
+    
+    public func onCheckEventForRow(_ row: Int) {
+        let (subDS, realRow) = self._subDataSource(for: row)
+        if subDS == nil {
+            return
+        }
+        subDS!.onCheckEventForRow(realRow)
+        self._callDelegateDatasChangedFunc()
+    }
+    
+    public func onFoldEvent(_ row: Int) {
+        let (subDS, _) = self._subDataSource(for: row)
+        if subDS == nil {
+            return
+        }
+        subDS!.onFoldEvent()
+        self._callDelegateDatasChangedFunc()
     }
     
     public func selectAll() {
@@ -274,15 +268,27 @@ extension BAXCTableViewDataSource {
         return true
     }
     
-    private func _onSubDSSelected() {
-        self._callDelegateDatasChangedFunc()
+    private func _onSubDSRowCheckBtnSelected(cell: NSTableCellView) {
+        if self.delegate != nil {
+            self.delegate!.onRowCheckBtnSelected(cell: cell)
+        }
     }
     
-    private func _onSubDSFoldBtnSelected() {
-        self._callDelegateDatasChangedFunc()
+    private func _onSubDSSectionCheckBtnSelected(cell: NSTableCellView) {
+        if self.delegate != nil {
+            self.delegate!.onSectionCheckBtnSelected(cell: cell)
+        }
     }
     
-    private func _onSubDSSectionSelected() {
-        self._callDelegateDatasChangedFunc()
+    private func _onSubDSFoldBtnSelected(cell: NSTableCellView) {
+        if self.delegate != nil {
+            self.delegate!.onFoldBtnSelected(cell: cell)
+        }
+    }
+    
+    private func _onSubDStipsBtnSelected(cell: NSTableCellView) {
+        if self.delegate != nil {
+            self.delegate!.onTipsBtnSelected(cell: cell)
+        }
     }
 }
