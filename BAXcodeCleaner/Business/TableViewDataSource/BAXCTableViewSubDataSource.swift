@@ -12,14 +12,12 @@ public class BAXCTableViewSubDataSource {
     var onSelected: (() -> ())? = nil
     var onSectionSelected: (() -> ())? = nil
     var onFoldBtnSelected: (() -> ())? = nil
-}
 
-extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
-    @objc public func numberOfRows() -> Int {
+    public func numberOfRows() -> Int {
         return 0
     }
     
-    @objc public func height(for row: Int) -> CGFloat {
+    public func height(for row: Int) -> CGFloat {
         if row == 0 {
             return 55
         } else {
@@ -27,7 +25,7 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
         }
     }
     
-    @objc public func cell(for row: Int, column: Int) -> NSTableCellView? {
+    public func cell(for row: Int, column: Int) -> NSTableCellView? {
         if row == 0 {
             if column == 0 {
                 let result: BAXCSectionTitleCell = BAXCSectionTitleCell.init()
@@ -79,55 +77,51 @@ extension BAXCTableViewSubDataSource: BAXCTableViewSubDataSourceProtocol {
         return nil
     }
     
-    @objc public func setContent(for cell: NSTableCellView, row: Int, column: Int) {
+    public func setContent(for cell: NSTableCellView, row: Int, column: Int) {
     }
     
-    @objc public func refresh() {
+    public func refresh() {
     }
     
-    @objc public func isAllSelected() -> Bool {
+    func isAllSelected() -> Bool {
         return false
     }
     
-    @objc public func isNoneSelected() -> Bool {
+    public func isNoneSelected() -> Bool {
         return false
     }
     
-    @objc public func selectAll() {
+    public func selectAll() {
     }
     
-    @objc public func unselectAll() {
+    public func unselectAll() {
     }
     
-    @objc public func onSelected(closure: @escaping () -> ()) {
+    public func onSelected(closure: @escaping () -> ()) {
         self.onSelected = closure
     }
     
-    @objc public func onSectionSelected(closure: @escaping () -> ()) {
+    public func onSectionSelected(closure: @escaping () -> ()) {
         self.onSectionSelected = closure
     }
     
-    @objc public func cleanCheck() -> String? {
+    public func cleanCheck() -> String? {
         return nil
     }
     
-    @objc public func clean() {
+    public func clean() {
     }
     
-    @objc public func contentForCopy(at row: Int) -> String? {
+    public func contentForCopy(at row: Int) -> String? {
         return nil
     }
     
-    @objc public func pathForOpen(at row: Int) -> String? {
+    public func pathForOpen(at row: Int) -> String? {
         return nil
     }
     
-    @objc public func totalSize() -> Int {
-        return 0
-    }
-    
-    @objc public func selectedSize() -> Int {
-        return 0
+    public func size() -> (Int, Int) {
+        return (0, 0)
     }
 }
 

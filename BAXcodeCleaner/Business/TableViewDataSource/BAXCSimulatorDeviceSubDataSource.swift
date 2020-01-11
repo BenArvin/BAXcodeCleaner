@@ -12,9 +12,7 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
     var isFolded: Bool = false
     var simulatoInfos: [(String, String?, String?, String?, Int, Bool)]? = nil
     var fullSize: Int = 0
-}
 
-extension BAXCSimulatorDeviceSubDataSource {
     public override func numberOfRows() -> Int {
         if self.simulatoInfos == nil {
             return 0
@@ -201,28 +199,19 @@ extension BAXCSimulatorDeviceSubDataSource {
         return path
     }
     
-    public override func totalSize() -> Int {
+    public override func size() -> (Int, Int) {
         if self.simulatoInfos == nil {
-            return 0
+            return (0, 0)
         }
-        var result = 0
-        for (_, _, _, _, size, _) in self.simulatoInfos! {
-            result = result + size
-        }
-        return result
-    }
-    
-    public override func selectedSize() -> Int {
-        if self.simulatoInfos == nil {
-            return 0
-        }
-        var result = 0
+        var total = 0
+        var selected = 0
         for (_, _, _, _, size, state) in self.simulatoInfos! {
+            total = total + size
             if state == true {
-                result = result + size
+                selected = selected + size
             }
         }
-        return result
+        return (total, selected)
     }
 }
 

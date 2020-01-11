@@ -194,8 +194,7 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
         } else if self._dataSource.isNoneSelected() == true {
             newState = BAXCTPCheckBox.State.Uncheck
         }
-        let totalSize = self._dataSource.totalSize()
-        let selectedSize = self._dataSource.selectedSize()
+        let (totalSize, selectedSize) = self._dataSource.size()
         DispatchQueue.main.async{[weak self] in
             guard let strongSelf = self else {
                 return

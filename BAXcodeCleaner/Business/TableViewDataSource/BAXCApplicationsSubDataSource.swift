@@ -12,9 +12,7 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
     var isFolded: Bool = false
     var appInfos: [(String, String?, Int, Bool)]? = nil
     var fullSize: Int = 0
-}
 
-extension BAXCApplicationsSubDataSource {
     public override func numberOfRows() -> Int {
         if self.appInfos == nil {
             return 0
@@ -192,28 +190,19 @@ extension BAXCApplicationsSubDataSource {
         return path
     }
     
-    public override func totalSize() -> Int {
+    public override func size() -> (Int, Int) {
         if self.appInfos == nil {
-            return 0
+            return (0, 0)
         }
-        var result = 0
-        for (_, _, size, _) in self.appInfos! {
-            result = result + size
-        }
-        return result
-    }
-    
-    public override func selectedSize() -> Int {
-        if self.appInfos == nil {
-            return 0
-        }
-        var result = 0
+        var total = 0
+        var selected = 0
         for (_, _, size, state) in self.appInfos! {
+            total = total + size
             if state == true {
-                result = result + size
+                selected = selected + size
             }
         }
-        return result
+        return (total, selected)
     }
 }
 

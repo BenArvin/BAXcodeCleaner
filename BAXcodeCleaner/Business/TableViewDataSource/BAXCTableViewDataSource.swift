@@ -22,9 +22,9 @@ public class BAXCTableViewDataSource {
     
     public var delegate: BAXCTableViewDataSourceProtocol?
     
-    private lazy var _subDS: [BAXCTableViewSubDataSourceProtocol] = {
-        let result: [BAXCTableViewSubDataSourceProtocol] = [self._derivedDataDS, self._archivesDS, self._applicationDS, self._deviceSupportDS, self._simulatorDeviceDS, self._simulatorCacheDS]
-//        let result: [BAXCTableViewSubDataSourceProtocol] = [self._simulatorCacheDS, self._archivesDS]
+    private lazy var _subDS: [BAXCTableViewSubDataSource] = {
+        let result: [BAXCTableViewSubDataSource] = [self._derivedDataDS, self._archivesDS, self._applicationDS, self._deviceSupportDS, self._simulatorDeviceDS, self._simulatorCacheDS]
+//        let result: [BAXCTableViewSubDataSource] = [self._simulatorCacheDS, self._archivesDS]
         return result
     }()
     
@@ -226,20 +226,15 @@ extension BAXCTableViewDataSource {
         }
     }
     
-    public func totalSize() -> Int {
-        var result: Int = 0
+    public func size() -> (Int, Int) {
+        var total = 0
+        var selected = 0
         for subDSItem in self._subDS {
-            result = result + subDSItem.totalSize()
+            let (totalTmp, selectedTmp) = subDSItem.size()
+            total = total + totalTmp
+            selected = selected + selectedTmp
         }
-        return result
-    }
-    
-    public func selectedSize() -> Int {
-        var result: Int = 0
-        for subDSItem in self._subDS {
-            result = result + subDSItem.selectedSize()
-        }
-        return result
+        return (total, selected)
     }
 }
 
@@ -251,7 +246,7 @@ extension BAXCTableViewDataSource {
         }
     }
     
-    private func _subDataSource(for row: Int) -> (BAXCTableViewSubDataSourceProtocol?, Int) {
+    private func _subDataSource(for row: Int) -> (BAXCTableViewSubDataSource?, Int) {
         var rowOffset: Int = 0
         for subDSItem in self._subDS {
             let countTmp: Int = subDSItem.numberOfRows()
