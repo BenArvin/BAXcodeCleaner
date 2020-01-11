@@ -84,11 +84,11 @@ public class BAXCTableViewSubDataSource {
     public func refresh() {
     }
     
-    func isAllSelected() -> Bool {
+    func isAllChecked() -> Bool {
         return false
     }
     
-    public func isNoneSelected() -> Bool {
+    public func isNoneChecked() -> Bool {
         return false
     }
     
@@ -101,10 +101,10 @@ public class BAXCTableViewSubDataSource {
     public func onFoldEvent() {
     }
     
-    public func selectAll() {
+    public func checkAll() {
     }
     
-    public func unselectAll() {
+    public func uncheckAll() {
     }
     
     public func cleanCheck() -> String? {

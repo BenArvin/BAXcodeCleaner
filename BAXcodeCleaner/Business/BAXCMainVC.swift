@@ -189,9 +189,9 @@ extension BAXCMainVC: NSTableViewDataSource {
 extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
     func onDatasChanged() {
         var newState = BAXCTPCheckBox.State.Part
-        if self._dataSource.isAllSelected() == true {
+        if self._dataSource.isAllChecked() == true {
             newState = BAXCTPCheckBox.State.Check
-        } else if self._dataSource.isNoneSelected() == true {
+        } else if self._dataSource.isNoneChecked() == true {
             newState = BAXCTPCheckBox.State.Uncheck
         }
         let (totalSize, selectedSize) = self._dataSource.size()
@@ -268,15 +268,15 @@ extension BAXCMainVC {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
         if self._selAllCheckBox.state == BAXCTPCheckBox.State.Uncheck {
             self._selAllCheckBox.state = BAXCTPCheckBox.State.Check
-            self._dataSource.selectAll()
+            self._dataSource.checkAll()
         } else {
             self._selAllCheckBox.state = BAXCTPCheckBox.State.Uncheck
-            self._dataSource.unselectAll()
+            self._dataSource.uncheckAll()
         }
     }
     
     @objc public func onCleanBtnSelected(_ sender: NSButton?) {
-        if self._dataSource.isNoneSelected() == true {
+        if self._dataSource.isNoneChecked() == true {
             return
         }
         let alert: NSAlert = NSAlert.init()

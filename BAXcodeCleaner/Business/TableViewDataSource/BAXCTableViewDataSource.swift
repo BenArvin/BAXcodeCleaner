@@ -106,10 +106,10 @@ extension BAXCTableViewDataSource {
         }
     }
     
-    public func isAllSelected() -> Bool {
+    public func isAllChecked() -> Bool {
         var allSelected: Bool = true
         for subDSItem in self._subDS {
-            if subDSItem.isAllSelected() == false {
+            if subDSItem.isAllChecked() == false {
                 allSelected = false
                 break
             }
@@ -117,10 +117,10 @@ extension BAXCTableViewDataSource {
         return allSelected
     }
     
-    public func isNoneSelected() -> Bool {
+    public func isNoneChecked() -> Bool {
         var noneSelected: Bool = true
         for subDSItem in self._subDS {
-            if subDSItem.isNoneSelected() == false {
+            if subDSItem.isNoneChecked() == false {
                 noneSelected = false
                 break
             }
@@ -155,16 +155,16 @@ extension BAXCTableViewDataSource {
         self._callDelegateDatasChangedFunc()
     }
     
-    public func selectAll() {
+    public func checkAll() {
         for subDSItem in self._subDS {
-            subDSItem.selectAll()
+            subDSItem.checkAll()
         }
         self._callDelegateDatasChangedFunc()
     }
     
-    public func unselectAll() {
+    public func uncheckAll() {
         for subDSItem in self._subDS {
-            subDSItem.unselectAll()
+            subDSItem.uncheckAll()
         }
         self._callDelegateDatasChangedFunc()
     }

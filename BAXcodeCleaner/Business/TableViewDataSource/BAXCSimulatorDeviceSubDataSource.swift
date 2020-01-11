@@ -37,9 +37,9 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
                 } else if column == 3 {
                     let checkBox: BAXCSectionCheckBoxCell? = cell as? BAXCSectionCheckBoxCell
                     if checkBox != nil {
-                        if self.isAllSelected() == true {
+                        if self.isAllChecked() == true {
                             checkBox!.state = BAXCTPCheckBox.State.Check
-                        } else if self.isNoneSelected() == true {
+                        } else if self.isNoneChecked() == true {
                             checkBox!.state = BAXCTPCheckBox.State.Uncheck
                         } else {
                             checkBox!.state = BAXCTPCheckBox.State.Part
@@ -110,7 +110,7 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
         }
     }
     
-    public override func isAllSelected() -> Bool {
+    public override func isAllChecked() -> Bool {
         if self.simulatoInfos == nil {
             return true
         }
@@ -123,7 +123,7 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
         return allSelected
     }
     
-    public override func isNoneSelected() -> Bool {
+    public override func isNoneChecked() -> Bool {
         if self.simulatoInfos == nil {
             return true
         }
@@ -137,10 +137,10 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func onCheckEventForSection() {
-        if self.isNoneSelected() == true {
-            self.selectAll()
+        if self.isNoneChecked() == true {
+            self.checkAll()
         } else {
-            self.unselectAll()
+            self.uncheckAll()
         }
     }
     
@@ -157,7 +157,7 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
         self.isFolded = !self.isFolded
     }
     
-    public override func selectAll() {
+    public override func checkAll() {
         if self.simulatoInfos == nil {
             return
         }
@@ -168,7 +168,7 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
         }
     }
     
-    public override func unselectAll() {
+    public override func uncheckAll() {
         if self.simulatoInfos == nil {
             return
         }
