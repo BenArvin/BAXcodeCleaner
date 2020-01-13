@@ -29,10 +29,10 @@ public class BAXCTableViewDataSource {
     private lazy var _subDS: [BAXCTableViewSubDataSource] = {
         let result: [BAXCTableViewSubDataSource] = [BAXCDerivedDataSubDataSource(),
                                                     BAXCArchivesSubDataSource(),
-                                                    BAXCApplicationsSubDataSource(),
                                                     BAXCDeviceSupportSubDataSource(),
                                                     BAXCSimulatorDeviceSubDataSource(),
-                                                    BAXCSimulatorCacheSubDataSource()]
+                                                    BAXCSimulatorCacheSubDataSource(),
+                                                    BAXCApplicationsSubDataSource()]
 //        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(), BAXCSimulatorDeviceSubDataSource()]
         for subDSItem in result {
             subDSItem.onRowCheckBtnSelected = self._onSubDSRowCheckBtnSelected

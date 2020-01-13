@@ -274,7 +274,7 @@ extension BAXCMainVC {
         
         self._tableContainerView.frame = CGRect.init(x: leftMargin, y: self._cleanBtn.frame.maxY + 10, width: self.view.bounds.width - leftMargin - rightMargin, height: self._topBar.frame.minY - self._cleanBtn.frame.maxY - 10 - 5)
         
-        self._refreshBtn.frame = CGRect.init(x: leftMargin, y: 0, width: 30, height: 30)
+        self._refreshBtn.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
         self._selAllCheckBox.frame = CGRect.init(x: self._topBar.bounds.width - 16 - 10, y: 4, width: 16, height: 16)
         self._sizeTextField.frame = CGRect.init(x: self._refreshBtn.frame.maxX + 15, y: 3, width: self._topBar.frame.width - self._refreshBtn.frame.maxX * 2 - 30, height: 18)
         

@@ -156,7 +156,7 @@ extension BAXCFileUtil {
     /// Get size(Byte)
     /// - Parameter path: String
     public class func size(_ path: String?) -> Int {
-        if path == nil {
+        if path == nil || path!.isEmpty {
             return 0
         }
         var fileAttr: [FileAttributeKey : Any]? = nil
