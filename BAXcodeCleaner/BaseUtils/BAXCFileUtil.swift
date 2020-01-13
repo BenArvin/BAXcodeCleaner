@@ -153,45 +153,27 @@ extension BAXCFileUtil {
 }
 
 extension BAXCFileUtil {
-    private class func _fileSize(_ filePath: String?) -> Int {
-        if filePath == nil {
-            return 0
-        }
-        let (existed, isDir) = self.isPathExisted(filePath!)
-        if existed == false || isDir == true {
-            return 0
-        }
-        var fileAttr: [FileAttributeKey : Any]? = nil
-        do {
-            try fileAttr = FileManager.default.attributesOfItem(atPath: filePath!)
-        } catch {
-            return 0
-        }
-        if fileAttr == nil {
-            return 0
-        }
-        let size: Int = fileAttr![FileAttributeKey.size] as? Int ?? 0
-        return size
-    }
-    
     /// Get size(Byte)
-    /// - Parameter filePath: String
+    /// - Parameter path: String
     public class func size(_ path: String?) -> Int {
         if path == nil {
             return 0
         }
-        let (existed, isDir) = self.isPathExisted(path!)
-        if existed == false {
+        var fileAttr: [FileAttributeKey : Any]? = nil
+        do {
+            try fileAttr = FileManager.default.attributesOfItem(atPath: path!)
+        } catch {
             return 0
         }
-        if isDir == false {
-            return self._fileSize(path!)
+        let type: FileAttributeType = fileAttr![FileAttributeKey.type] as? FileAttributeType ?? FileAttributeType.typeUnknown
+        if type != FileAttributeType.typeDirectory {
+            let size: Int = fileAttr![FileAttributeKey.size] as? Int ?? 0
+            return size
         }
         let contentPaths: [String]? = self.contentsOfDir(path!)
         if contentPaths == nil || contentPaths!.isEmpty {
             return 0
         }
-        
         var result: Int = 0
         for itemPaths in contentPaths! {
             result = result + self.size(itemPaths)
