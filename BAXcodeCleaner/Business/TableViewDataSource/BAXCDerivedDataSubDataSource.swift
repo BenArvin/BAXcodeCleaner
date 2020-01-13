@@ -57,12 +57,7 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
                 } else if column == 1 {
                     let contentCell: BAXCContentCell? = cell as? BAXCContentCell
                     if contentCell != nil {
-                        if targetPath != nil {
-                            let (isExisted, _) = BAXCFileUtil.isPathExisted(targetPath!)
-                            contentCell!.text = String.init(format: "%@%@", isExisted == true ? "" : "⚠️", targetPath!)
-                        } else {
-                            contentCell!.text = "⚠️"
-                        }
+                        contentCell!.text = self._cellContents(for: name, targetPath: targetPath)
                     }
                 } else if column == 2 {
                     let sizeCell: BAXCFileSizeCell? = cell as? BAXCFileSizeCell
@@ -229,5 +224,20 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     
     public override func tipsForHelp() -> (String?, String?) {
         return ("Derived Data", "Temporary data for your projects, it will regenerated when build project next time, but it also means your next build will be a long journey.")
+    }
+}
+
+extension BAXCDerivedDataSubDataSource {
+    private func _cellContents(for name: String?, targetPath: String?) -> String {
+        if targetPath != nil && !targetPath!.isEmpty {
+            let (isExisted, _) = BAXCFileUtil.isPathExisted(targetPath!)
+            return String.init(format: "%@%@", isExisted == true ? "" : "⚠️", targetPath!)
+        } else {
+            if name != nil && name! == "ModuleCache.noindex" {
+                return ""
+            } else {
+                return "⚠️"
+            }
+        }
     }
 }
