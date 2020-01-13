@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/BenArvin/BAXcodeCleaner/blob/master/Resources/icon-64.png?raw=true">
+  <img src="https://github.com/BenArvin/BAXcodeCleaner/blob/master/materials/icon-64.png?raw=true">
   <p align="center">BAXcodeCleaner</p>
 </h1>
 
@@ -8,7 +8,7 @@
 BAXcodeCleaner is trash cleaner for Xcode. You can detect and clean trash files accurately.
 
 <div align="left">
-<img src="https://github.com/BenArvin/BAXcodeCleaner/blob/master/Resources/snapshot.png?raw=true" style="width:70%;height:70%">
+<img src="https://github.com/BenArvin/BAXcodeCleaner/blob/master/materials/snapshot.png?raw=true" style="width:70%;height:70%">
 </div>
 
 ## Installation
