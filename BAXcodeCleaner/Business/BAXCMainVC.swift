@@ -17,8 +17,9 @@ private struct BAXCMainVCConstants {
 }
 
 class BAXCMainVC: NSViewController {
-    private lazy var _tableView: NSTableView = {
-        let result: NSTableView = NSTableView.init()
+    private lazy var _tableView: BAXCTableView = {
+        let result: BAXCTableView = BAXCTableView.init()
+        result.enableKeyEvent = false
         result.delegate = self
         result.dataSource = self
         result.menu = self._tableViewMenu
@@ -34,28 +35,28 @@ class BAXCMainVC: NSViewController {
     
     private var _columnsSetted: Bool = false
     
-    private lazy var _tableViewColumn1: NSTableColumn = {
+    private lazy var _tableViewColumn0: NSTableColumn = {
         let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("0"))
         result.title = " "
         result.minWidth = 50
         return result
     }()
     
-    private lazy var _tableViewColumn2: NSTableColumn = {
+    private lazy var _tableViewColumn1: NSTableColumn = {
         let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("1"))
         result.title = " "
         result.minWidth = 50
         return result
     }()
     
-    private lazy var _tableViewColumn3: NSTableColumn = {
+    private lazy var _tableViewColumn2: NSTableColumn = {
         let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("2"))
         result.title = " "
         result.minWidth = 50
         return result
     }()
     
-    private lazy var _tableViewColumn4: NSTableColumn = {
+    private lazy var _tableViewColumn3: NSTableColumn = {
         let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("3"))
         result.title = " "
         result.minWidth = 30
@@ -279,18 +280,19 @@ extension BAXCMainVC {
         
         if self._columnsSetted == false && self.view.bounds.width > 10 {
             self._columnsSetted = true
-            let width: CGFloat = self.view.bounds.width - leftMargin - rightMargin
-            self._tableViewColumn3.width = 100
-            self._tableViewColumn1.width = floor(width / 3)
-            self._tableViewColumn2.width = floor(width / 3 * 2) - self._tableViewColumn3.width - self._tableViewColumn4.width
+            let width: CGFloat = self._tableContainerView.bounds.width
+            self._tableViewColumn2.width = 100
+            self._tableViewColumn3.width = 30
+            self._tableViewColumn0.width = floor(width / 3)
+            self._tableViewColumn1.width = floor(width / 3 * 2) - self._tableViewColumn2.width - self._tableViewColumn3.width - 12
         }
     }
     
     private func _settingTableView() {
+        self._tableView.addTableColumn(self._tableViewColumn0)
         self._tableView.addTableColumn(self._tableViewColumn1)
         self._tableView.addTableColumn(self._tableViewColumn2)
         self._tableView.addTableColumn(self._tableViewColumn3)
-        self._tableView.addTableColumn(self._tableViewColumn4)
         self._tableView.gridStyleMask = [NSTableView.GridLineStyle.solidHorizontalGridLineMask]
     }
 }
@@ -333,8 +335,8 @@ extension BAXCMainVC {
                 alert.alertStyle = NSAlert.Style.critical
                 alert.messageText = "Are you sure to clean those files?"
                 alert.informativeText = "Take it easy, you can find and retrive those files from Trash🗑 if you regret it. The world won't be destroyed."
-                alert.addButton(withTitle: "Continue")
-                alert.addButton(withTitle: "Cancel")
+                alert.addButton(withTitle: "YES")
+                alert.addButton(withTitle: "NO")
                 let res: NSApplication.ModalResponse = alert.runModal()
                 if res != NSApplication.ModalResponse.alertFirstButtonReturn {
                     return
