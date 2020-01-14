@@ -33,7 +33,7 @@ public class BAXCTableViewDataSource {
                                                     BAXCSimulatorDeviceSubDataSource(),
                                                     BAXCSimulatorCacheSubDataSource(),
                                                     BAXCApplicationsSubDataSource()]
-//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(), BAXCSimulatorDeviceSubDataSource()]
+//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(), BAXCSimulatorCacheSubDataSource()]
         for subDSItem in result {
             subDSItem.onRowCheckBtnSelected = self._onSubDSRowCheckBtnSelected
             subDSItem.onSectionCheckBtnSelected = self._onSubDSSectionCheckBtnSelected

@@ -1,5 +1,5 @@
 //
-//  BAXCMainVC.swift
+//  BAXCManualCleanVC.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/25.
@@ -8,15 +8,7 @@
 
 import Cocoa
 
-private struct BAXCMainVCConstants {
-    static let titleCellID: String = "titleCell"
-    static let contentCellID: String = "contentCell"
-    static let checkBoxCellID: String = "checkBoxCell"
-    static let sectionCellID: String = "sectionCell"
-    static let sectionBlankCellID: String = "sectionBlankCell"
-}
-
-class BAXCMainVC: NSViewController {
+class BAXCManualCleanVC: BAViewController {
     private lazy var _tableView: BAXCTableView = {
         let result: BAXCTableView = BAXCTableView.init()
         result.enableKeyEvent = false
@@ -161,7 +153,7 @@ class BAXCMainVC: NSViewController {
     }
 }
 
-extension BAXCMainVC: NSTableViewDelegate {
+extension BAXCManualCleanVC: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return self._dataSource.height(for: row)
     }
@@ -171,7 +163,7 @@ extension BAXCMainVC: NSTableViewDelegate {
     }
 }
 
-extension BAXCMainVC: NSTableViewDataSource {
+extension BAXCManualCleanVC: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
         return self._dataSource.numberOfRows()
     }
@@ -187,7 +179,7 @@ extension BAXCMainVC: NSTableViewDataSource {
     }
 }
 
-extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
+extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol {
     func onDatasChanged() {
         var newState = BAXCTPCheckBox.State.Part
         if self._dataSource.isAllChecked() == true {
@@ -256,7 +248,7 @@ extension BAXCMainVC: BAXCTableViewDataSourceProtocol {
 }
 
 // MARK: - UI setting
-extension BAXCMainVC {
+extension BAXCManualCleanVC {
     private func _setElementsFrame() {
         self._loadingView.frame = self.view.bounds
         
@@ -298,7 +290,7 @@ extension BAXCMainVC {
 }
 
 // MARK: - selector methods
-extension BAXCMainVC {
+extension BAXCManualCleanVC {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
         if self._selAllCheckBox.state == BAXCTPCheckBox.State.Uncheck {
             self._selAllCheckBox.state = BAXCTPCheckBox.State.Check
@@ -421,7 +413,7 @@ extension BAXCMainVC {
 }
 
 // MARK - private methods
-extension BAXCMainVC {
+extension BAXCManualCleanVC {
     private func _refresh() {
         self._loadingView.show()
         DispatchQueue.global().async{[weak self] in

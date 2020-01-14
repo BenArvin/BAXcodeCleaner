@@ -10,16 +10,18 @@ import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    public var rootVC: BAXCMainVC?
+    public var rootVC: BAXCManualCleanVC?
+    public var rootNavi: BANavigationController?
     public var window: NSWindow?
     public var rootWC: NSWindowController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        self.rootVC = BAXCMainVC()
+        self.rootVC = BAXCManualCleanVC()
+        self.rootNavi = BANavigationController.init(rootViewController: self.rootVC!)
+        self.window = NSWindow.init(contentViewController: self.rootNavi!)
         
         let width: CGFloat = floor(NSScreen.main!.frame.width * 0.618)
         let height: CGFloat = floor(NSScreen.main!.frame.height * 0.618)
-        self.window = NSWindow.init(contentViewController: self.rootVC!)
         self.window!.setFrame(NSRect.init(x: floor((NSScreen.main!.frame.width - width) / 2),
                                           y: floor((NSScreen.main!.frame.height - height) / 2),
                                           width: width,
