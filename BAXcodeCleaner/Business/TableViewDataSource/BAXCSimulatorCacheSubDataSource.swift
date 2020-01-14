@@ -75,14 +75,14 @@ public class BAXCSimulatorCacheSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func refresh() {
-        let caches: [(String, String?, String?)]? = BAXCSimulatorManager.caches()
+        let datas: ([(String, String?, String?, Int)]?, Int) = BAXCSimulatorCacheTrashManager.datas() as! ([(String, String?, String?, Int)]?, Int)
+        let (caches, fullSize) = datas
         if caches == nil {
             self.cacheInfos = nil
         } else {
             var newCacheInfos: [(String, String?, String?, Int, Bool)] = []
-            self.fullSize = 0
-            for (path, name, abname) in caches! {
-                let size: Int = BAXCFileUtil.size(path)
+            self.fullSize = fullSize
+            for (path, name, abname, size) in caches! {
                 if size == 0 {
                     continue
                 }
@@ -99,7 +99,6 @@ public class BAXCSimulatorCacheSubDataSource: BAXCTableViewSubDataSource {
                 if finded == false {
                     newCacheInfos.append((path, name, abname, size, false))
                 }
-                self.fullSize = self.fullSize + size
             }
             newCacheInfos.sort { (arg0, arg1) -> Bool in
                 let (_, _, _, size0, _) = arg0
@@ -189,7 +188,7 @@ public class BAXCSimulatorCacheSubDataSource: BAXCTableViewSubDataSource {
         }
         for (path, _, _, _, state) in self.cacheInfos! {
             if state == true {
-                BAXCFileUtil.recycle(path)
+                BAXCSimulatorCacheTrashManager.clean(path)
             }
         }
     }

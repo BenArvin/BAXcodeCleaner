@@ -75,18 +75,14 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func refresh() {
-        let devices: [(String, String?, String?, String?)]? = BAXCSimulatorManager.devices()
+        let datas: ([(String, String?, String?, String?, Int)]?, Int) = BAXCSimulatorDeviceTrashManager.datas() as! ([(String, String?, String?, String?, Int)]?, Int)
+        let (devices, fullSize) = datas
         if devices == nil {
             self.simulatoInfos = nil
         } else {
             var newAppInfos: [(String, String?, String?, String?, Int, Bool)] = []
-            self.fullSize = 0
-            for (path, name, model, version) in devices! {
-                var size: Int = 0
-                let dataPath = self._buildDataPath(path)
-                if dataPath != nil {
-                    size = BAXCFileUtil.size(dataPath)
-                }
+            self.fullSize = fullSize
+            for (path, name, model, version, size) in devices! {
                 if size == 0 {
                     continue
                 }
@@ -103,7 +99,6 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
                 if finded == false {
                     newAppInfos.append((path, name, model, version, size, false))
                 }
-                self.fullSize = self.fullSize + size
             }
             newAppInfos.sort { (arg0, arg1) -> Bool in
                 let (_, _, _, _, size0, _) = arg0
@@ -193,17 +188,7 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
         }
         for (path, _, _, _, _, state) in self.simulatoInfos! {
             if state == true {
-                let dataPath = self._buildDataPath(path)
-                if dataPath == nil {
-                    continue
-                }
-                let innerPaths: [String]? = BAXCFileUtil.contentsOfDir(dataPath!)
-                if innerPaths == nil {
-                    continue
-                }
-                for innerPathItem in innerPaths! {
-                    BAXCFileUtil.recycle(innerPathItem)
-                }
+                BAXCSimulatorDeviceTrashManager.clean(path)
             }
         }
     }

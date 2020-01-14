@@ -27,7 +27,7 @@ public class BAXCMainDeskVC: BAViewController {
         result.maximumNumberOfLines = 0
         result.lineBreakMode = NSLineBreakMode.byCharWrapping
         result.font = NSFont.systemFont(ofSize: 16)
-        result.stringValue = "Lazy mode, clean device support and derived data files only for safety."
+        result.stringValue = "Lazy mode, clean derived data and device support files only for safety."
         return result
     }()
     
@@ -104,7 +104,30 @@ extension BAXCMainDeskVC {
 // MARK: - selector methods
 extension BAXCMainDeskVC {
     @objc private func _onCleanBtnSelected(_ sender: NSButton?) {
-        
+        let alert: NSAlert = NSAlert.init()
+        alert.alertStyle = NSAlert.Style.critical
+        alert.messageText = "Are you sure?"
+        alert.informativeText = "Derived data and device support files will be cleaned."
+        alert.addButton(withTitle: "YES")
+        alert.addButton(withTitle: "NO")
+        let res: NSApplication.ModalResponse = alert.runModal()
+        if res != NSApplication.ModalResponse.alertFirstButtonReturn {
+            return
+        }
+        self._loadingView.message = "Cleaning..."
+        self._loadingView.show()
+        self._simplyClean { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            DispatchQueue.main.async { [weak strongSelf] in
+                guard let strongSelf2 = strongSelf else {
+                    return
+                }
+                strongSelf2._loadingView.hide()
+                BAXCAutoDismissAlert.show("Successed!", inView: strongSelf2.view, aliveTime: 5)
+            }
+        }
     }
     
     @objc private func _onManualBtnSelected(_ sender: NSButton?) {
@@ -117,5 +140,27 @@ extension BAXCMainDeskVC {
 extension BAXCMainDeskVC {
     @objc public override func onMenuCleanItemSelected(_ sender: NSButton?) {
         self._onCleanBtnSelected(sender)
+    }
+}
+
+// MARK - private methods
+extension BAXCMainDeskVC {
+    private func _simplyClean(_ completion: (() -> ())?) {
+        let group = DispatchGroup.init()
+        group.enter()
+        DispatchQueue.global().async{
+            BAXCDerivedDataTrashManager.simplyClean()
+            group.leave()
+        }
+        group.enter()
+        DispatchQueue.global().async{
+            BAXCDeviceSupportTrashManager.simplyClean()
+            group.leave()
+        }
+        group.notify(queue: DispatchQueue.global()) {
+            if completion != nil {
+                completion!()
+            }
+        }
     }
 }

@@ -75,14 +75,17 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func refresh() {
-        let derivedDatas: [(String, String?, String?)]? = BAXCDerivedDataManager.items()
+        let datas: ([(String, String?, String?, Int)]?, Int) = BAXCDerivedDataTrashManager.datas() as! ([(String, String?, String?, Int)]?, Int)
+        let (derivedDatas, fullSize) = datas
         if derivedDatas == nil {
             self.derivedDataInfos = nil
         } else {
             var newAppInfos: [(String, String?, String?, Int, Bool)] = []
-            self.fullSize = 0
-            for (path, name, targetPath) in derivedDatas! {
-                let size: Int = BAXCFileUtil.size(path)
+            self.fullSize = fullSize
+            for (path, name, targetPath, size) in derivedDatas! {
+                if size == 0 {
+                    continue
+                }
                 var finded: Bool = false
                 if self.derivedDataInfos != nil {
                     for (oldPath, _, _, _, oldState) in self.derivedDataInfos! {
@@ -96,7 +99,6 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
                 if finded == false {
                     newAppInfos.append((path, name, targetPath, size, false))
                 }
-                self.fullSize = self.fullSize + size
             }
             newAppInfos.sort { (arg0, arg1) -> Bool in
                 let (_, _, _, size0, _) = arg0
@@ -186,7 +188,7 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
         }
         for (path, _, _, _, state) in self.derivedDataInfos! {
             if state == true {
-                BAXCFileUtil.recycle(path)
+                BAXCDerivedDataTrashManager.clean(path)
             }
         }
     }

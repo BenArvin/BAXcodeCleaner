@@ -40,4 +40,10 @@ public class BAXCBlockView: NSView {
         self._scrollView.frame = self.bounds
         self._scrollView.isHidden = self.isEnabled
     }
+    
+    public override func mouseDown(with event: NSEvent) {
+        if self.isEnabled {
+            super.mouseDown(with: event)
+        }
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  BAXCXcodeAppManager.swift
+//  BAXCXcodeAppTrashManager.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2019/12/30.
@@ -8,13 +8,14 @@
 
 import Foundation
 
-public class BAXCXcodeAppManager {
-    public class func xcodes() -> [(String, String?)]? {
+public class BAXCXcodeAppTrashManager: BAXCTrashDataManager {
+    public override class func datas() -> ([Any]?, Int) {
         let appPaths: [String]? = BAXCFileUtil.contentsOfDir(BAXCXcodeInfoManager.applicationPath())
         if appPaths == nil {
-            return nil
+            return (nil, 0)
         }
-        var result: [(String, String?)]? = nil
+        var fullSize: Int = 0
+        var result: [(String, String?, Int)]? = nil
         for pathItem in appPaths! {
             let infoPlistPath: String? = BAXCXcodeInfoManager.appPlistPath(pathItem)
             let bundleID: String? = BAXCPlistAnalyzer.read(path: infoPlistPath, key: "CFBundleIdentifier") as? String
@@ -25,8 +26,10 @@ public class BAXCXcodeAppManager {
             if result == nil {
                 result = []
             }
-            result!.append((pathItem, version))
+            let sizeItem: Int = BAXCFileUtil.size(pathItem)
+            fullSize = fullSize + sizeItem
+            result!.append((pathItem, version, sizeItem))
         }
-        return result
+        return (result, fullSize)
     }
 }

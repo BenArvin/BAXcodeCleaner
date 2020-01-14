@@ -1,5 +1,5 @@
 //
-//  BAXCArchivesManager.swift
+//  BAXCArchivesTrashManager.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2020/1/1.
@@ -8,13 +8,14 @@
 
 import Foundation
 
-public class BAXCArchivesManager {
-    public class func archives() -> [(String, String?, String?)]? {
+public class BAXCArchivesTrashManager: BAXCTrashDataManager {
+    public override class func datas() -> ([Any]?, Int) {
         let appPaths: [String]? = BAXCFileUtil.contentsOfDir(BAXCXcodeInfoManager.archivesPath())
         if appPaths == nil {
-            return nil
+            return (nil, 0)
         }
-        var result: [(String, String?, String?)]? = nil
+        var fullSize: Int = 0
+        var result: [(String, String?, String?, Int)]? = nil
         for pathItem in appPaths! {
             let name: String? = BAXCFileUtil.splitAbnormalPath(pathItem)
             if result == nil {
@@ -34,8 +35,10 @@ public class BAXCArchivesManager {
                     }
                 }
             }
-            result!.append((pathItem, name, innerItems))
+            let sizeItem: Int = BAXCFileUtil.size(pathItem)
+            fullSize = fullSize + sizeItem
+            result!.append((pathItem, name, innerItems, sizeItem))
         }
-        return result
+        return (result, fullSize)
     }
 }

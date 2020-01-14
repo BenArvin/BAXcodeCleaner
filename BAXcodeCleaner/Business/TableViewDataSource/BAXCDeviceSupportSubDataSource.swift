@@ -75,14 +75,17 @@ public class BAXCDeviceSupportSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func refresh() {
-        let devices: [(String, String?)]? = BAXCDeviceSupportManager.devices()
+        let datas: ([(String, String?, Int)]?, Int) = BAXCDeviceSupportTrashManager.datas() as! ([(String, String?, Int)]?, Int)
+        let (devices, fullSize) = datas
         if devices == nil {
             self.deviceSupportInfos = nil
         } else {
             var newAppInfos: [(String, String?, Int, Bool)] = []
-            self.fullSize = 0
-            for (path, name) in devices! {
-                let size: Int = BAXCFileUtil.size(path)
+            self.fullSize = fullSize
+            for (path, name, size) in devices! {
+                if size == 0 {
+                    continue
+                }
                 var finded: Bool = false
                 if self.deviceSupportInfos != nil {
                     for (oldPath, _, _, oldState) in self.deviceSupportInfos! {
@@ -96,7 +99,6 @@ public class BAXCDeviceSupportSubDataSource: BAXCTableViewSubDataSource {
                 if finded == false {
                     newAppInfos.append((path, name, size, false))
                 }
-                self.fullSize = self.fullSize + size
             }
             newAppInfos.sort { (arg0, arg1) -> Bool in
                 let (_, _, size0, _) = arg0
@@ -186,7 +188,7 @@ public class BAXCDeviceSupportSubDataSource: BAXCTableViewSubDataSource {
         }
         for (path, _, _, state) in self.deviceSupportInfos! {
             if state == true {
-                BAXCFileUtil.recycle(path)
+                BAXCDeviceSupportTrashManager.clean(path)
             }
         }
     }

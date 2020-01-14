@@ -344,7 +344,7 @@ extension BAXCManualCleanVC {
                 if res != NSApplication.ModalResponse.alertFirstButtonReturn {
                     return
                 }
-                strongSelf2._loadingView.message = "Cleanning..."
+                strongSelf2._loadingView.message = "Cleaning..."
                 strongSelf2._loadingView.show()
                 DispatchQueue.global().async{[weak strongSelf2] in
                     guard let strongSelf3 = strongSelf2 else {

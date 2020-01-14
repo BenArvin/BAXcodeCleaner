@@ -75,14 +75,17 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func refresh() {
-        let apps: [(String, String?)]? = BAXCXcodeAppManager.xcodes()
+        let datas: ([(String, String?, Int)]?, Int) = BAXCXcodeAppTrashManager.datas() as! ([(String, String?, Int)]?, Int)
+        let (apps, fullSize) = datas
         if apps == nil {
             self.appInfos = nil
         } else {
             var newAppInfos: [(String, String?, Int, Bool)] = []
-            self.fullSize = 0
-            for (path, version) in apps! {
-                let size: Int = BAXCFileUtil.size(path)
+            self.fullSize = fullSize
+            for (path, version, size) in apps! {
+                if size == 0 {
+                    continue
+                }
                 var finded: Bool = false
                 if self.appInfos != nil {
                     for (oldPath, _, _, oldState) in self.appInfos! {
@@ -96,7 +99,6 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
                 if finded == false {
                     newAppInfos.append((path, version, size, false))
                 }
-                self.fullSize = self.fullSize + size
             }
             newAppInfos.sort { (arg0, arg1) -> Bool in
                 let (_, _, size0, _) = arg0
@@ -190,7 +192,7 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
         }
         for (path, _, _, state) in self.appInfos! {
             if state == true {
-                BAXCFileUtil.recycle(path)
+                BAXCXcodeAppTrashManager.clean(path)
             }
         }
     }
