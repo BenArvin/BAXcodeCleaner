@@ -46,6 +46,7 @@
 		E4BEC9E623B9A4B000C785A5 /* BAXCPlistAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BEC9E523B9A4B000C785A5 /* BAXCPlistAnalyzer.swift */; };
 		E4BECA1623BA027400C785A5 /* BAXCProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BECA1523BA027400C785A5 /* BAXCProgressIndicator.swift */; };
 		E4EFF0C623CC73A400291D81 /* BANavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0C523CC73A400291D81 /* BANavigationController.swift */; };
+		E4EFF0CA23CD944900291D81 /* BAXCMainDeskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0C923CD944900291D81 /* BAXCMainDeskVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		E4BEC9E523B9A4B000C785A5 /* BAXCPlistAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCPlistAnalyzer.swift; sourceTree = "<group>"; };
 		E4BECA1523BA027400C785A5 /* BAXCProgressIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCProgressIndicator.swift; sourceTree = "<group>"; };
 		E4EFF0C523CC73A400291D81 /* BANavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BANavigationController.swift; sourceTree = "<group>"; };
+		E4EFF0C923CD944900291D81 /* BAXCMainDeskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCMainDeskVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +213,7 @@
 		E497EE2B23B74F2200D9212E /* Business */ = {
 			isa = PBXGroup;
 			children = (
+				E4EFF0C923CD944900291D81 /* BAXCMainDeskVC.swift */,
 				E493A94C23B3056E00F8FE78 /* BAXCManualCleanVC.swift */,
 				E49FEA6D23BB2D66004F6306 /* TableViewDataSource */,
 				E487977E23BA1C2300087258 /* TableViewCell */,
@@ -419,6 +422,7 @@
 				E493A94B23B3056E00F8FE78 /* AppDelegate.swift in Sources */,
 				E4110F3523BC7F4200C56137 /* BAXCTableViewSubDataSource.swift in Sources */,
 				E4AA40BB23BE087E005CA901 /* BAXCFileSizeCell.swift in Sources */,
+				E4EFF0CA23CD944900291D81 /* BAXCMainDeskVC.swift in Sources */,
 				E4110F2F23BC787C00C56137 /* BAXCArchivesSubDataSource.swift in Sources */,
 				E497EE2723B7365300D9212E /* main.swift in Sources */,
 				E4110F3323BC7CD500C56137 /* BAXCSimulatorDeviceSubDataSource.swift in Sources */,

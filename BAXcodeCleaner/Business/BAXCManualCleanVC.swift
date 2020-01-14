@@ -71,8 +71,17 @@ class BAXCManualCleanVC: BAViewController {
         return result
     }()
     
+    private lazy var _backBtn: NSButton = {
+        let result: NSButton = NSButton.init(title: "", target: self, action: #selector(_onBackBtnSelected(_:)))
+        result.bezelStyle = NSButton.BezelStyle.regularSquare
+        result.image = NSImage(named: NSImage.Name("arrow-left-white"))
+        result.imageScaling = NSImageScaling.scaleAxesIndependently
+        result.imagePosition = NSControl.ImagePosition.imageOnly
+        return result
+    }()
+    
     private lazy var _refreshBtn: NSButton = {
-        let result: NSButton = NSButton.init(title: "", target: self, action: #selector(onRefreshBtnSelected(_:)))
+        let result: NSButton = NSButton.init(title: "", target: self, action: #selector(_onRefreshBtnSelected(_:)))
         result.bezelStyle = NSButton.BezelStyle.regularSquare
         result.image = NSImage(named: NSImage.Name("refresh-white"))
         result.imageScaling = NSImageScaling.scaleAxesIndependently
@@ -100,7 +109,7 @@ class BAXCManualCleanVC: BAViewController {
     }()
     
     private lazy var _cleanBtn: NSButton = {
-        let result: NSButton = NSButton.init(title: "Clean", target: self, action: #selector(onCleanBtnSelected(_:)))
+        let result: NSButton = NSButton.init(title: "Clean", target: self, action: #selector(_onCleanBtnSelected(_:)))
         result.bezelStyle = NSButton.BezelStyle.regularSquare
         result.font = NSFont.systemFont(ofSize: 20)
         return result
@@ -118,10 +127,6 @@ class BAXCManualCleanVC: BAViewController {
         return result
     }()
     
-    override func loadView() {
-        self.view = NSView()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -130,6 +135,7 @@ class BAXCManualCleanVC: BAViewController {
         super.viewWillAppear()
         if self._tableContainerView.superview != self.view {
             self.view.addSubview(self._topBar)
+            self._topBar.addSubview(self._backBtn)
             self._topBar.addSubview(self._refreshBtn)
             self._topBar.addSubview(self._selAllCheckBox)
             self._topBar.addSubview(self._sizeTextField)
@@ -266,9 +272,10 @@ extension BAXCManualCleanVC {
         
         self._tableContainerView.frame = CGRect.init(x: leftMargin, y: self._cleanBtn.frame.maxY + 10, width: self.view.bounds.width - leftMargin - rightMargin, height: self._topBar.frame.minY - self._cleanBtn.frame.maxY - 10 - 5)
         
-        self._refreshBtn.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
+        self._backBtn.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
+        self._refreshBtn.frame = CGRect.init(x: self._backBtn.frame.maxX + 5, y: 0, width: 30, height: 30)
         self._selAllCheckBox.frame = CGRect.init(x: self._topBar.bounds.width - 16 - 10, y: 4, width: 16, height: 16)
-        self._sizeTextField.frame = CGRect.init(x: self._refreshBtn.frame.maxX + 15, y: 3, width: self._topBar.frame.width - self._refreshBtn.frame.maxX * 2 - 30, height: 18)
+        self._sizeTextField.frame = CGRect.init(x: self._backBtn.frame.maxX + 15, y: 3, width: self._topBar.frame.width - self._backBtn.frame.maxX * 2 - 30, height: 18)
         
         if self._columnsSetted == false && self.view.bounds.width > 10 {
             self._columnsSetted = true
@@ -311,7 +318,11 @@ extension BAXCManualCleanVC {
         }
     }
     
-    @objc public func onCleanBtnSelected(_ sender: NSButton?) {
+    @objc private func _onBackBtnSelected(_ sender: NSButton?) {
+        self.navigationController!.popViewControllerAnimated(true, completion: nil)
+    }
+    
+    @objc private func _onCleanBtnSelected(_ sender: NSButton?) {
         DispatchQueue.global().async{[weak self] in
             guard let strongSelf = self else {
                 return
@@ -333,6 +344,7 @@ extension BAXCManualCleanVC {
                 if res != NSApplication.ModalResponse.alertFirstButtonReturn {
                     return
                 }
+                strongSelf2._loadingView.message = "Cleanning..."
                 strongSelf2._loadingView.show()
                 DispatchQueue.global().async{[weak strongSelf2] in
                     guard let strongSelf3 = strongSelf2 else {
@@ -357,6 +369,12 @@ extension BAXCManualCleanVC {
                             }
                             return
                         }
+                        DispatchQueue.main.async{[weak strongSelf4] in
+                            guard let strongSelf5 = strongSelf4 else {
+                                return
+                            }
+                            strongSelf5._loadingView.message = "Searching..."
+                        }
                         strongSelf4._dataSource.refresh {[weak strongSelf4] in
                             guard let strongSelf5 = strongSelf4 else {
                                 return
@@ -374,7 +392,7 @@ extension BAXCManualCleanVC {
         }
     }
     
-    @objc public func onRefreshBtnSelected(_ sender: NSButton?) {
+    @objc private func _onRefreshBtnSelected(_ sender: NSButton?) {
         self._refresh()
     }
     
@@ -412,10 +430,22 @@ extension BAXCManualCleanVC {
     }
 }
 
+// MARK - menuItem methods
+extension BAXCManualCleanVC {
+    @objc public override func onMenuCleanItemSelected(_ sender: NSButton?) {
+        self._onCleanBtnSelected(sender)
+    }
+    
+    @objc public override func onMenuRefreshItemSelected(_ sender: NSButton?) {
+        self._onRefreshBtnSelected(sender)
+    }
+}
+
 // MARK - private methods
 extension BAXCManualCleanVC {
     private func _refresh() {
         self._loadingView.show()
+        self._loadingView.message = "Searching..."
         DispatchQueue.global().async{[weak self] in
             guard let strongSelf = self else {
                 return

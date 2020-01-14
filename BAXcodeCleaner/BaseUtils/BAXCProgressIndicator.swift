@@ -33,6 +33,31 @@ public class BAXCProgressIndicator: NSView {
         return result
     }()
     
+    private var _message: String? = nil
+    public var message: String? {
+        set {
+            self._message = newValue
+            self._msgTextField.stringValue = newValue == nil ? "" : newValue!
+        }
+        get {
+            return self._message
+        }
+    }
+    
+    private lazy var _msgTextField: NSTextField = {
+        let result: NSTextField = NSTextField.init()
+        result.isEditable = false
+        result.isBordered = false
+        result.isSelectable = false
+        result.backgroundColor = NSColor.clear
+        result.textColor = NSColor.lightGray
+        result.alignment = NSTextAlignment.center
+        result.maximumNumberOfLines = 1
+        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.font = NSFont.systemFont(ofSize: 14)
+        return result
+    }()
+    
     deinit {
         self._indicator.stopAnimation(self)
     }
@@ -45,6 +70,7 @@ public class BAXCProgressIndicator: NSView {
         super.init(frame: frameRect)
         self.addSubview(self._bgView)
         self.addSubview(self._indicator)
+        self.addSubview(self._msgTextField)
     }
     
     public override func layout() {
@@ -56,6 +82,7 @@ public class BAXCProgressIndicator: NSView {
                                             y: floor((self.frame.height - size) / 2),
                                             width: size,
                                             height: size)
+        self._msgTextField.frame = CGRect.init(x: 0, y: self._indicator.frame.minY - 18 - 5, width: self.bounds.width, height: 18)
     }
 }
 

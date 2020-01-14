@@ -10,13 +10,13 @@ import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    public var rootVC: BAXCManualCleanVC?
+    public var rootVC: BAXCMainDeskVC?
     public var rootNavi: BANavigationController?
     public var window: NSWindow?
     public var rootWC: NSWindowController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        self.rootVC = BAXCManualCleanVC()
+        self.rootVC = BAXCMainDeskVC()
         self.rootNavi = BANavigationController.init(rootViewController: self.rootVC!)
         self.window = NSWindow.init(contentViewController: self.rootNavi!)
         
@@ -61,10 +61,10 @@ extension AppDelegate {
     }
     
     @objc func refreshAction() {
-        self.rootVC!.onRefreshBtnSelected(nil)
+        self.rootVC!.onMenuRefreshItemSelected(nil)
     }
     
     @objc func deleteAction() {
-        self.rootVC!.onCleanBtnSelected(nil)
+        self.rootVC!.onMenuCleanItemSelected(nil)
     }
 }

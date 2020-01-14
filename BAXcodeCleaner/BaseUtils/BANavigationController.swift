@@ -9,7 +9,7 @@
 import Cocoa
 
 public class BAViewController: NSViewController {
-    public weak var navigation: BANavigationController? = nil
+    public weak var navigationController: BANavigationController? = nil
     
     override public func loadView() {
         self.view = NSView()
@@ -18,14 +18,22 @@ public class BAViewController: NSViewController {
     public override var title: String? {
         set {
             super.title = newValue
-            if self.navigation == nil {
+            if self.navigationController == nil {
                 return
             }
-            self.navigation!._updateTitle(self)
+            self.navigationController!._updateTitle(self)
         }
         get {
             return super.title
         }
+    }
+}
+
+extension BAViewController {
+    @objc public func onMenuCleanItemSelected(_ sender: NSButton?) {
+    }
+    
+    @objc public func onMenuRefreshItemSelected(_ sender: NSButton?) {
     }
 }
 
@@ -104,7 +112,7 @@ public class BANavigationController: BAViewController {
 extension BANavigationController {
     convenience init(rootViewController: BAViewController) {
         self.init()
-        rootViewController.navigation = self
+        rootViewController.navigationController = self
         self.addChild(rootViewController)
         self.viewControllers = [rootViewController]
     }
@@ -118,7 +126,7 @@ extension BANavigationController {
             }
             return
         }
-        viewController!.navigation = self
+        viewController!.navigationController = self
         self.viewControllers!.append(viewController!)
         self.addChild(viewController!)
         let count: Int = self.viewControllers!.count
