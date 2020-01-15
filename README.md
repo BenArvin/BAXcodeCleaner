@@ -14,7 +14,7 @@ BAXcodeCleaner is trash cleaner for Xcode. You can detect and clean trash files 
 ## Installation
 <p align="left">
 	<a>You can download latest .dmg package from</a>
-	<a href="https://github.com/BenArvin/BAXcodeCleaner/blob/master/release/BAXcodeCleaner.dmg?raw=true">here</a>
+	<a href="https://github.com/BenArvin/BAXcodeCleaner/releases">here</a>
 	<a>, or build source code directly.</a>
 </p>
 
