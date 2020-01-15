@@ -34,10 +34,17 @@ autoreleasepool {
     let windowMenuItem: NSMenuItem = NSMenuItem.init()
     windowMenuItem.submenu = windowMenu
     
+    let helpMenu: NSMenu = NSMenu.init(title: "Help")
+    helpMenu.addItem(NSMenuItem.init(title: "Bug report", action: #selector(AppDelegate.bugReportAction), keyEquivalent: ""))
+
+    let helpMenuItem: NSMenuItem = NSMenuItem.init()
+    helpMenuItem.submenu = helpMenu
+    
     app.mainMenu = NSMenu.init()
     app.mainMenu!.addItem(firstMenuItem)
     app.mainMenu!.addItem(actionMenuItem)
     app.mainMenu!.addItem(windowMenuItem)
+    app.mainMenu!.addItem(helpMenuItem)
     
     app.run()
 }

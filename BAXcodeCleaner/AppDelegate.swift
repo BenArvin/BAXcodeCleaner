@@ -49,7 +49,7 @@ extension AppDelegate: NSWindowDelegate {
 // MARK: - main menu actions
 extension AppDelegate {
     @objc func introductionAction() {
-        BAXCSelfIntroduction.shared.show()
+        BAXCSelfIntroduction.show()
     }
     
     @objc func quitAction() {
@@ -66,5 +66,9 @@ extension AppDelegate {
     
     @objc func deleteAction() {
         self.rootVC!.onMenuCleanItemSelected(nil)
+    }
+    
+    @objc func bugReportAction() {
+        BABugReporter.show()
     }
 }

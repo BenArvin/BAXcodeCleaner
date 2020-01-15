@@ -176,7 +176,7 @@ extension BAXCManualCleanVC: NSTableViewDataSource {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let columnID: String = tableColumn!.identifier.rawValue
-        var cell: NSTableCellView? = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier.init("123"), owner: self) as? NSTableCellView
+        var cell: NSTableCellView? = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier.init(columnID), owner: self) as? NSTableCellView
         if cell == nil {
             cell = self._dataSource.cell(for: row, column: Int(columnID) ?? 0)
         }

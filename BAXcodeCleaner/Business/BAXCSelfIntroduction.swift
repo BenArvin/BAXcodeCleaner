@@ -97,15 +97,33 @@ public class BAXCSelfIntroduction: NSObject{
     private var _window: NSWindow?
     private var _rootWC: NSWindowController?
     
-    public static let shared: BAXCSelfIntroduction = {
+    private static let shared: BAXCSelfIntroduction = {
         let instance = BAXCSelfIntroduction()
         return instance
     }()
     
-    public func show() {
+    public class func show() {
+        self.shared._show()
+    }
+}
+
+extension BAXCSelfIntroduction: NSWindowDelegate {
+    public func windowWillClose(_ notification: Notification) {
+        NSApplication.shared.stopModal()
+        self._rootVC = nil
+        self._window = nil
+        self._rootWC = nil
+        self._displaying = false
+    }
+}
+
+// MARK: - private methods
+extension BAXCSelfIntroduction {
+    private func _show() {
         if self._displaying == true {
             return
         }
+        self._displaying = true
         if self._rootVC == nil {
             self._rootVC = BAXCSelfIntroductionVC()
         }
@@ -130,16 +148,5 @@ public class BAXCSelfIntroduction: NSObject{
         }
         self._rootWC!.showWindow(self)
         NSApplication.shared.runModal(for: self._window!)
-        self._displaying = true
-    }
-}
-
-extension BAXCSelfIntroduction: NSWindowDelegate {
-    public func windowWillClose(_ notification: Notification) {
-        NSApplication.shared.stopModal()
-        self._rootVC = nil
-        self._window = nil
-        self._rootWC = nil
-        self._displaying = false
     }
 }

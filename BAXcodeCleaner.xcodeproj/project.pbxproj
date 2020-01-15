@@ -49,6 +49,9 @@
 		E4EFF0CA23CD944900291D81 /* BAXCMainDeskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0C923CD944900291D81 /* BAXCMainDeskVC.swift */; };
 		E4EFF0D023CDB1B300291D81 /* BAXCTrashDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0CF23CDB1B300291D81 /* BAXCTrashDataManager.swift */; };
 		E4EFF0D223CDBE3100291D81 /* BAXCAutoDismissAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0D123CDBE3100291D81 /* BAXCAutoDismissAlert.swift */; };
+		E4EFF0D423CEBB5D00291D81 /* BABugReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0D323CEBB5D00291D81 /* BABugReporter.swift */; };
+		E4EFF0D823CEF7A500291D81 /* BACrashLogAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0D723CEF7A500291D81 /* BACrashLogAnalyzer.swift */; };
+		E4EFF0DA23CEFADD00291D81 /* BABugReporterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0D923CEFADD00291D81 /* BABugReporterVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +121,9 @@
 		E4EFF0C923CD944900291D81 /* BAXCMainDeskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCMainDeskVC.swift; sourceTree = "<group>"; };
 		E4EFF0CF23CDB1B300291D81 /* BAXCTrashDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTrashDataManager.swift; sourceTree = "<group>"; };
 		E4EFF0D123CDBE3100291D81 /* BAXCAutoDismissAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCAutoDismissAlert.swift; sourceTree = "<group>"; };
+		E4EFF0D323CEBB5D00291D81 /* BABugReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BABugReporter.swift; sourceTree = "<group>"; };
+		E4EFF0D723CEF7A500291D81 /* BACrashLogAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACrashLogAnalyzer.swift; sourceTree = "<group>"; };
+		E4EFF0D923CEFADD00291D81 /* BABugReporterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BABugReporterVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -252,6 +258,7 @@
 				E43DB90E23C6CC220021417D /* BAXCTPCheckBox.swift */,
 				E456783123CC1A0E003395EA /* BAXCTableView.swift */,
 				E4EFF0C523CC73A400291D81 /* BANavigationController.swift */,
+				E4EFF0D523CEF78A00291D81 /* BABugReporter */,
 			);
 			path = BaseUtils;
 			sourceTree = "<group>";
@@ -278,6 +285,16 @@
 				E43DB90C23C5F99D0021417D /* BAXCSimulatorCacheSubDataSource.swift */,
 			);
 			path = TableViewDataSource;
+			sourceTree = "<group>";
+		};
+		E4EFF0D523CEF78A00291D81 /* BABugReporter */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFF0D323CEBB5D00291D81 /* BABugReporter.swift */,
+				E4EFF0D923CEFADD00291D81 /* BABugReporterVC.swift */,
+				E4EFF0D723CEF7A500291D81 /* BACrashLogAnalyzer.swift */,
+			);
+			path = BABugReporter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -438,14 +455,17 @@
 				E43DB91123C70B4B0021417D /* BAXCSectionCheckBoxCell.swift in Sources */,
 				E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */,
 				E43DB90D23C5F99D0021417D /* BAXCSimulatorCacheSubDataSource.swift in Sources */,
+				E4EFF0DA23CEFADD00291D81 /* BABugReporterVC.swift in Sources */,
 				E4110F2923BC73DA00C56137 /* BAXCDeviceSupportTrashManager.swift in Sources */,
 				E49FEA8123BB4EF5004F6306 /* BAXCSelfIntroduction.swift in Sources */,
+				E4EFF0D423CEBB5D00291D81 /* BABugReporter.swift in Sources */,
 				E4110F2523BC441400C56137 /* BAXCDerivedDataSubDataSource.swift in Sources */,
 				E487977B23BA1C0700087258 /* BAXCContentCell.swift in Sources */,
 				E4EFF0D223CDBE3100291D81 /* BAXCAutoDismissAlert.swift in Sources */,
 				E4BEC9E623B9A4B000C785A5 /* BAXCPlistAnalyzer.swift in Sources */,
 				E4BECA1623BA027400C785A5 /* BAXCProgressIndicator.swift in Sources */,
 				E497EE3123B74FEF00D9212E /* BAXCDerivedDataTrashManager.swift in Sources */,
+				E4EFF0D823CEF7A500291D81 /* BACrashLogAnalyzer.swift in Sources */,
 				E4110F2B23BC747300C56137 /* BAXCDeviceSupportSubDataSource.swift in Sources */,
 				E487977D23BA1C1E00087258 /* BAXCSectionBlankCell.swift in Sources */,
 			);
