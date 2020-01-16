@@ -69,7 +69,7 @@ public class BACheckUpdateVC: NSViewController {
         result.maximumNumberOfLines = 0
         result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 18, weight: NSFont.Weight.regular)
-        result.stringValue = "Check for updates failed, please try later."
+        result.stringValue = "Check for updates failed, please try again later."
         result.isHidden = true
         return result
     }()

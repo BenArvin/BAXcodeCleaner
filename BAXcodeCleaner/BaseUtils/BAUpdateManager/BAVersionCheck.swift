@@ -49,7 +49,7 @@ extension BAVersionCheck {
                 completion!(false, nil)
             }
         }
-        let requestTmp: NSMutableURLRequest = NSMutableURLRequest.init(url: requestUrl!)
+        let requestTmp: NSMutableURLRequest = NSMutableURLRequest.init(url: requestUrl!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringCacheData, timeoutInterval: 30)
         requestTmp.httpMethod = "GET"
         requestTmp.setValue("curl/7.64.1", forHTTPHeaderField: "User-Agent")
         requestTmp.setValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
