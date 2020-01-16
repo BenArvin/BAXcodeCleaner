@@ -34,7 +34,7 @@ fileprivate class BAXCAutoDismissAlertView: NSView {
         result.textColor = NSColor.lightGray
         result.alignment = NSTextAlignment.center
         result.maximumNumberOfLines = 0
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 16)
         return result
     }()

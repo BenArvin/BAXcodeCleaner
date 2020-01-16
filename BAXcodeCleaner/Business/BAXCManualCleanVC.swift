@@ -103,7 +103,7 @@ class BAXCManualCleanVC: BAViewController {
         result.textColor = NSColor.lightGray
         result.alignment = NSTextAlignment.center
         result.maximumNumberOfLines = 1
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 16)
         return result
     }()

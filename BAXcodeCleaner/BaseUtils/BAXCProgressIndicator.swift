@@ -53,7 +53,7 @@ public class BAXCProgressIndicator: NSView {
         result.textColor = NSColor.lightGray
         result.alignment = NSTextAlignment.center
         result.maximumNumberOfLines = 1
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 14)
         return result
     }()

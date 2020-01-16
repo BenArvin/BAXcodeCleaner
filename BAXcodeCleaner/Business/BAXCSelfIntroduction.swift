@@ -17,9 +17,9 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         result.textColor = NSColor.white
         result.alignment = NSTextAlignment.center
         result.maximumNumberOfLines = 0
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 24, weight: NSFont.Weight.bold)
-        result.stringValue = "BAXcodeCleaner"
+        result.stringValue = BAXCDefines.Repo.Name
         return result
     }()
     
@@ -31,7 +31,7 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         result.textColor = NSColor.white
         result.alignment = NSTextAlignment.center
         result.maximumNumberOfLines = 0
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 18)
         result.stringValue = String.init(format: "%@(%@)", Bundle.main.mc_releaseVersion(), Bundle.main.mc_buildVersion())
         return result
@@ -45,7 +45,7 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         result.alignment = NSTextAlignment.center
         let attrStr: NSMutableAttributedString = NSMutableAttributedString.init()
         attrStr.append(NSAttributedString.init(string: "GitHub: ", attributes: [NSAttributedString.Key.foregroundColor: NSColor.white, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18)]))
-        attrStr.append(NSAttributedString.init(string: "https://github.com/BenArvin/BAXcodeCleaner", attributes: [NSAttributedString.Key.link : "https://github.com/BenArvin/BAXcodeCleaner", NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18)]))
+        attrStr.append(NSAttributedString.init(string: BAXCDefines.Repo.Address, attributes: [NSAttributedString.Key.link : BAXCDefines.Repo.Address, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18)]))
         result.textStorage?.setAttributedString(attrStr)
         return result
     }()
@@ -58,7 +58,7 @@ private class BAXCSelfIntroductionVC: NSViewController, NSTextViewDelegate {
         result.alignment = NSTextAlignment.center
         let attrStr: NSMutableAttributedString = NSMutableAttributedString.init()
         attrStr.append(NSAttributedString.init(string: "License: ", attributes: [NSAttributedString.Key.foregroundColor: NSColor.white, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18)]))
-        attrStr.append(NSAttributedString.init(string: "GNU GPL", attributes: [NSAttributedString.Key.link : "https://github.com/BenArvin/BAXcodeCleaner/blob/master/LICENSE", NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18)]))
+        attrStr.append(NSAttributedString.init(string: "GNU GPL", attributes: [NSAttributedString.Key.link : BAXCDefines.Repo.License, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 18)]))
         result.textStorage?.setAttributedString(attrStr)
         return result
     }()

@@ -29,11 +29,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                               display: true)
         self.window!.styleMask = [NSWindow.StyleMask.closable, NSWindow.StyleMask.miniaturizable, NSWindow.StyleMask.resizable, NSWindow.StyleMask.titled]
         self.window!.backingType = NSWindow.BackingStoreType.buffered
-        self.window!.title = "BAXcodeCleaner"
+        self.window!.title = BAXCDefines.Repo.Name
         self.window!.delegate = self
 
         self.rootWC = NSWindowController.init(window: self.window!)
         self.rootWC!.showWindow(self)
+        
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 5) {
+            BAUpdateManager.checkUpdate(true)
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -70,5 +74,9 @@ extension AppDelegate {
     
     @objc func bugReportAction() {
         BABugReporter.show()
+    }
+    
+    @objc func checkForUpdatesAction() {
+        BAUpdateManager.checkUpdate(false)
     }
 }

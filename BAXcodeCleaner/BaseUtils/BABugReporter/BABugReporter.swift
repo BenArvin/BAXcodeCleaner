@@ -58,7 +58,7 @@ extension BABugReporter {
                                display: true)
         self._window!.styleMask = [NSWindow.StyleMask.closable, NSWindow.StyleMask.titled]
         self._window!.backingType = NSWindow.BackingStoreType.buffered
-        self._window!.title = "Bug report"
+        self._window!.title = "Bug Report"
         self._window!.delegate = self
         
         if self._rootWC == nil {

@@ -31,7 +31,7 @@ public class BABugReporterTableCell: NSTableCellView {
         result.textColor = NSColor.white
         result.alignment = NSTextAlignment.left
         result.maximumNumberOfLines = 1
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 14)
         return result
     }()
@@ -73,7 +73,7 @@ public class BABugReporterVC: NSViewController, NSTextViewDelegate {
         result.backgroundColor = NSColor.clear
         result.alignment = NSTextAlignment.left
         let attrStr: NSMutableAttributedString = NSMutableAttributedString.init()
-        attrStr.append(NSAttributedString.init(string: "Please creat an issue of this repository on github, and paste the content of crash log would be greatly helpful.", attributes: [NSAttributedString.Key.foregroundColor: NSColor.white, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14)]))
+        attrStr.append(NSAttributedString.init(string: "Please creat an issue of this repository on Github, and paste the content of crash log would be greatly helpful.", attributes: [NSAttributedString.Key.foregroundColor: NSColor.white, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14)]))
         result.textStorage?.setAttributedString(attrStr)
         return result
     }()
@@ -87,7 +87,7 @@ public class BABugReporterVC: NSViewController, NSTextViewDelegate {
         result.textColor = NSColor.white
         result.alignment = NSTextAlignment.left
         result.maximumNumberOfLines = 0
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 14)
         result.stringValue = "Here's all crash logs:"
         return result

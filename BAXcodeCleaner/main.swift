@@ -15,6 +15,7 @@ autoreleasepool {
     
     let firstMenu: NSMenu = NSMenu.init()
     firstMenu.addItem(NSMenuItem.init(title: "About", action: #selector(AppDelegate.introductionAction), keyEquivalent: ""))
+    firstMenu.addItem(NSMenuItem.init(title: "Check for Updates", action: #selector(AppDelegate.checkForUpdatesAction), keyEquivalent: ""))
     firstMenu.addItem(NSMenuItem.separator())
     firstMenu.addItem(NSMenuItem.init(title: "Quit", action: #selector(AppDelegate.quitAction), keyEquivalent: "q"))
 
@@ -35,7 +36,7 @@ autoreleasepool {
     windowMenuItem.submenu = windowMenu
     
     let helpMenu: NSMenu = NSMenu.init(title: "Help")
-    helpMenu.addItem(NSMenuItem.init(title: "Bug report", action: #selector(AppDelegate.bugReportAction), keyEquivalent: ""))
+    helpMenu.addItem(NSMenuItem.init(title: "Bug Report", action: #selector(AppDelegate.bugReportAction), keyEquivalent: ""))
 
     let helpMenuItem: NSMenuItem = NSMenuItem.init()
     helpMenuItem.submenu = helpMenu

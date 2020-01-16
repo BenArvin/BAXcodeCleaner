@@ -25,7 +25,7 @@ public class BAXCMainDeskVC: BAViewController {
         result.textColor = NSColor.lightGray
         result.alignment = NSTextAlignment.left
         result.maximumNumberOfLines = 0
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 16)
         result.stringValue = "Lazy mode, clean derived data and device support files only for safety."
         return result
@@ -47,7 +47,7 @@ public class BAXCMainDeskVC: BAViewController {
         result.textColor = NSColor.lightGray
         result.alignment = NSTextAlignment.left
         result.maximumNumberOfLines = 0
-        result.lineBreakMode = NSLineBreakMode.byCharWrapping
+        result.lineBreakMode = NSLineBreakMode.byWordWrapping
         result.font = NSFont.systemFont(ofSize: 16)
         result.stringValue = "Search many more kinds of temporary files, you can clean it accurately."
         return result
