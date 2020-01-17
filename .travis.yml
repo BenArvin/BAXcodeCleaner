@@ -18,7 +18,7 @@ if: tag IS present
 script:
 - xcodebuild -project BAXcodeCleaner.xcodeproj -scheme BAXcodeCleaner CONFIGURATION_BUILD_DIR=./BAXcodeCleaner-release/ CODE_SIGNING_REQUIRED=NO
 - rm -rf ./BAXcodeCleaner-release/BAXcodeCleaner.swiftmodule
-- cp ./materials/Applications ./BAXcodeCleaner-release/
+- ln -s /Applications ./BAXcodeCleaner-release/Applications
 - hdiutil create ./BAXcodeCleaner.dmg -ov -volname "BAXcodeCleaner" -fs HFS+ -srcfolder "./BAXcodeCleaner-release/"
 # - hdiutil convert ./BAXcodeCleaner.dmg -format UDZO -o ./BAXcodeCleaner-install.dmg
 
