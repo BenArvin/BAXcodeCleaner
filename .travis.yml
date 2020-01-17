@@ -1,0 +1,32 @@
+language: objective-c
+osx_image: xcode11.3
+
+sudo: required
+
+before_install:
+  - gem install xcpretty --no-document --quiet
+
+notifications:
+  email:
+    recipients:
+      - niedongsen@yeah.net
+    on_success: always
+    on_failure: always
+
+if: tag IS present
+
+script:
+- xcodebuild -project BAXcodeCleaner.xcodeproj -scheme BAXcodeCleaner CONFIGURATION_BUILD_DIR=./BAXcodeCleaner-release/ CODE_SIGNING_REQUIRED=NO
+- rm -rf ./BAXcodeCleaner-release/BAXcodeCleaner.swiftmodule
+- cp ./materials/Applications ./BAXcodeCleaner-release/
+- hdiutil create ./BAXcodeCleaner.dmg -ov -volname "BAXcodeCleaner" -fs HFS+ -srcfolder "./BAXcodeCleaner-release/"
+# - hdiutil convert ./BAXcodeCleaner.dmg -format UDZO -o ./BAXcodeCleaner-install.dmg
+
+deploy:
+  provider: releases
+  api_key: "${GH_TOKEN}"
+  file: "BAXcodeCleaner.dmg"
+  skip_cleanup: true
+  overwrite: true
+  on:
+    tags: true
