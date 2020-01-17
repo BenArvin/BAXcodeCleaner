@@ -5,6 +5,8 @@
 
 ## Introduction
 
+[![Build Status](https://travis-ci.org/BenArvin/BAXcodeCleaner.svg?branch=master)](https://travis-ci.org/BenArvin/BAXcodeCleaner)
+
 BAXcodeCleaner is trash cleaner for Xcode. You can detect and clean trash files accurately.
 
 <div align="left">
