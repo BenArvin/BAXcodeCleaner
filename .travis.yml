@@ -21,7 +21,7 @@ script:
 deploy:
   provider: releases
   api_key: "${GH_TOKEN}"
-  file: "BAXcodeCleaner.dmg"
+  file: "./build/Release/BAXcodeCleaner.dmg"
   skip_cleanup: true
   overwrite: true
   on:
