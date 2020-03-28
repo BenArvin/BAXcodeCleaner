@@ -58,15 +58,18 @@ public class BAXCSimulatorDeviceTrashManager: BAXCTrashDataManager {
             let devicePlistPath: String? = BAXCFileUtil.assemblePath(pathItem, "device.plist")
             let deviceType: String? = BAXCPlistAnalyzer.read(path: devicePlistPath, key: "deviceType") as? String
             let runtime: String? = BAXCPlistAnalyzer.read(path: devicePlistPath, key: "runtime") as? String
-            if result == nil {
-                result = []
-            }
             var sizeItem: Int = 0
             let dataPath = BAXCSimulatorHelper._buildDataPath(pathItem)
             if dataPath != nil {
                 sizeItem = BAXCFileUtil.size(dataPath)
             }
+            if (sizeItem <= 0) {
+                continue
+            }
             fullSize = fullSize + sizeItem
+            if result == nil {
+                result = []
+            }
             result!.append((pathItem, name, BAXCSimulatorHelper._getLastPart(deviceType), BAXCSimulatorHelper._getLastPart(runtime), sizeItem))
         }
         return (result, fullSize)
@@ -105,11 +108,14 @@ public class BAXCSimulatorCacheTrashManager: BAXCTrashDataManager {
             }
             for dyldPathItem in dyldPaths! {
                 let name: String? = BAXCFileUtil.splitAbnormalPath(dyldPathItem)
+                let sizeItem: Int = BAXCFileUtil.size(dyldPathItem)
+                if (sizeItem <= 0) {
+                    continue
+                }
+                fullSize = fullSize + sizeItem
                 if result == nil {
                     result = []
                 }
-                let sizeItem: Int = BAXCFileUtil.size(dyldPathItem)
-                fullSize = fullSize + sizeItem
                 result!.append((dyldPathItem, name, BAXCSimulatorHelper._getLastSecondPart(name), sizeItem))
             }
         }

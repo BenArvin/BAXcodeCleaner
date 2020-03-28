@@ -20,11 +20,14 @@ public class BAXCDerivedDataTrashManager: BAXCTrashDataManager {
             let name: String? = BAXCFileUtil.splitAbnormalPath(pathItem)
             let infoPath: String? = BAXCFileUtil.assemblePath(pathItem, "info.plist")
             let workspacePath: String? = BAXCPlistAnalyzer.read(path: infoPath, key: "WorkspacePath") as? String
+            let sizeItem: Int = BAXCFileUtil.size(pathItem)
+            if (sizeItem <= 0) {
+                continue
+            }
+            fullSize = fullSize + sizeItem
             if result == nil {
                 result = []
             }
-            let sizeItem: Int = BAXCFileUtil.size(pathItem)
-            fullSize = fullSize + sizeItem
             result!.append((pathItem, name, workspacePath, sizeItem))
         }
         return (result, fullSize)

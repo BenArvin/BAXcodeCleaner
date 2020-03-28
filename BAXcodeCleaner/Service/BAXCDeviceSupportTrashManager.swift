@@ -18,11 +18,14 @@ public class BAXCDeviceSupportTrashManager: BAXCTrashDataManager {
         var result: [(String, String?, Int)]? = nil
         for pathItem in appPaths! {
             let name: String? = BAXCFileUtil.splitAbnormalPath(pathItem)
+            let sizeItem: Int = BAXCFileUtil.size(pathItem)
+            if (sizeItem <= 0) {
+                continue
+            }
+            fullSize = fullSize + sizeItem
             if result == nil {
                 result = []
             }
-            let sizeItem: Int = BAXCFileUtil.size(pathItem)
-            fullSize = fullSize + sizeItem
             result!.append((pathItem, name, sizeItem))
         }
         return (result, fullSize)

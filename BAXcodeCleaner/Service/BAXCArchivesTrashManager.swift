@@ -18,9 +18,6 @@ public class BAXCArchivesTrashManager: BAXCTrashDataManager {
         var result: [(String, String?, String?, Int)]? = nil
         for pathItem in appPaths! {
             let name: String? = BAXCFileUtil.splitAbnormalPath(pathItem)
-            if result == nil {
-                result = []
-            }
             var innerItems: String? = nil
             let innerPaths: [String]? = BAXCFileUtil.contentsOfDir(pathItem)
             if innerPaths != nil {
@@ -36,7 +33,13 @@ public class BAXCArchivesTrashManager: BAXCTrashDataManager {
                 }
             }
             let sizeItem: Int = BAXCFileUtil.size(pathItem)
+            if sizeItem <= 0 {
+                continue
+            }
             fullSize = fullSize + sizeItem
+            if result == nil {
+                result = []
+            }
             result!.append((pathItem, name, innerItems, sizeItem))
         }
         return (result, fullSize)

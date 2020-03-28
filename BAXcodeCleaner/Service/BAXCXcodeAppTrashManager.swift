@@ -23,11 +23,14 @@ public class BAXCXcodeAppTrashManager: BAXCTrashDataManager {
                 continue
             }
             let version: String? = BAXCPlistAnalyzer.read(path: infoPlistPath, key: "CFBundleShortVersionString") as? String
+            let sizeItem: Int = BAXCFileUtil.size(pathItem)
+            if (sizeItem <= 0) {
+                continue
+            }
+            fullSize = fullSize + sizeItem
             if result == nil {
                 result = []
             }
-            let sizeItem: Int = BAXCFileUtil.size(pathItem)
-            fullSize = fullSize + sizeItem
             result!.append((pathItem, version, sizeItem))
         }
         return (result, fullSize)
