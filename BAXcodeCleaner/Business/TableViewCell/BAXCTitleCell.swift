@@ -8,11 +8,8 @@
 
 import Cocoa
 
-public struct BAXCTitleCellConstants {
-    static let identifier: String = "BAXCTitleCell"
-}
-
 public class BAXCTitleCell: BAXCTableViewCell {
+    public static let identifier: String = "BAXCTitleCell"
     public var text: String? {
         set {
             self._titleTextField.stringValue = newValue == nil ? "" : newValue!

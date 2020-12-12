@@ -8,17 +8,13 @@
 
 import Cocoa
 
-public struct BAXCSectionTitleCellConstants {
-    static let identifier: String = "BAXCSectionTitleCell"
-}
-
 public protocol BAXCSectionTitleCellDelegate: class {
     func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell)
     func onSectionTitleCellTipsBtnSelected(cell: BAXCSectionTitleCell)
 }
 
 public class BAXCSectionTitleCell: BAXCTableViewCell {
-    
+    public static let identifier: String = "BAXCSectionTitleCell"
     public var delegate: BAXCSectionTitleCellDelegate?
     
     public var isFolded: Bool = false

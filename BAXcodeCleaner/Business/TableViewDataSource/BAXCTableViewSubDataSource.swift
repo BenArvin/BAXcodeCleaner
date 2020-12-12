@@ -30,46 +30,46 @@ public class BAXCTableViewSubDataSource {
         if row == 0 {
             if column == 0 {
                 let result: BAXCSectionTitleCell = BAXCSectionTitleCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionTitleCellConstants.identifier)
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionTitleCell.identifier)
                 result.index = row
                 result.delegate = self
                 return result
             } else if column == 2 {
                 let result: BAXCSectionSizeCell = BAXCSectionSizeCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionSizeCellConstants.identifier)
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionSizeCell.identifier)
                 result.index = row
                 return result
             } else if column == 3 {
                 let result: BAXCSectionCheckBoxCell = BAXCSectionCheckBoxCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionCheckBoxCellConstants.identifier)
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionCheckBoxCell.identifier)
                 result.index = row
                 result.delegate = self
                 return result
             } else {
                 let result: BAXCSectionBlankCell = BAXCSectionBlankCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionBlankCellConstants.identifier)
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionBlankCell.identifier)
                 result.index = row
                 return result
             }
         } else {
             if column == 0 {
                 let result: BAXCTitleCell = BAXCTitleCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCTitleCellConstants.identifier)
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCTitleCell.identifier)
                 result.index = row
                 return result
             } else if column == 1 {
                 let result: BAXCContentCell = BAXCContentCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCContentCellConstants.identifier)
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCContentCell.identifier)
                 result.index = row
                 return result
             } else if column == 2 {
                 let result: BAXCFileSizeCell = BAXCFileSizeCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCFileSizeCellConstants.identifier)
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCFileSizeCell.identifier)
                 result.index = row
                 return result
             } else if column == 3 {
                 let result: BAXCCheckBoxCell = BAXCCheckBoxCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCellConstants.identifier)
+                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCell.identifier)
                 result.index = row
                 result.delegate = self
                 return result

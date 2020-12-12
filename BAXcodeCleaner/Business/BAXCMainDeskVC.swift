@@ -131,7 +131,8 @@ extension BAXCMainDeskVC {
     }
     
     @objc private func _onManualBtnSelected(_ sender: NSButton?) {
-        let manualCleanVC: BAXCManualCleanVC = BAXCManualCleanVC.init()
+//        let manualCleanVC: BAXCManualCleanVC = BAXCManualCleanVC.init()
+        let manualCleanVC: BAXCManualCleanVC_new = BAXCManualCleanVC_new.init()
         self.navigationController!.presentViewController(manualCleanVC, animated: true, completion: nil)
     }
 }

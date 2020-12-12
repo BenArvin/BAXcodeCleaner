@@ -6,6 +6,8 @@
 //  Copyright © 2019 BenArvin. All rights reserved.
 //
 
+import Cocoa
+
 extension String {
     public func mc_sub(from: Int, to: Int) -> String? {
         if from >= to || from >= self.count {
@@ -28,5 +30,10 @@ extension String {
         } else {
             self = String.init(format: "%.1fGB", size_d / 1024.0 / 1024.0 / 1024.0)
         }
+    }
+    
+    public func mc_sizeThatFits(font: NSFont, maxWidth: CGFloat, maxHeight: CGFloat) -> CGSize {
+        let attrStr: NSAttributedString = NSAttributedString.init(string: self, attributes: [NSAttributedString.Key.font: font])
+        return attrStr.mc_sizeThatFits(maxWidth: maxWidth, maxHeight: maxHeight)
     }
 }

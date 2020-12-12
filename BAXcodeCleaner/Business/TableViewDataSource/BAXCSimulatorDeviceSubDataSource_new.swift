@@ -1,5 +1,5 @@
 //
-//  BAXCDerivedDataSubDataSource.swift
+//  BAXCSimulatorDeviceSubDataSource.swift
 //  BAXcodeCleaner
 //
 //  Created by BenArvin on 2020/1/1.
@@ -8,16 +8,16 @@
 
 import Cocoa
 
-public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
+public class BAXCSimulatorDeviceSubDataSource_new: BAXCTableViewSubDataSource_new {
     var isFolded: Bool = false
-    var derivedDataInfos: [(String, String?, String?, Int, Bool)]? = nil
+    var simulatoInfos: [(String, String?, String?, String?, Int, Bool)]? = nil
     var fullSize: Int = 0
 
     public override func numberOfRows() -> Int {
-        if self.derivedDataInfos == nil {
+        if self.simulatoInfos == nil {
             return 0
         }
-        return self.isFolded == true ? 1 : self.derivedDataInfos!.count + 1
+        return self.isFolded == true ? 1 : self.simulatoInfos!.count + 1
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -26,7 +26,7 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
                 if column == 0 {
                     let sectiontitleCell: BAXCSectionTitleCell? = cell as? BAXCSectionTitleCell
                     if sectiontitleCell != nil {
-                        sectiontitleCell!.text = "Derived Data"
+                        sectiontitleCell!.text = "Simulator Devices"
                         sectiontitleCell!.isFolded = self.isFolded
                     }
                 } else if column == 2 {
@@ -48,16 +48,16 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
                 }
             } else {
                 let realRow: Int = row - 1
-                let (_, name, targetPath, size, state) = self.derivedDataInfos![realRow]
+                let (path, name, model, version, size, state) = self.simulatoInfos![realRow]
                 if column == 0 {
                     let titleCell: BAXCTitleCell? = cell as? BAXCTitleCell
                     if titleCell != nil {
-                        titleCell!.text = name
+                        titleCell!.text = (model != nil && version != nil) ? (String.init(format: "%@(%@)", model!, version!)) : name
                     }
                 } else if column == 1 {
                     let contentCell: BAXCContentCell? = cell as? BAXCContentCell
                     if contentCell != nil {
-                        contentCell!.text = self._cellContents(for: name, targetPath: targetPath)
+                        contentCell!.text = path
                     }
                 } else if column == 2 {
                     let sizeCell: BAXCFileSizeCell? = cell as? BAXCFileSizeCell
@@ -75,46 +75,46 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func refresh() {
-        let datas: ([(String, String?, String?, Int)]?, Int) = BAXCDerivedDataTrashManager.datas() as! ([(String, String?, String?, Int)]?, Int)
-        let (derivedDatas, fullSize) = datas
-        if derivedDatas == nil {
-            self.derivedDataInfos = nil
+        let datas: ([(String, String?, String?, String?, Int)]?, Int) = BAXCSimulatorDeviceTrashManager.datas() as! ([(String, String?, String?, String?, Int)]?, Int)
+        let (devices, fullSize) = datas
+        if devices == nil {
+            self.simulatoInfos = nil
         } else {
-            var newAppInfos: [(String, String?, String?, Int, Bool)] = []
+            var newAppInfos: [(String, String?, String?, String?, Int, Bool)] = []
             self.fullSize = fullSize
-            for (path, name, targetPath, size) in derivedDatas! {
+            for (path, name, model, version, size) in devices! {
                 if size == 0 {
                     continue
                 }
                 var finded: Bool = false
-                if self.derivedDataInfos != nil {
-                    for (oldPath, _, _, _, oldState) in self.derivedDataInfos! {
+                if self.simulatoInfos != nil {
+                    for (oldPath, _, _, _, _, oldState) in self.simulatoInfos! {
                         if oldPath == path {
-                            newAppInfos.append((path, name, targetPath, size, oldState))
+                            newAppInfos.append((path, name, model, version, size, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((path, name, targetPath, size, false))
+                    newAppInfos.append((path, name, model, version, size, false))
                 }
             }
             newAppInfos.sort { (arg0, arg1) -> Bool in
-                let (_, _, _, size0, _) = arg0
-                let (_, _, _, size1, _) = arg1
+                let (_, _, _, _, size0, _) = arg0
+                let (_, _, _, _, size1, _) = arg1
                 return size0 > size1
             }
-            self.derivedDataInfos = newAppInfos
+            self.simulatoInfos = newAppInfos
         }
     }
     
     public override func isAllChecked() -> Bool {
-        if self.derivedDataInfos == nil {
+        if self.simulatoInfos == nil {
             return true
         }
         var allSelected: Bool = true
-        for (_, _, _, _, state) in self.derivedDataInfos! {
+        for (_, _, _, _, _, state) in self.simulatoInfos! {
             if state == false {
                 allSelected = false
             }
@@ -123,11 +123,11 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func isNoneChecked() -> Bool {
-        if self.derivedDataInfos == nil {
+        if self.simulatoInfos == nil {
             return true
         }
         var noneSelected: Bool = true
-        for (_, _, _, _, state) in self.derivedDataInfos! {
+        for (_, _, _, _, _, state) in self.simulatoInfos! {
             if state == true {
                 noneSelected = false
             }
@@ -144,36 +144,31 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func onCheckEventForRow(_ row: Int) {
-        let realIndex = row - 1
-        if realIndex < 0 || self.derivedDataInfos == nil || realIndex >= self.derivedDataInfos!.count {
+        if row < 0 || self.simulatoInfos == nil || row >= self.simulatoInfos!.count {
             return
         }
-        let (path, name, targetPath, size, state) = self.derivedDataInfos![realIndex]
-        self.derivedDataInfos![realIndex] = (path, name, targetPath, size, !state)
-    }
-    
-    public override func onFoldEvent() {
-        self.isFolded = !self.isFolded
+        let (path, name, model, version, size, state) = self.simulatoInfos![row]
+        self.simulatoInfos![row] = (path, name, model, version, size, !state)
     }
     
     public override func checkAll() {
-        if self.derivedDataInfos == nil {
+        if self.simulatoInfos == nil {
             return
         }
         var index: Int = 0
-        for (path, name, targetPath, size, _) in self.derivedDataInfos! {
-            self.derivedDataInfos![index] = (path, name, targetPath, size, true)
+        for (path, name, model, version, size, _) in self.simulatoInfos! {
+            self.simulatoInfos![index] = (path, name, model, version, size, true)
             index = index + 1
         }
     }
     
     public override func uncheckAll() {
-        if self.derivedDataInfos == nil {
+        if self.simulatoInfos == nil {
             return
         }
         var index: Int = 0
-        for (path, name, targetPath, size, _) in self.derivedDataInfos! {
-            self.derivedDataInfos![index] = (path, name, targetPath, size, false)
+        for (path, name, model, version, size, _) in self.simulatoInfos! {
+            self.simulatoInfos![index] = (path, name, model, version, size, false)
             index = index + 1
         }
     }
@@ -183,39 +178,39 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func clean() {
-        if self.derivedDataInfos == nil {
+        if self.simulatoInfos == nil {
             return
         }
-        for (path, _, _, _, state) in self.derivedDataInfos! {
+        for (path, _, _, _, _, state) in self.simulatoInfos! {
             if state == true {
-                BAXCDerivedDataTrashManager.clean(path)
+                BAXCSimulatorDeviceTrashManager.clean(path)
             }
         }
     }
     
     public override func contentForCopy(at row: Int) -> String? {
-        if row <= 0 || self.derivedDataInfos == nil || row > self.derivedDataInfos!.count {
+        if row <= 0 || self.simulatoInfos == nil || row > self.simulatoInfos!.count {
             return nil
         }
-        let (path, name, _, size, _) = self.derivedDataInfos![row - 1]
+        let (path, name, _, _, size, _) = self.simulatoInfos![row - 1]
         return String.init(format: "%@  %@  %@", name ?? "", path, String.init(fromSize: size))
     }
     
     public override func pathForOpen(at row: Int) -> String? {
-        if row <= 0 || self.derivedDataInfos == nil || row > self.derivedDataInfos!.count {
+        if row <= 0 || self.simulatoInfos == nil || row > self.simulatoInfos!.count {
             return nil
         }
-        let (path, _, _, _, _) = self.derivedDataInfos![row - 1]
+        let (path, _, _, _, _, _) = self.simulatoInfos![row - 1]
         return path
     }
     
     public override func size() -> (Int, Int) {
-        if self.derivedDataInfos == nil {
+        if self.simulatoInfos == nil {
             return (0, 0)
         }
         var total = 0
         var selected = 0
-        for (_, _, _, size, state) in self.derivedDataInfos! {
+        for (_, _, _, _, size, state) in self.simulatoInfos! {
             total = total + size
             if state == true {
                 selected = selected + size
@@ -225,21 +220,15 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func tipsForHelp() -> (String?, String?) {
-        return ("Derived Data", "Temporary data for your projects, it will regenerated when build project next time, but it also means your next build will be a long journey.")
+        return ("Simulator Devices", "Simulator devices for Xcode, you can clean it if you don't need it.")
     }
 }
 
-extension BAXCDerivedDataSubDataSource {
-    private func _cellContents(for name: String?, targetPath: String?) -> String {
-        if targetPath != nil && !targetPath!.isEmpty {
-            let (isExisted, _) = BAXCFileUtil.isPathExisted(targetPath!)
-            return String.init(format: "%@%@", isExisted == true ? "" : "⚠️", targetPath!)
-        } else {
-            if name != nil && name! == "ModuleCache.noindex" {
-                return "Precompiled module files"
-            } else {
-                return "⚠️"
-            }
+extension BAXCSimulatorDeviceSubDataSource {
+    private func _buildDataPath(_ path: String?) -> String? {
+        if path == nil {
+            return nil
         }
+        return BAXCFileUtil.assemblePath(path!, "data")
     }
 }

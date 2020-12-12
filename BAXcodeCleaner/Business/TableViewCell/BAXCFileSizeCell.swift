@@ -8,11 +8,8 @@
 
 import Cocoa
 
-public struct BAXCFileSizeCellConstants {
-    static let identifier: String = "BAXCFileSizeCell"
-}
-
 public class BAXCFileSizeCell: BAXCTableViewCell {
+    public static let identifier: String = "BAXCFileSizeCell"
     private var _size: Int = 0
     public var size: Int {
         set {

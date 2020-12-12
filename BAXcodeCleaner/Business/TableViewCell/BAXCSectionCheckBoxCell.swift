@@ -8,15 +8,12 @@
 
 import Cocoa
 
-public struct BAXCSectionCheckBoxCellConstants {
-    static let identifier: String = "BAXCSectionCheckBoxCell"
-}
-
 public protocol BAXCSectionCheckBoxCellDelegate: class {
     func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCell)
 }
 
 public class BAXCSectionCheckBoxCell: BAXCTableViewCell {
+    public static let identifier: String = "BAXCSectionCheckBoxCell"
     public var delegate: BAXCSectionCheckBoxCellDelegate?
     
     public var state: BAXCTPCheckBox.State {

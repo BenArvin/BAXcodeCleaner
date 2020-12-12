@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E408B84125834FFA00AB84CD /* BAScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E408B84025834FFA00AB84CD /* BAScrollView.swift */; };
+		E408B84A258373BB00AB84CD /* BAXCNestedTableCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E408B849258373BB00AB84CD /* BAXCNestedTableCellData.swift */; };
+		E408B8552583759500AB84CD /* BAXCNestedTableCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E408B8542583759500AB84CD /* BAXCNestedTableCellDelegate.swift */; };
 		E4110F2323BC399A00C56137 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F2223BC399A00C56137 /* Bundle+Extension.swift */; };
 		E4110F2523BC441400C56137 /* BAXCDerivedDataSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F2423BC441400C56137 /* BAXCDerivedDataSubDataSource.swift */; };
 		E4110F2723BC44E900C56137 /* BAXCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F2623BC44E900C56137 /* BAXCTableViewCell.swift */; };
@@ -17,6 +20,14 @@
 		E4110F3123BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F3023BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift */; };
 		E4110F3323BC7CD500C56137 /* BAXCSimulatorDeviceSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F3223BC7CD500C56137 /* BAXCSimulatorDeviceSubDataSource.swift */; };
 		E4110F3523BC7F4200C56137 /* BAXCTableViewSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F3423BC7F4200C56137 /* BAXCTableViewSubDataSource.swift */; };
+		E4349DFB2584663B00BC7203 /* BAXCTableViewDataSource_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349DFA2584663B00BC7203 /* BAXCTableViewDataSource_new.swift */; };
+		E4349E0A258468A900BC7203 /* BAXCDerivedDataSubDataSource_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E02258468A800BC7203 /* BAXCDerivedDataSubDataSource_new.swift */; };
+		E4349E0C258468A900BC7203 /* BAXCDeviceSupportSubDataSource_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E04258468A800BC7203 /* BAXCDeviceSupportSubDataSource_new.swift */; };
+		E4349E0D258468A900BC7203 /* BAXCTableViewSubDataSource_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E05258468A800BC7203 /* BAXCTableViewSubDataSource_new.swift */; };
+		E4349E0E258468A900BC7203 /* BAXCSimulatorDeviceSubDataSource_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E06258468A800BC7203 /* BAXCSimulatorDeviceSubDataSource_new.swift */; };
+		E4349E0F258468A900BC7203 /* BAXCArchivesSubDataSource_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E07258468A800BC7203 /* BAXCArchivesSubDataSource_new.swift */; };
+		E4349E10258468A900BC7203 /* BAXCApplicationsSubDataSource_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E08258468A800BC7203 /* BAXCApplicationsSubDataSource_new.swift */; };
+		E4349E11258468A900BC7203 /* BAXCSimulatorCacheSubDataSource_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E09258468A900BC7203 /* BAXCSimulatorCacheSubDataSource_new.swift */; };
 		E43DB90923C35BE60021417D /* BAXCSectionSizeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43DB90823C35BE60021417D /* BAXCSectionSizeCell.swift */; };
 		E43DB90D23C5F99D0021417D /* BAXCSimulatorCacheSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43DB90C23C5F99D0021417D /* BAXCSimulatorCacheSubDataSource.swift */; };
 		E43DB90F23C6CC220021417D /* BAXCTPCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43DB90E23C6CC220021417D /* BAXCTPCheckBox.swift */; };
@@ -42,9 +53,11 @@
 		E49FEA7123BB2F6E004F6306 /* BAXCTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49FEA7023BB2F6E004F6306 /* BAXCTableViewDataSource.swift */; };
 		E49FEA8123BB4EF5004F6306 /* BAXCSelfIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49FEA8023BB4EF5004F6306 /* BAXCSelfIntroduction.swift */; };
 		E4AA40BB23BE087E005CA901 /* BAXCFileSizeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AA40BA23BE087E005CA901 /* BAXCFileSizeCell.swift */; };
+		E4B2DF372583189200A63C93 /* BAXCXcodeInnerPlatformsTrashManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B2DF362583189200A63C93 /* BAXCXcodeInnerPlatformsTrashManager.swift */; };
 		E4BEC9E423B9A40C00C785A5 /* BAXCXcodeAppTrashManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BEC9E323B9A40C00C785A5 /* BAXCXcodeAppTrashManager.swift */; };
 		E4BEC9E623B9A4B000C785A5 /* BAXCPlistAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BEC9E523B9A4B000C785A5 /* BAXCPlistAnalyzer.swift */; };
 		E4BECA1623BA027400C785A5 /* BAXCProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BECA1523BA027400C785A5 /* BAXCProgressIndicator.swift */; };
+		E4D60BB52584CCFB00B00041 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D60BB42584CCFB00B00041 /* NSAttributedString+Extension.swift */; };
 		E4EFF0C623CC73A400291D81 /* BANavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0C523CC73A400291D81 /* BANavigationController.swift */; };
 		E4EFF0CA23CD944900291D81 /* BAXCMainDeskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0C923CD944900291D81 /* BAXCMainDeskVC.swift */; };
 		E4EFF0D023CDB1B300291D81 /* BAXCTrashDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0CF23CDB1B300291D81 /* BAXCTrashDataManager.swift */; };
@@ -56,6 +69,8 @@
 		E4EFF0DF23CF397100291D81 /* BAVersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0DE23CF397100291D81 /* BAVersionCheck.swift */; };
 		E4EFF0E123D04B6400291D81 /* BACheckUpdateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0E023D04B6400291D81 /* BACheckUpdateVC.swift */; };
 		E4EFF0E323D06F5000291D81 /* BAXCDefines.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFF0E223D06F5000291D81 /* BAXCDefines.swift */; };
+		E4FE080225831BA4004A6620 /* BAXCManualCleanVC_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FE080125831BA4004A6620 /* BAXCManualCleanVC_new.swift */; };
+		E4FE080725831C93004A6620 /* BAXCNestedTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FE080625831C93004A6620 /* BAXCNestedTableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +91,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E408B84025834FFA00AB84CD /* BAScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAScrollView.swift; sourceTree = "<group>"; };
+		E408B849258373BB00AB84CD /* BAXCNestedTableCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCNestedTableCellData.swift; sourceTree = "<group>"; };
+		E408B8542583759500AB84CD /* BAXCNestedTableCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCNestedTableCellDelegate.swift; sourceTree = "<group>"; };
 		E4110F2223BC399A00C56137 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		E4110F2423BC441400C56137 /* BAXCDerivedDataSubDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCDerivedDataSubDataSource.swift; sourceTree = "<group>"; };
 		E4110F2623BC44E900C56137 /* BAXCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTableViewCell.swift; sourceTree = "<group>"; };
@@ -86,6 +104,14 @@
 		E4110F3023BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCSimulatorTrashManager.swift; sourceTree = "<group>"; };
 		E4110F3223BC7CD500C56137 /* BAXCSimulatorDeviceSubDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCSimulatorDeviceSubDataSource.swift; sourceTree = "<group>"; };
 		E4110F3423BC7F4200C56137 /* BAXCTableViewSubDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTableViewSubDataSource.swift; sourceTree = "<group>"; };
+		E4349DFA2584663B00BC7203 /* BAXCTableViewDataSource_new.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCTableViewDataSource_new.swift; sourceTree = "<group>"; };
+		E4349E02258468A800BC7203 /* BAXCDerivedDataSubDataSource_new.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCDerivedDataSubDataSource_new.swift; sourceTree = "<group>"; };
+		E4349E04258468A800BC7203 /* BAXCDeviceSupportSubDataSource_new.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCDeviceSupportSubDataSource_new.swift; sourceTree = "<group>"; };
+		E4349E05258468A800BC7203 /* BAXCTableViewSubDataSource_new.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCTableViewSubDataSource_new.swift; sourceTree = "<group>"; };
+		E4349E06258468A800BC7203 /* BAXCSimulatorDeviceSubDataSource_new.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCSimulatorDeviceSubDataSource_new.swift; sourceTree = "<group>"; };
+		E4349E07258468A800BC7203 /* BAXCArchivesSubDataSource_new.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCArchivesSubDataSource_new.swift; sourceTree = "<group>"; };
+		E4349E08258468A800BC7203 /* BAXCApplicationsSubDataSource_new.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCApplicationsSubDataSource_new.swift; sourceTree = "<group>"; };
+		E4349E09258468A900BC7203 /* BAXCSimulatorCacheSubDataSource_new.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCSimulatorCacheSubDataSource_new.swift; sourceTree = "<group>"; };
 		E43DB90823C35BE60021417D /* BAXCSectionSizeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCSectionSizeCell.swift; sourceTree = "<group>"; };
 		E43DB90C23C5F99D0021417D /* BAXCSimulatorCacheSubDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCSimulatorCacheSubDataSource.swift; sourceTree = "<group>"; };
 		E43DB90E23C6CC220021417D /* BAXCTPCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTPCheckBox.swift; sourceTree = "<group>"; };
@@ -118,9 +144,11 @@
 		E49FEA7023BB2F6E004F6306 /* BAXCTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTableViewDataSource.swift; sourceTree = "<group>"; };
 		E49FEA8023BB4EF5004F6306 /* BAXCSelfIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCSelfIntroduction.swift; sourceTree = "<group>"; };
 		E4AA40BA23BE087E005CA901 /* BAXCFileSizeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCFileSizeCell.swift; sourceTree = "<group>"; };
+		E4B2DF362583189200A63C93 /* BAXCXcodeInnerPlatformsTrashManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCXcodeInnerPlatformsTrashManager.swift; sourceTree = "<group>"; };
 		E4BEC9E323B9A40C00C785A5 /* BAXCXcodeAppTrashManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCXcodeAppTrashManager.swift; sourceTree = "<group>"; };
 		E4BEC9E523B9A4B000C785A5 /* BAXCPlistAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCPlistAnalyzer.swift; sourceTree = "<group>"; };
 		E4BECA1523BA027400C785A5 /* BAXCProgressIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCProgressIndicator.swift; sourceTree = "<group>"; };
+		E4D60BB42584CCFB00B00041 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		E4EFF0C523CC73A400291D81 /* BANavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BANavigationController.swift; sourceTree = "<group>"; };
 		E4EFF0C923CD944900291D81 /* BAXCMainDeskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCMainDeskVC.swift; sourceTree = "<group>"; };
 		E4EFF0CF23CDB1B300291D81 /* BAXCTrashDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTrashDataManager.swift; sourceTree = "<group>"; };
@@ -132,6 +160,8 @@
 		E4EFF0DE23CF397100291D81 /* BAVersionCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAVersionCheck.swift; sourceTree = "<group>"; };
 		E4EFF0E023D04B6400291D81 /* BACheckUpdateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACheckUpdateVC.swift; sourceTree = "<group>"; };
 		E4EFF0E223D06F5000291D81 /* BAXCDefines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCDefines.swift; sourceTree = "<group>"; };
+		E4FE080125831BA4004A6620 /* BAXCManualCleanVC_new.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCManualCleanVC_new.swift; sourceTree = "<group>"; };
+		E4FE080625831C93004A6620 /* BAXCNestedTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCNestedTableCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,10 +189,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E408B8482583739E00AB84CD /* NestedTableCell */ = {
+			isa = PBXGroup;
+			children = (
+				E408B849258373BB00AB84CD /* BAXCNestedTableCellData.swift */,
+				E408B8542583759500AB84CD /* BAXCNestedTableCellDelegate.swift */,
+				E4FE080625831C93004A6620 /* BAXCNestedTableCell.swift */,
+			);
+			path = NestedTableCell;
+			sourceTree = "<group>";
+		};
 		E487977E23BA1C2300087258 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
 				E4110F2623BC44E900C56137 /* BAXCTableViewCell.swift */,
+				E408B8482583739E00AB84CD /* NestedTableCell */,
 				E487977423BA1BD800087258 /* BAXCSectionTitleCell.swift */,
 				E487977C23BA1C1E00087258 /* BAXCSectionBlankCell.swift */,
 				E43DB90823C35BE60021417D /* BAXCSectionSizeCell.swift */,
@@ -233,6 +274,7 @@
 			children = (
 				E4EFF0C923CD944900291D81 /* BAXCMainDeskVC.swift */,
 				E493A94C23B3056E00F8FE78 /* BAXCManualCleanVC.swift */,
+				E4FE080125831BA4004A6620 /* BAXCManualCleanVC_new.swift */,
 				E49FEA6D23BB2D66004F6306 /* TableViewDataSource */,
 				E487977E23BA1C2300087258 /* TableViewCell */,
 				E49FEA8023BB4EF5004F6306 /* BAXCSelfIntroduction.swift */,
@@ -250,6 +292,7 @@
 				E4110F2C23BC76B300C56137 /* BAXCArchivesTrashManager.swift */,
 				E4110F2823BC73DA00C56137 /* BAXCDeviceSupportTrashManager.swift */,
 				E4110F3023BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift */,
+				E4B2DF362583189200A63C93 /* BAXCXcodeInnerPlatformsTrashManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -267,6 +310,7 @@
 				E43DB90E23C6CC220021417D /* BAXCTPCheckBox.swift */,
 				E456783123CC1A0E003395EA /* BAXCTableView.swift */,
 				E4EFF0C523CC73A400291D81 /* BANavigationController.swift */,
+				E408B84025834FFA00AB84CD /* BAScrollView.swift */,
 				E4EFF0DB23CF390000291D81 /* BAUpdateManager */,
 				E4EFF0D523CEF78A00291D81 /* BABugReporter */,
 			);
@@ -277,6 +321,7 @@
 			isa = PBXGroup;
 			children = (
 				E497EE3723B75E5500D9212E /* String+Extension.swift */,
+				E4D60BB42584CCFB00B00041 /* NSAttributedString+Extension.swift */,
 				E4110F2223BC399A00C56137 /* Bundle+Extension.swift */,
 			);
 			path = Extensions;
@@ -285,6 +330,14 @@
 		E49FEA6D23BB2D66004F6306 /* TableViewDataSource */ = {
 			isa = PBXGroup;
 			children = (
+				E4349DFA2584663B00BC7203 /* BAXCTableViewDataSource_new.swift */,
+				E4349E05258468A800BC7203 /* BAXCTableViewSubDataSource_new.swift */,
+				E4349E09258468A900BC7203 /* BAXCSimulatorCacheSubDataSource_new.swift */,
+				E4349E07258468A800BC7203 /* BAXCArchivesSubDataSource_new.swift */,
+				E4349E02258468A800BC7203 /* BAXCDerivedDataSubDataSource_new.swift */,
+				E4349E08258468A800BC7203 /* BAXCApplicationsSubDataSource_new.swift */,
+				E4349E04258468A800BC7203 /* BAXCDeviceSupportSubDataSource_new.swift */,
+				E4349E06258468A800BC7203 /* BAXCSimulatorDeviceSubDataSource_new.swift */,
 				E49FEA7023BB2F6E004F6306 /* BAXCTableViewDataSource.swift */,
 				E4110F3423BC7F4200C56137 /* BAXCTableViewSubDataSource.swift */,
 				E49FEA6E23BB2EF4004F6306 /* BAXCApplicationsSubDataSource.swift */,
@@ -449,47 +502,62 @@
 				E493A94D23B3056E00F8FE78 /* BAXCManualCleanVC.swift in Sources */,
 				E43DB90923C35BE60021417D /* BAXCSectionSizeCell.swift in Sources */,
 				E4110F2323BC399A00C56137 /* Bundle+Extension.swift in Sources */,
+				E4B2DF372583189200A63C93 /* BAXCXcodeInnerPlatformsTrashManager.swift in Sources */,
+				E4FE080725831C93004A6620 /* BAXCNestedTableCell.swift in Sources */,
 				E4110F3123BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift in Sources */,
+				E4349E0D258468A900BC7203 /* BAXCTableViewSubDataSource_new.swift in Sources */,
 				E4BEC9E423B9A40C00C785A5 /* BAXCXcodeAppTrashManager.swift in Sources */,
 				E49FEA6F23BB2EF4004F6306 /* BAXCApplicationsSubDataSource.swift in Sources */,
+				E408B8552583759500AB84CD /* BAXCNestedTableCellDelegate.swift in Sources */,
 				E487978023BA201300087258 /* BAXCBlockView.swift in Sources */,
 				E487977723BA1BEC00087258 /* BAXCCheckBoxCell.swift in Sources */,
 				E4EFF0E323D06F5000291D81 /* BAXCDefines.swift in Sources */,
 				E487977923BA1BF900087258 /* BAXCTitleCell.swift in Sources */,
 				E49FEA7123BB2F6E004F6306 /* BAXCTableViewDataSource.swift in Sources */,
+				E4349E0A258468A900BC7203 /* BAXCDerivedDataSubDataSource_new.swift in Sources */,
 				E487977523BA1BD800087258 /* BAXCSectionTitleCell.swift in Sources */,
+				E4349E10258468A900BC7203 /* BAXCApplicationsSubDataSource_new.swift in Sources */,
 				E4EFF0C623CC73A400291D81 /* BANavigationController.swift in Sources */,
 				E4EFF0DD23CF392A00291D81 /* BAUpdateManager.swift in Sources */,
 				E456783223CC1A0E003395EA /* BAXCTableView.swift in Sources */,
 				E497EE3823B75E5500D9212E /* String+Extension.swift in Sources */,
+				E4349E0C258468A900BC7203 /* BAXCDeviceSupportSubDataSource_new.swift in Sources */,
 				E4110F2723BC44E900C56137 /* BAXCTableViewCell.swift in Sources */,
 				E497EE2F23B74F7900D9212E /* BAXCFileUtil.swift in Sources */,
 				E4EFF0D023CDB1B300291D81 /* BAXCTrashDataManager.swift in Sources */,
+				E4349E0F258468A900BC7203 /* BAXCArchivesSubDataSource_new.swift in Sources */,
 				E493A94B23B3056E00F8FE78 /* AppDelegate.swift in Sources */,
 				E4110F3523BC7F4200C56137 /* BAXCTableViewSubDataSource.swift in Sources */,
 				E4AA40BB23BE087E005CA901 /* BAXCFileSizeCell.swift in Sources */,
 				E4EFF0CA23CD944900291D81 /* BAXCMainDeskVC.swift in Sources */,
 				E4110F2F23BC787C00C56137 /* BAXCArchivesSubDataSource.swift in Sources */,
 				E497EE2723B7365300D9212E /* main.swift in Sources */,
+				E4349DFB2584663B00BC7203 /* BAXCTableViewDataSource_new.swift in Sources */,
 				E4110F3323BC7CD500C56137 /* BAXCSimulatorDeviceSubDataSource.swift in Sources */,
 				E43DB90F23C6CC220021417D /* BAXCTPCheckBox.swift in Sources */,
 				E4110F2D23BC76B400C56137 /* BAXCArchivesTrashManager.swift in Sources */,
 				E43DB91123C70B4B0021417D /* BAXCSectionCheckBoxCell.swift in Sources */,
+				E4349E0E258468A900BC7203 /* BAXCSimulatorDeviceSubDataSource_new.swift in Sources */,
 				E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */,
 				E43DB90D23C5F99D0021417D /* BAXCSimulatorCacheSubDataSource.swift in Sources */,
 				E4EFF0DA23CEFADD00291D81 /* BABugReporterVC.swift in Sources */,
 				E4EFF0E123D04B6400291D81 /* BACheckUpdateVC.swift in Sources */,
+				E4D60BB52584CCFB00B00041 /* NSAttributedString+Extension.swift in Sources */,
 				E4110F2923BC73DA00C56137 /* BAXCDeviceSupportTrashManager.swift in Sources */,
 				E49FEA8123BB4EF5004F6306 /* BAXCSelfIntroduction.swift in Sources */,
 				E4EFF0D423CEBB5D00291D81 /* BABugReporter.swift in Sources */,
+				E408B84125834FFA00AB84CD /* BAScrollView.swift in Sources */,
 				E4110F2523BC441400C56137 /* BAXCDerivedDataSubDataSource.swift in Sources */,
 				E487977B23BA1C0700087258 /* BAXCContentCell.swift in Sources */,
+				E4FE080225831BA4004A6620 /* BAXCManualCleanVC_new.swift in Sources */,
 				E4EFF0D223CDBE3100291D81 /* BAXCAutoDismissAlert.swift in Sources */,
 				E4BEC9E623B9A4B000C785A5 /* BAXCPlistAnalyzer.swift in Sources */,
+				E408B84A258373BB00AB84CD /* BAXCNestedTableCellData.swift in Sources */,
 				E4BECA1623BA027400C785A5 /* BAXCProgressIndicator.swift in Sources */,
 				E497EE3123B74FEF00D9212E /* BAXCDerivedDataTrashManager.swift in Sources */,
 				E4EFF0D823CEF7A500291D81 /* BACrashLogAnalyzer.swift in Sources */,
 				E4110F2B23BC747300C56137 /* BAXCDeviceSupportSubDataSource.swift in Sources */,
+				E4349E11258468A900BC7203 /* BAXCSimulatorCacheSubDataSource_new.swift in Sources */,
 				E4EFF0DF23CF397100291D81 /* BAVersionCheck.swift in Sources */,
 				E487977D23BA1C1E00087258 /* BAXCSectionBlankCell.swift in Sources */,
 			);

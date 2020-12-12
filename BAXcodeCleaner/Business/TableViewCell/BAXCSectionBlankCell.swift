@@ -8,11 +8,8 @@
 
 import Cocoa
 
-public struct BAXCSectionBlankCellConstants {
-    static let identifier: String = "BAXCSectionBlankCell"
-}
-
 public class BAXCSectionBlankCell: BAXCTableViewCell {
+    public static let identifier: String = "BAXCSectionBlankCell"
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         self.wantsLayer = true
