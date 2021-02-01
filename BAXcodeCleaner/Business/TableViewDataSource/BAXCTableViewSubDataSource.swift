@@ -8,74 +8,78 @@
 
 import Cocoa
 
-public class BAXCTableViewSubDataSource {
-    var onRowCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
-    var onSectionCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
-    var onFoldBtnSelected: ((_: NSTableCellView) -> ())? = nil
-    var onTipsBtnSelected: ((_: NSTableCellView) -> ())? = nil
+public class BAXCTableViewSubDataSource: NSObject {
+    private var _columnWidth: [CGFloat] = []
+    
+    public var columnEverSetted: Bool = false
+    public var onRowCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    public var onSectionCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    public var onFoldBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    public var onTipsBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    
+    public override init() {
+        super.init()
+        for _ in 0..<self.numberOfColumns() {
+            _columnWidth.append(0)
+        }
+    }
+    
+    public func totalHeight() -> CGFloat {
+        var result: CGFloat = BAXCNestedTableCell.minHeight()
+        for row in 0..<self.numberOfRows() {
+            result = result + self.height(for: row) + 1 // 1px for divid line
+        }
+        return result < 200 ? 200 : result
+    }
+    
+    public func title() -> String {
+        return "Unknown"
+    }
+    
+    public func description() -> String {
+        return "Unknown"
+    }
 
     public func numberOfRows() -> Int {
         return 0
     }
     
-    public func height(for row: Int) -> CGFloat {
-        if row == 0 {
-            return 55
-        } else {
-            return 20
-        }
+    public func numberOfColumns() -> Int {
+        return 0
     }
     
-    public func cell(for row: Int, column: Int) -> NSTableCellView? {
-        if row == 0 {
-            if column == 0 {
-                let result: BAXCSectionTitleCell = BAXCSectionTitleCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionTitleCell.identifier)
-                result.index = row
-                result.delegate = self
-                return result
-            } else if column == 2 {
-                let result: BAXCSectionSizeCell = BAXCSectionSizeCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionSizeCell.identifier)
-                result.index = row
-                return result
-            } else if column == 3 {
-                let result: BAXCSectionCheckBoxCell = BAXCSectionCheckBoxCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionCheckBoxCell.identifier)
-                result.index = row
-                result.delegate = self
-                return result
-            } else {
-                let result: BAXCSectionBlankCell = BAXCSectionBlankCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCSectionBlankCell.identifier)
-                result.index = row
-                return result
-            }
-        } else {
-            if column == 0 {
-                let result: BAXCTitleCell = BAXCTitleCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCTitleCell.identifier)
-                result.index = row
-                return result
-            } else if column == 1 {
-                let result: BAXCContentCell = BAXCContentCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCContentCell.identifier)
-                result.index = row
-                return result
-            } else if column == 2 {
-                let result: BAXCFileSizeCell = BAXCFileSizeCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCFileSizeCell.identifier)
-                result.index = row
-                return result
-            } else if column == 3 {
-                let result: BAXCCheckBoxCell = BAXCCheckBoxCell.init()
-                result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCell.identifier)
-                result.index = row
-                result.delegate = self
-                return result
-            }
-        }
-        return nil
+    public func titleFor(column: Int) -> String {
+        return " "
+    }
+    
+    public func minWidthFor(column: Int) -> CGFloat {
+        return 30
+    }
+    
+    public func maxWidthFor(column: Int) -> CGFloat {
+        return CGFloat.greatestFiniteMagnitude
+    }
+    
+    public func defaultWidthFor(column: Int, totalWidth: CGFloat) -> CGFloat {
+        return 0.0
+    }
+    
+    public func widthFor(column: Int) -> CGFloat {
+        return self._columnWidth[column]
+    }
+    
+    public func update(width: CGFloat, for column: Int) {
+        self._columnWidth[column] = width
+    }
+    
+    public func height(for row: Int) -> CGFloat {
+        return 20
+    }
+    
+    public func cell(for row: Int, column: Int, delegate: Any) -> NSTableCellView? {
+        let result: NSTableCellView = NSTableCellView.init()
+        result.identifier = NSUserInterfaceItemIdentifier.init("NSTableCellView")
+        return result
     }
     
     public func setContent(for cell: NSTableCellView, row: Int, column: Int) {
@@ -96,9 +100,6 @@ public class BAXCTableViewSubDataSource {
     }
     
     public func onCheckEventForRow(_ row: Int) {
-    }
-    
-    public func onFoldEvent() {
     }
     
     public func checkAll() {

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-public protocol BAXCTableViewDataSourceProtocol: class {
+public protocol BAXCTableViewDataSourceProtocol_new: class {
     func onDatasChanged()
     func onRowCheckBtnSelected(cell: NSTableCellView)
     func onSectionCheckBtnSelected(cell: NSTableCellView)
@@ -24,16 +24,16 @@ public class BAXCTableViewDataSource {
         case All = 2
     }
     
-    public var delegate: BAXCTableViewDataSourceProtocol?
+    public var delegate: BAXCTableViewDataSourceProtocol_new?
     
     private lazy var _subDS: [BAXCTableViewSubDataSource] = {
-//        let result: [BAXCTableViewSubDataSource] = [BAXCDerivedDataSubDataSource(),
-//                                                    BAXCArchivesSubDataSource(),
-//                                                    BAXCDeviceSupportSubDataSource(),
-//                                                    BAXCSimulatorDeviceSubDataSource(),
-//                                                    BAXCSimulatorCacheSubDataSource(),
-//                                                    BAXCApplicationsSubDataSource()]
-        let result: [BAXCTableViewSubDataSource] = [BAXCSimulatorCacheSubDataSource()]
+        let result: [BAXCTableViewSubDataSource] = [BAXCDerivedDataSubDataSource(),
+                                                    BAXCArchivesSubDataSource(),
+                                                    BAXCDeviceSupportSubDataSource(),
+                                                    BAXCSimulatorDeviceSubDataSource(),
+                                                    BAXCSimulatorCacheSubDataSource(),
+                                                    BAXCApplicationsSubDataSource()]
+//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(), BAXCSimulatorDeviceSubDataSource()]
         for subDSItem in result {
             subDSItem.onRowCheckBtnSelected = self._onSubDSRowCheckBtnSelected
             subDSItem.onSectionCheckBtnSelected = self._onSubDSSectionCheckBtnSelected
@@ -49,41 +49,27 @@ public class BAXCTableViewDataSource {
 
 // MARK: - public methods
 extension BAXCTableViewDataSource {
-    public func numberOfRows() -> Int {
-        var result: Int = 0
-        for subDSItem in self._subDS {
-            result = result + subDSItem.numberOfRows()
-        }
+    public func numberOfKinds() -> Int {
+        return self._subDS.count
+    }
+    
+//    public func numberOfRows(in kind: Int) -> Int {
+//        let item = self._subDS[kind]
+//        return item.numberOfRows()
+//    }
+    
+    public func height(for kind: Int) -> CGFloat {
+        return 20
+    }
+    
+    public func createKindCell(for kind: Int) -> NSTableCellView {
+        let result: BAXCNestedTableCell = BAXCNestedTableCell.init()
+        result.identifier = NSUserInterfaceItemIdentifier.init(BAXCNestedTableCell.identifier)
         return result
     }
     
-    public func height(for row: Int) -> CGFloat {
-        let (subDS, realRow) = self._subDataSource(for: row)
-        if subDS != nil {
-            return subDS!.height(for: realRow)
-        } else {
-            return 20
-        }
-    }
-    
-    public func cell(for row: Int, column: Int) -> NSTableCellView {
-        let (subDS, realRow) = self._subDataSource(for: row)
-        if subDS != nil {
-            let result: NSTableCellView? = subDS!.cell(for: realRow, column: column)
-            if result != nil {
-                return result!
-            }
-        }
-        let result: NSTableCellView = NSTableCellView.init()
-        result.identifier = NSUserInterfaceItemIdentifier.init("NSTableCellView")
-        return result
-    }
-    
-    public func setContent(for cell: NSTableCellView, row: Int, column: Int) {
-        let (subDS, realRow) = self._subDataSource(for: row)
-        if subDS != nil {
-            subDS!.setContent(for: cell, row: realRow, column: column)
-        }
+    public func dataSourceForkind(_ kind: Int) -> BAXCTableViewSubDataSource {
+        return self._subDS[kind]
     }
     
     public func refresh(_ completion: (() -> ())?) {
@@ -143,15 +129,6 @@ extension BAXCTableViewDataSource {
             return
         }
         subDS!.onCheckEventForRow(realRow)
-        self._callDelegateDatasChangedFunc()
-    }
-    
-    public func onFoldEvent(_ row: Int) {
-        let (subDS, _) = self._subDataSource(for: row)
-        if subDS == nil {
-            return
-        }
-        subDS!.onFoldEvent()
         self._callDelegateDatasChangedFunc()
     }
     

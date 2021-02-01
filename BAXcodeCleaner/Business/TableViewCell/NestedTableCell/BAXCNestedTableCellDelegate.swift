@@ -10,4 +10,5 @@ import Cocoa
 
 public protocol BAXCNestedTableCellDelegate: class {
     func onCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int)
+    func onCheckAllBoxSelected(cell: BAXCNestedTableCell)
 }

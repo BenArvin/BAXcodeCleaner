@@ -14,18 +14,10 @@ class BAXCManualCleanVC: BAViewController {
         result.enableKeyEvent = false
         result.delegate = self
         result.dataSource = self
-        result.menu = self._tableViewMenu
+        result.headerView = nil
+        result.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
         return result
     }()
-    
-    private lazy var _tableViewMenu: NSMenu = {
-        let result: NSMenu = NSMenu.init()
-        result.addItem(NSMenuItem.init(title: "Copy", action: #selector(_onCopyMenuItemSelected), keyEquivalent: ""))
-        result.addItem(NSMenuItem.init(title: "Show in Finder", action: #selector(_onShowInFinderMenuItemSelected), keyEquivalent: ""))
-        return result
-    }()
-    
-    private var _columnsSetted: Bool = false
     
     private lazy var _tableViewColumn0: NSTableColumn = {
         let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("0"))
@@ -34,34 +26,12 @@ class BAXCManualCleanVC: BAViewController {
         return result
     }()
     
-    private lazy var _tableViewColumn1: NSTableColumn = {
-        let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("1"))
-        result.title = " "
-        result.minWidth = 50
-        return result
-    }()
-    
-    private lazy var _tableViewColumn2: NSTableColumn = {
-        let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("2"))
-        result.title = " "
-        result.minWidth = 50
-        return result
-    }()
-    
-    private lazy var _tableViewColumn3: NSTableColumn = {
-        let result: NSTableColumn = NSTableColumn.init(identifier: NSUserInterfaceItemIdentifier.init("3"))
-        result.title = " "
-        result.minWidth = 30
-        result.maxWidth = 30
-        return result
-    }()
-    
     private lazy var _tableContainerView: NSScrollView = {
         let result: NSScrollView = NSScrollView.init()
         result.documentView = self._tableView
         result.drawsBackground = false
-        result.hasVerticalScroller = true
-        result.hasHorizontalScroller = true
+        result.hasVerticalScroller = false
+        result.hasHorizontalScroller = false
         result.autohidesScrollers = true
         return result
     }()
@@ -143,7 +113,7 @@ class BAXCManualCleanVC: BAViewController {
             self.view.addSubview(self._cleanBtn)
             self.view.addSubview(self._loadingView)
             
-            self._settingTableView()
+            self._tableView.addTableColumn(self._tableViewColumn0)
             
             self._refresh()
         }
@@ -156,36 +126,41 @@ class BAXCManualCleanVC: BAViewController {
     override func viewWillLayout() {
         super.viewWillLayout()
         self._setElementsFrame()
+        self._tableView.reloadData()
     }
 }
 
 extension BAXCManualCleanVC: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return self._dataSource.height(for: row)
+        return self._dataSource.dataSourceForkind(row).totalHeight()
     }
     
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-        return !self._dataSource.isSectionRow(row)
+        return false
     }
 }
 
 extension BAXCManualCleanVC: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return self._dataSource.numberOfRows()
+        return self._dataSource.numberOfKinds()
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let columnID: String = tableColumn!.identifier.rawValue
         var cell: NSTableCellView? = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier.init(columnID), owner: self) as? NSTableCellView
         if cell == nil {
-            cell = self._dataSource.cell(for: row, column: Int(columnID) ?? 0)
+            let cellTmp: BAXCNestedTableCell = BAXCNestedTableCell.init()
+            cellTmp.identifier = NSUserInterfaceItemIdentifier.init(BAXCNestedTableCell.identifier)
+            cell = cellTmp
         }
-        self._dataSource.setContent(for: cell!, row: row, column: Int(columnID) ?? 0)
+        let cellTmp: BAXCNestedTableCell = cell as! BAXCNestedTableCell
+        cellTmp.dataSource = self._dataSource.dataSourceForkind(row)
+        cellTmp.delegate = self
         return cell
     }
 }
 
-extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol {
+extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol_new {
     func onDatasChanged() {
         var newState = BAXCTPCheckBox.State.Part
         if self._dataSource.isAllChecked() == true {
@@ -203,7 +178,7 @@ extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol {
             strongSelf._updateSizeTextField(total: totalSize, selected: selectedSize)
         }
     }
-    
+
     func onRowCheckBtnSelected(cell: NSTableCellView) {
         let row = self._tableView.row(for: cell)
         DispatchQueue.global().async{[weak self] in
@@ -213,43 +188,43 @@ extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol {
             strongSelf._dataSource.onCheckEventForRow(row)
         }
     }
-    
+
     func onSectionCheckBtnSelected(cell: NSTableCellView) {
-        let row = self._tableView.row(for: cell)
-        DispatchQueue.global().async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf._dataSource.onCheckEventForSection(row)
-        }
+//        let row = self._tableView.row(for: cell)
+//        DispatchQueue.global().async{[weak self] in
+//            guard let strongSelf = self else {
+//                return
+//            }
+//            strongSelf._dataSource.onCheckEventForSection(row)
+//        }
     }
-    
+
     func onFoldBtnSelected(cell: NSTableCellView) {
-        let row = self._tableView.row(for: cell)
-        DispatchQueue.global().async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf._dataSource.onFoldEvent(row)
-        }
+//        let row = self._tableView.row(for: cell)
+//        DispatchQueue.global().async{[weak self] in
+//            guard let strongSelf = self else {
+//                return
+//            }
+//            strongSelf._dataSource.onFoldEvent(row)
+//        }
     }
-    
+
     func onTipsBtnSelected(cell: NSTableCellView) {
-        let row = self._tableView.row(for: cell)
-        DispatchQueue.global().async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            let (title, content): (String?, String?) = strongSelf._dataSource.tipsForHelp(row)
-            DispatchQueue.main.async{
-                let alert: NSAlert = NSAlert.init()
-                alert.alertStyle = NSAlert.Style.informational
-                alert.messageText = title == nil ? "Unknown" : title!
-                alert.informativeText = content == nil ? "Unknown" : content!
-                alert.addButton(withTitle: "OK")
-                alert.runModal()
-            }
-        }
+//        let row = self._tableView.row(for: cell)
+//        DispatchQueue.global().async{[weak self] in
+//            guard let strongSelf = self else {
+//                return
+//            }
+//            let (title, content): (String?, String?) = strongSelf._dataSource.tipsForHelp(row)
+//            DispatchQueue.main.async{
+//                let alert: NSAlert = NSAlert.init()
+//                alert.alertStyle = NSAlert.Style.informational
+//                alert.messageText = title == nil ? "Unknown" : title!
+//                alert.informativeText = content == nil ? "Unknown" : content!
+//                alert.addButton(withTitle: "OK")
+//                alert.runModal()
+//            }
+//        }
     }
 }
 
@@ -275,47 +250,51 @@ extension BAXCManualCleanVC {
         self._backBtn.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
         self._refreshBtn.frame = CGRect.init(x: self._backBtn.frame.maxX + 5, y: 0, width: 30, height: 30)
         self._selAllCheckBox.frame = CGRect.init(x: self._topBar.bounds.width - 16 - 10, y: 4, width: 16, height: 16)
-        self._sizeTextField.frame = CGRect.init(x: self._backBtn.frame.maxX + 15, y: 3, width: self._topBar.frame.width - self._backBtn.frame.maxX * 2 - 30, height: 18)
-        
-        if self._columnsSetted == false && self.view.bounds.width > 10 {
-            self._columnsSetted = true
-            let width: CGFloat = self._tableContainerView.bounds.width
-            self._tableViewColumn2.width = 100
-            self._tableViewColumn3.width = 30
-            self._tableViewColumn0.width = floor(width / 3)
-            self._tableViewColumn1.width = floor(width / 3 * 2) - self._tableViewColumn2.width - self._tableViewColumn3.width - 12
-        }
+        self._sizeTextField.frame = CGRect.init(x: self._refreshBtn.frame.maxX + 15, y: 3, width: self._topBar.frame.width - self._backBtn.frame.maxX * 2 - 30, height: 18)
+        self._tableView.sizeLastColumnToFit()
+    }
+}
+
+extension BAXCManualCleanVC: BAXCNestedTableCellDelegate {
+    func onCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int) {
+        let kind = self._tableView.row(for: cell)
+        let subDS = self._dataSource.dataSourceForkind(kind)
+        subDS.onCheckEventForRow(innerRow)
+        self.onDatasChanged()
     }
     
-    private func _settingTableView() {
-        self._tableView.addTableColumn(self._tableViewColumn0)
-        self._tableView.addTableColumn(self._tableViewColumn1)
-        self._tableView.addTableColumn(self._tableViewColumn2)
-        self._tableView.addTableColumn(self._tableViewColumn3)
-        self._tableView.gridStyleMask = [NSTableView.GridLineStyle.solidHorizontalGridLineMask]
+    func onCheckAllBoxSelected(cell: BAXCNestedTableCell) {
+        let kind = self._tableView.row(for: cell)
+        let subDS = self._dataSource.dataSourceForkind(kind)
+        if subDS.isAllChecked() {
+            subDS.uncheckAll()
+        } else {
+            subDS.checkAll()
+        }
+        self.onDatasChanged()
     }
 }
 
 // MARK: - selector methods
 extension BAXCManualCleanVC {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
-        if self._selAllCheckBox.state == BAXCTPCheckBox.State.Uncheck {
-            self._selAllCheckBox.state = BAXCTPCheckBox.State.Check
-            DispatchQueue.global().async{[weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                strongSelf._dataSource.checkAll()
-            }
-        } else {
-            self._selAllCheckBox.state = BAXCTPCheckBox.State.Uncheck
-            DispatchQueue.global().async{[weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                strongSelf._dataSource.uncheckAll()
-            }
-        }
+//        if self._selAllCheckBox.state == BAXCTPCheckBox.State.Uncheck {
+//            self._selAllCheckBox.state = BAXCTPCheckBox.State.Check
+//            DispatchQueue.global().async{[weak self] in
+//                guard let strongSelf = self else {
+//                    return
+//                }
+//                strongSelf._dataSource.checkAll()
+//            }
+//        } else {
+//            self._selAllCheckBox.state = BAXCTPCheckBox.State.Uncheck
+//            DispatchQueue.global().async{[weak self] in
+//                guard let strongSelf = self else {
+//                    return
+//                }
+//                strongSelf._dataSource.uncheckAll()
+//            }
+//        }
     }
     
     @objc private func _onBackBtnSelected(_ sender: NSButton?) {
@@ -323,73 +302,73 @@ extension BAXCManualCleanVC {
     }
     
     @objc private func _onCleanBtnSelected(_ sender: NSButton?) {
-        DispatchQueue.global().async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            if strongSelf._dataSource.isNoneChecked() == true {
-                return
-            }
-            DispatchQueue.main.async{[weak strongSelf] in
-                guard let strongSelf2 = strongSelf else {
-                    return
-                }
-                let alert: NSAlert = NSAlert.init()
-                alert.alertStyle = NSAlert.Style.critical
-                alert.messageText = "Are you sure to clean those files?"
-                alert.informativeText = "Take it easy, you can find and retrive those files from Trash🗑 if you regret it. The world won't be destroyed."
-                alert.addButton(withTitle: "YES")
-                alert.addButton(withTitle: "NO")
-                let res: NSApplication.ModalResponse = alert.runModal()
-                if res != NSApplication.ModalResponse.alertFirstButtonReturn {
-                    return
-                }
-                strongSelf2._loadingView.message = "Cleaning..."
-                strongSelf2._loadingView.show()
-                DispatchQueue.global().async{[weak strongSelf2] in
-                    guard let strongSelf3 = strongSelf2 else {
-                        return
-                    }
-                    strongSelf3._dataSource.clean { [weak strongSelf3] (successed, errorMsg) in
-                        guard let strongSelf4 = strongSelf3 else {
-                            return
-                        }
-                        if successed == false {
-                            DispatchQueue.main.async{ [weak strongSelf4] in
-                                guard let strongSelf5 = strongSelf4 else {
-                                    return
-                                }
-                                strongSelf5._loadingView.hide()
-                                let alert: NSAlert = NSAlert.init()
-                                alert.alertStyle = NSAlert.Style.critical
-                                alert.messageText = "Clean failed!"
-                                alert.informativeText = errorMsg == nil ? "unknown" : errorMsg!
-                                alert.addButton(withTitle: "OK")
-                                alert.runModal()
-                            }
-                            return
-                        }
-                        DispatchQueue.main.async{[weak strongSelf4] in
-                            guard let strongSelf5 = strongSelf4 else {
-                                return
-                            }
-                            strongSelf5._loadingView.message = "Searching..."
-                        }
-                        strongSelf4._dataSource.refresh {[weak strongSelf4] in
-                            guard let strongSelf5 = strongSelf4 else {
-                                return
-                            }
-                            DispatchQueue.main.async{[weak strongSelf5] in
-                                guard let strongSelf6 = strongSelf5 else {
-                                    return
-                                }
-                                strongSelf6._loadingView.hide()
-                            }
-                        }
-                    }
-                }
-            }
-        }
+//        DispatchQueue.global().async{[weak self] in
+//            guard let strongSelf = self else {
+//                return
+//            }
+//            if strongSelf._dataSource.isNoneChecked() == true {
+//                return
+//            }
+//            DispatchQueue.main.async{[weak strongSelf] in
+//                guard let strongSelf2 = strongSelf else {
+//                    return
+//                }
+//                let alert: NSAlert = NSAlert.init()
+//                alert.alertStyle = NSAlert.Style.critical
+//                alert.messageText = "Are you sure to clean those files?"
+//                alert.informativeText = "Take it easy, you can find and retrive those files from Trash🗑 if you regret it. The world won't be destroyed."
+//                alert.addButton(withTitle: "YES")
+//                alert.addButton(withTitle: "NO")
+//                let res: NSApplication.ModalResponse = alert.runModal()
+//                if res != NSApplication.ModalResponse.alertFirstButtonReturn {
+//                    return
+//                }
+//                strongSelf2._loadingView.message = "Cleaning..."
+//                strongSelf2._loadingView.show()
+//                DispatchQueue.global().async{[weak strongSelf2] in
+//                    guard let strongSelf3 = strongSelf2 else {
+//                        return
+//                    }
+//                    strongSelf3._dataSource.clean { [weak strongSelf3] (successed, errorMsg) in
+//                        guard let strongSelf4 = strongSelf3 else {
+//                            return
+//                        }
+//                        if successed == false {
+//                            DispatchQueue.main.async{ [weak strongSelf4] in
+//                                guard let strongSelf5 = strongSelf4 else {
+//                                    return
+//                                }
+//                                strongSelf5._loadingView.hide()
+//                                let alert: NSAlert = NSAlert.init()
+//                                alert.alertStyle = NSAlert.Style.critical
+//                                alert.messageText = "Clean failed!"
+//                                alert.informativeText = errorMsg == nil ? "unknown" : errorMsg!
+//                                alert.addButton(withTitle: "OK")
+//                                alert.runModal()
+//                            }
+//                            return
+//                        }
+//                        DispatchQueue.main.async{[weak strongSelf4] in
+//                            guard let strongSelf5 = strongSelf4 else {
+//                                return
+//                            }
+//                            strongSelf5._loadingView.message = "Searching..."
+//                        }
+//                        strongSelf4._dataSource.refresh {[weak strongSelf4] in
+//                            guard let strongSelf5 = strongSelf4 else {
+//                                return
+//                            }
+//                            DispatchQueue.main.async{[weak strongSelf5] in
+//                                guard let strongSelf6 = strongSelf5 else {
+//                                    return
+//                                }
+//                                strongSelf6._loadingView.hide()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
     
     @objc private func _onRefreshBtnSelected(_ sender: NSButton?) {
@@ -397,36 +376,36 @@ extension BAXCManualCleanVC {
     }
     
     @objc private func _onCopyMenuItemSelected() {
-        let row = self._tableView.clickedRow
-        DispatchQueue.global().async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            let content: String? = strongSelf._dataSource.contentForCopy(at: row)
-            if content == nil {
-                return
-            }
-            DispatchQueue.main.async{
-                NSPasteboard.general.clearContents()
-                NSPasteboard.general.writeObjects([content! as NSString])
-            }
-        }
+//        let row = self._tableView.clickedRow
+//        DispatchQueue.global().async{[weak self] in
+//            guard let strongSelf = self else {
+//                return
+//            }
+//            let content: String? = strongSelf._dataSource.contentForCopy(at: row)
+//            if content == nil {
+//                return
+//            }
+//            DispatchQueue.main.async{
+//                NSPasteboard.general.clearContents()
+//                NSPasteboard.general.writeObjects([content! as NSString])
+//            }
+//        }
     }
     
     @objc private func _onShowInFinderMenuItemSelected() {
-        let row = self._tableView.clickedRow
-        DispatchQueue.global().async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            let path: String? = strongSelf._dataSource.pathForOpen(at: row)
-            if path == nil {
-                return
-            }
-            DispatchQueue.main.async{
-                NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
-            }
-        }
+//        let row = self._tableView.clickedRow
+//        DispatchQueue.global().async{[weak self] in
+//            guard let strongSelf = self else {
+//                return
+//            }
+//            let path: String? = strongSelf._dataSource.pathForOpen(at: row)
+//            if path == nil {
+//                return
+//            }
+//            DispatchQueue.main.async{
+//                NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
+//            }
+//        }
     }
 }
 

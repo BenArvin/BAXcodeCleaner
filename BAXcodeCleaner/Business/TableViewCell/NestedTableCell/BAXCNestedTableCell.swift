@@ -31,7 +31,7 @@ fileprivate class BAXCNestedTableHeaderCell: NSTableHeaderCell {
 public class BAXCNestedTableCell: BAXCTableViewCell {
     public static let identifier: String = "BAXCNestedTableCell"
     
-    public var dataSource: BAXCTableViewSubDataSource_new? = nil
+    public var dataSource: BAXCTableViewSubDataSource? = nil
     public var delegate: BAXCNestedTableCellDelegate?
     
     private lazy var _tableView: BAXCTableView = {
@@ -41,7 +41,6 @@ public class BAXCNestedTableCell: BAXCTableViewCell {
         result.delegate = self
         result.dataSource = self
         result.menu = self._tableViewMenu
-//        result.headerView = nil
         result.gridStyleMask = [NSTableView.GridLineStyle.solidHorizontalGridLineMask, NSTableView.GridLineStyle.solidVerticalGridLineMask]
         result.intercellSpacing = NSSize.init(width: 0, height: 1)
         if #available(OSX 11.0, *) {
@@ -140,7 +139,11 @@ public class BAXCNestedTableCell: BAXCTableViewCell {
         
         var newState = BAXCTPCheckBox.State.Part
         if self.dataSource!.isAllChecked() == true {
-            newState = BAXCTPCheckBox.State.Check
+            if self._tableView.numberOfRows == 0 {
+                newState = BAXCTPCheckBox.State.Uncheck
+            } else {
+                newState = BAXCTPCheckBox.State.Check
+            }
         } else if self.dataSource!.isNoneChecked() == true {
             newState = BAXCTPCheckBox.State.Uncheck
         }
@@ -150,7 +153,8 @@ public class BAXCNestedTableCell: BAXCTableViewCell {
         self._updateSizeTextField(total: totalSize, selected: selectedSize)
         
         // set frame
-        let titleStrSize: CGSize = self._titleTextField.attributedStringValue.mc_sizeThatFits(maxWidth: CGFloat.greatestFiniteMagnitude, maxHeight: CGFloat.greatestFiniteMagnitude)
+        var titleStrSize: CGSize = self._titleTextField.attributedStringValue.mc_sizeThatFits(maxWidth: CGFloat.greatestFiniteMagnitude, maxHeight: CGFloat.greatestFiniteMagnitude)
+        titleStrSize = CGSize.init(width: titleStrSize.width + 10, height: titleStrSize.height)
         let sizeStrSize: CGSize = self._sizeTextField.attributedStringValue.mc_sizeThatFits(maxWidth: CGFloat.greatestFiniteMagnitude, maxHeight: CGFloat.greatestFiniteMagnitude)
         let topBarHeight: CGFloat = 70
         self._tableContainerView.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height - topBarHeight)
@@ -190,6 +194,9 @@ extension BAXCNestedTableCell {
 // MARK: - selector methods
 extension BAXCNestedTableCell {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
+        if self.delegate != nil {
+            self.delegate!.onCheckAllBoxSelected(cell: self)
+        }
     }
     
     @objc private func _onCopyMenuItemSelected() {

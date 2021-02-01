@@ -15,20 +15,18 @@ public class BAXCArchivesTrashManager: BAXCTrashDataManager {
             return (nil, 0)
         }
         var fullSize: Int = 0
-        var result: [(String, String?, String?, Int)]? = nil
+        var result: [(String, String?, Int)]? = nil
         for pathItem in appPaths! {
-            let name: String? = BAXCFileUtil.splitAbnormalPath(pathItem)
-            var innerItems: String? = nil
             let innerPaths: [String]? = BAXCFileUtil.contentsOfDir(pathItem)
             if innerPaths != nil {
                 for innerPathItem in innerPaths! {
                     let fileName: String? = BAXCFileUtil.splitAbnormalPath(innerPathItem)
                     if fileName != nil {
-                        if innerItems == nil {
-                            innerItems = fileName!
-                        } else {
-                            innerItems = innerItems!.appendingFormat(", %@", fileName!)
+                        let sizeItem: Int = BAXCFileUtil.size(innerPathItem)
+                        if result == nil {
+                            result = []
                         }
+                        result!.append((fileName!, innerPathItem, sizeItem))
                     }
                 }
             }
@@ -40,7 +38,6 @@ public class BAXCArchivesTrashManager: BAXCTrashDataManager {
             if result == nil {
                 result = []
             }
-            result!.append((pathItem, name, innerItems, sizeItem))
         }
         return (result, fullSize)
     }

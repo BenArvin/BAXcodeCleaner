@@ -9,67 +9,110 @@
 import Cocoa
 
 public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
-    var isFolded: Bool = false
     var derivedDataInfos: [(String, String?, String?, Int, Bool)]? = nil
     var fullSize: Int = 0
+    
+    public override func title() -> String {
+        return "Derived Data"
+    }
+    
+    public override func description() -> String {
+        return "Temporary data for your projects, it will regenerated when build project next time, but it also means your next build will be a long journey."
+    }
 
     public override func numberOfRows() -> Int {
         if self.derivedDataInfos == nil {
             return 0
         }
-        return self.isFolded == true ? 1 : self.derivedDataInfos!.count + 1
+        return self.derivedDataInfos!.count
+    }
+    
+    public override func numberOfColumns() -> Int {
+        return 4
+    }
+    
+    public override func titleFor(column: Int) -> String {
+        if column == 0 {
+            return "name"
+        } else if column == 1 {
+            return "path"
+        } else if column == 2 {
+            return "size"
+        } else {
+            return super.titleFor(column: column)
+        }
+    }
+    
+    public override func maxWidthFor(column: Int) -> CGFloat {
+        if column == 3 {
+            return 30
+        } else {
+            return super.maxWidthFor(column: column)
+        }
+    }
+    
+    public override func defaultWidthFor(column: Int, totalWidth: CGFloat) -> CGFloat {
+        let realWidth = totalWidth - 30
+        if column == 0 {
+            return 0.2 * realWidth
+        } else if column == 1 {
+            return 0.7 * realWidth
+        } else if column == 2 {
+            return 0.1 * realWidth
+        } else if column == 3 {
+            return 30
+        } else {
+            return super.defaultWidthFor(column: column, totalWidth: totalWidth)
+        }
+    }
+    
+    public override func cell(for row: Int, column: Int, delegate: Any) -> NSTableCellView? {
+        if column == 0 {
+            let result: BAXCTitleCell = BAXCTitleCell.init()
+            result.identifier = NSUserInterfaceItemIdentifier.init(BAXCTitleCell.identifier)
+            result.index = row
+            return result
+        } else if column == 1 {
+            let result: BAXCContentCell = BAXCContentCell.init()
+            result.identifier = NSUserInterfaceItemIdentifier.init(BAXCContentCell.identifier)
+            result.index = row
+            return result
+        } else if column == 2 {
+            let result: BAXCFileSizeCell = BAXCFileSizeCell.init()
+            result.identifier = NSUserInterfaceItemIdentifier.init(BAXCFileSizeCell.identifier)
+            result.index = row
+            return result
+        } else if column == 3 {
+            let result: BAXCCheckBoxCell = BAXCCheckBoxCell.init()
+            result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCell.identifier)
+            result.index = row
+            result.delegate = self
+            return result
+        }
+        return super.cell(for: row, column: column, delegate: delegate)
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
-        if row >= 0 || row < self.numberOfRows() {
-            if row == 0 {
-                if column == 0 {
-                    let sectiontitleCell: BAXCSectionTitleCell? = cell as? BAXCSectionTitleCell
-                    if sectiontitleCell != nil {
-                        sectiontitleCell!.text = "Derived Data"
-                        sectiontitleCell!.isFolded = self.isFolded
-                    }
-                } else if column == 2 {
-                    let sizeCell: BAXCSectionSizeCell? = cell as? BAXCSectionSizeCell
-                    if sizeCell != nil {
-                        sizeCell!.size = self.fullSize
-                    }
-                } else if column == 3 {
-                    let checkBox: BAXCSectionCheckBoxCell? = cell as? BAXCSectionCheckBoxCell
-                    if checkBox != nil {
-                        if self.isAllChecked() == true {
-                            checkBox!.state = BAXCTPCheckBox.State.Check
-                        } else if self.isNoneChecked() == true {
-                            checkBox!.state = BAXCTPCheckBox.State.Uncheck
-                        } else {
-                            checkBox!.state = BAXCTPCheckBox.State.Part
-                        }
-                    }
-                }
-            } else {
-                let realRow: Int = row - 1
-                let (_, name, targetPath, size, state) = self.derivedDataInfos![realRow]
-                if column == 0 {
-                    let titleCell: BAXCTitleCell? = cell as? BAXCTitleCell
-                    if titleCell != nil {
-                        titleCell!.text = name
-                    }
-                } else if column == 1 {
-                    let contentCell: BAXCContentCell? = cell as? BAXCContentCell
-                    if contentCell != nil {
-                        contentCell!.text = self._cellContents(for: name, targetPath: targetPath)
-                    }
-                } else if column == 2 {
-                    let sizeCell: BAXCFileSizeCell? = cell as? BAXCFileSizeCell
-                    if sizeCell != nil {
-                        sizeCell!.size = size
-                    }
-                } else if column == 3 {
-                    let checkboxCell: BAXCCheckBoxCell? = cell as? BAXCCheckBoxCell
-                    if checkboxCell != nil {
-                        checkboxCell!.selected = state
-                    }
-                }
+        let (_, name, targetPath, size, state) = self.derivedDataInfos![row]
+        if column == 0 {
+            let titleCell: BAXCTitleCell? = cell as? BAXCTitleCell
+            if titleCell != nil {
+                titleCell!.text = name
+            }
+        } else if column == 1 {
+            let contentCell: BAXCContentCell? = cell as? BAXCContentCell
+            if contentCell != nil {
+                contentCell!.text = self._cellContents(for: name, targetPath: targetPath)
+            }
+        } else if column == 2 {
+            let sizeCell: BAXCFileSizeCell? = cell as? BAXCFileSizeCell
+            if sizeCell != nil {
+                sizeCell!.size = size
+            }
+        } else if column == 3 {
+            let checkboxCell: BAXCCheckBoxCell? = cell as? BAXCCheckBoxCell
+            if checkboxCell != nil {
+                checkboxCell!.selected = state
             }
         }
     }
@@ -144,16 +187,11 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func onCheckEventForRow(_ row: Int) {
-        let realIndex = row - 1
-        if realIndex < 0 || self.derivedDataInfos == nil || realIndex >= self.derivedDataInfos!.count {
+        if row < 0 || self.derivedDataInfos == nil || row >= self.derivedDataInfos!.count {
             return
         }
-        let (path, name, targetPath, size, state) = self.derivedDataInfos![realIndex]
-        self.derivedDataInfos![realIndex] = (path, name, targetPath, size, !state)
-    }
-    
-    public override func onFoldEvent() {
-        self.isFolded = !self.isFolded
+        let (path, name, targetPath, size, state) = self.derivedDataInfos![row]
+        self.derivedDataInfos![row] = (path, name, targetPath, size, !state)
     }
     
     public override func checkAll() {
@@ -222,10 +260,6 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
             }
         }
         return (total, selected)
-    }
-    
-    public override func tipsForHelp() -> (String?, String?) {
-        return ("Derived Data", "Temporary data for your projects, it will regenerated when build project next time, but it also means your next build will be a long journey.")
     }
 }
 
