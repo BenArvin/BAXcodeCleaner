@@ -16,6 +16,7 @@
 		E4110F2D23BC76B400C56137 /* BAXCArchivesTrashManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F2C23BC76B300C56137 /* BAXCArchivesTrashManager.swift */; };
 		E4110F3123BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F3023BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift */; };
 		E412D82C25C93A01009ADF0F /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412D82B25C93A01009ADF0F /* Date+Extension.swift */; };
+		E412D83425C93F56009ADF0F /* BADarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412D83325C93F56009ADF0F /* BADarkView.swift */; };
 		E4349DFB2584663B00BC7203 /* BAXCTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349DFA2584663B00BC7203 /* BAXCTableViewDataSource.swift */; };
 		E4349E0A258468A900BC7203 /* BAXCDerivedDataSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E02258468A800BC7203 /* BAXCDerivedDataSubDataSource.swift */; };
 		E4349E0C258468A900BC7203 /* BAXCDeviceSupportSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E04258468A800BC7203 /* BAXCDeviceSupportSubDataSource.swift */; };
@@ -88,6 +89,7 @@
 		E4110F2C23BC76B300C56137 /* BAXCArchivesTrashManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCArchivesTrashManager.swift; sourceTree = "<group>"; };
 		E4110F3023BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCSimulatorTrashManager.swift; sourceTree = "<group>"; };
 		E412D82B25C93A01009ADF0F /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		E412D83325C93F56009ADF0F /* BADarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BADarkView.swift; sourceTree = "<group>"; };
 		E4349DFA2584663B00BC7203 /* BAXCTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCTableViewDataSource.swift; sourceTree = "<group>"; };
 		E4349E02258468A800BC7203 /* BAXCDerivedDataSubDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCDerivedDataSubDataSource.swift; sourceTree = "<group>"; };
 		E4349E04258468A800BC7203 /* BAXCDeviceSupportSubDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCDeviceSupportSubDataSource.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				E43DB90E23C6CC220021417D /* BAXCTPCheckBox.swift */,
 				E456783123CC1A0E003395EA /* BAXCTableView.swift */,
 				E4EFF0C523CC73A400291D81 /* BANavigationController.swift */,
+				E412D83325C93F56009ADF0F /* BADarkView.swift */,
 				E408B84025834FFA00AB84CD /* BAScrollView.swift */,
 				E4EFF0DB23CF390000291D81 /* BAUpdateManager */,
 				E4EFF0D523CEF78A00291D81 /* BABugReporter */,
@@ -464,6 +467,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4110F2323BC399A00C56137 /* Bundle+Extension.swift in Sources */,
+				E412D83425C93F56009ADF0F /* BADarkView.swift in Sources */,
 				E4B2DF372583189200A63C93 /* BAXCXcodeInnerPlatformsTrashManager.swift in Sources */,
 				E4FE080725831C93004A6620 /* BAXCNestedTableCell.swift in Sources */,
 				E4110F3123BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift in Sources */,
@@ -677,7 +681,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenArvin.BAXcodeCleaner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -699,7 +703,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenArvin.BAXcodeCleaner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
