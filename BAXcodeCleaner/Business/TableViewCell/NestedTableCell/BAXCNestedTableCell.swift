@@ -101,6 +101,14 @@ public class BAXCNestedTableCell: BAXCTableViewCell {
         return result
     }()
     
+    private lazy var _tipsBtn: NSButton = {
+        let result: NSButton = NSButton.init(title: "", target: self, action: #selector(onTipsBtnSelected(_:)))
+        result.bezelStyle = NSButton.BezelStyle.helpButton
+        result.imageScaling = NSImageScaling.scaleAxesIndependently
+        result.imagePosition = NSControl.ImagePosition.imageOnly
+        return result
+    }()
+    
     private lazy var _selAllCheckBox: BAXCTPCheckBox = {
         let result: BAXCTPCheckBox = BAXCTPCheckBox.init(target: self, action: #selector(_onSelAllCheckBoxSelected(_:)))
         result.state = BAXCTPCheckBox.State.Uncheck
@@ -114,6 +122,7 @@ public class BAXCNestedTableCell: BAXCTableViewCell {
         self.addSubview(self._topBar)
         self._topBar.addSubview(self._titleTextField)
         self._topBar.addSubview(self._sizeTextField)
+        self._topBar.addSubview(self._tipsBtn)
         self._topBar.addSubview(self._selAllCheckBox)
         self.addSubview(self._tableContainerView)
     }
@@ -139,7 +148,7 @@ public class BAXCNestedTableCell: BAXCTableViewCell {
         
         var newState = BAXCTPCheckBox.State.Part
         if self.dataSource!.isAllChecked() == true {
-            if self._tableView.numberOfRows == 0 {
+            if self.dataSource!.numberOfRows() == 0 {
                 newState = BAXCTPCheckBox.State.Uncheck
             } else {
                 newState = BAXCTPCheckBox.State.Check
@@ -162,6 +171,7 @@ public class BAXCNestedTableCell: BAXCTableViewCell {
         self._titleTextField.frame = CGRect.init(x: 0, y: 5, width: titleStrSize.width, height: 28)
         self._selAllCheckBox.frame = CGRect.init(x: self.bounds.width - 16, y: 7, width: 16, height: 16)
         self._sizeTextField.frame = CGRect.init(x: self._titleTextField.frame.maxX, y: 9, width: ceil(sizeStrSize.width) + 2, height: 16)
+        self._tipsBtn.frame = CGRect.init(x: self._sizeTextField.frame.maxX + 5, y: 2, width: 30, height: 30)
         
         // set tableview
         for column in 0..<self.dataSource!.numberOfColumns() {
@@ -195,41 +205,28 @@ extension BAXCNestedTableCell {
 extension BAXCNestedTableCell {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
         if self.delegate != nil {
-            self.delegate!.onCheckAllBoxSelected(cell: self)
+            self.delegate!.onNestedCellCheckAllBoxSelected(cell: self)
+        }
+    }
+    
+    @objc public func onTipsBtnSelected(_ sender: NSButton?) {
+        if self.delegate != nil {
+            self.delegate!.onNestedCellTipsBtnSelected(cell: self)
         }
     }
     
     @objc private func _onCopyMenuItemSelected() {
-//        let row = self._tableView.clickedRow
-//        DispatchQueue.global().async{[weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            let content: String? = strongSelf._dataSource.contentForCopy(at: row)
-//            if content == nil {
-//                return
-//            }
-//            DispatchQueue.main.async{
-//                NSPasteboard.general.clearContents()
-//                NSPasteboard.general.writeObjects([content! as NSString])
-//            }
-//        }
+        let row = self._tableView.clickedRow
+        if self.delegate != nil {
+            self.delegate!.onNestedCellCopyMenuItemSelected(cell: self, innerRow: row)
+        }
     }
     
     @objc private func _onShowInFinderMenuItemSelected() {
-//        let row = self._tableView.clickedRow
-//        DispatchQueue.global().async{[weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            let path: String? = strongSelf._dataSource.pathForOpen(at: row)
-//            if path == nil {
-//                return
-//            }
-//            DispatchQueue.main.async{
-//                NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
-//            }
-//        }
+        let row = self._tableView.clickedRow
+        if self.delegate != nil {
+            self.delegate!.onNestedCellShowInFinderMenuItemSelected(cell: self, innerRow: row)
+        }
     }
 }
 
@@ -272,7 +269,7 @@ extension BAXCNestedTableCell: BAXCCheckBoxCellDelegate {
     public func onCheckBoxSelected(cell: BAXCCheckBoxCell) {
         let row = self._tableView.row(for: cell)
         if self.delegate != nil {
-            self.delegate!.onCheckBoxSelected(cell: self, innerRow: row)
+            self.delegate!.onNestedCellCheckBoxSelected(cell: self, innerRow: row)
         }
     }
 }

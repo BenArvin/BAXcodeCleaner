@@ -9,6 +9,9 @@
 import Cocoa
 
 public protocol BAXCNestedTableCellDelegate: class {
-    func onCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int)
-    func onCheckAllBoxSelected(cell: BAXCNestedTableCell)
+    func onNestedCellCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int)
+    func onNestedCellCheckAllBoxSelected(cell: BAXCNestedTableCell)
+    func onNestedCellTipsBtnSelected(cell: BAXCNestedTableCell)
+    func onNestedCellCopyMenuItemSelected(cell: BAXCNestedTableCell, innerRow: Int)
+    func onNestedCellShowInFinderMenuItemSelected(cell: BAXCNestedTableCell, innerRow: Int)
 }

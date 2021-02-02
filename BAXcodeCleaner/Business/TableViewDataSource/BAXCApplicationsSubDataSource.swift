@@ -237,18 +237,18 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func contentForCopy(at row: Int) -> String? {
-        if row <= 0 || self.appInfos == nil || row > self.appInfos!.count {
+        if row < 0 || self.appInfos == nil || row > self.appInfos!.count {
             return nil
         }
-        let (path, version, size, _) = self.appInfos![row - 1]
+        let (path, version, size, _) = self.appInfos![row]
         return String.init(format: "%@  %@  %@", version ?? "", path, String.init(fromSize: size))
     }
     
     public override func pathForOpen(at row: Int) -> String? {
-        if row <= 0 || self.appInfos == nil || row > self.appInfos!.count {
+        if row < 0 || self.appInfos == nil || row > self.appInfos!.count {
             return nil
         }
-        let (path, _, _, _) = self.appInfos![row - 1]
+        let (path, _, _, _) = self.appInfos![row]
         return path
     }
     

@@ -155,12 +155,37 @@ extension BAXCManualCleanVC: NSTableViewDataSource {
         }
         let cellTmp: BAXCNestedTableCell = cell as! BAXCNestedTableCell
         cellTmp.dataSource = self._dataSource.dataSourceForkind(row)
-        cellTmp.delegate = self
+        cellTmp.delegate = cellTmp.dataSource
         return cell
     }
 }
 
-extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol_new {
+extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol {
+    func onTipsBtnSelected(cell: NSTableCellView) {
+        let row = self._tableView.row(for: cell)
+        let subDS = self._dataSource.dataSourceForkind(row)
+        let title = subDS.title()
+        let content = subDS.description()
+        DispatchQueue.main.async{
+            let alert: NSAlert = NSAlert.init()
+            alert.alertStyle = NSAlert.Style.informational
+            alert.messageText = title
+            alert.informativeText = content
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+        }
+    }
+    
+    func onSectionCheckBtnSelected(cell: NSTableCellView) {
+        let row = self._tableView.row(for: cell)
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf._dataSource.onCheckEventForSection(row)
+        }
+    }
+    
     func onDatasChanged() {
         var newState = BAXCTPCheckBox.State.Part
         if self._dataSource.isAllChecked() == true {
@@ -179,52 +204,42 @@ extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol_new {
         }
     }
 
-    func onRowCheckBtnSelected(cell: NSTableCellView) {
+    func onRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int) {
         let row = self._tableView.row(for: cell)
         DispatchQueue.global().async{[weak self] in
             guard let strongSelf = self else {
                 return
             }
-            strongSelf._dataSource.onCheckEventForRow(row)
+            strongSelf._dataSource.onCheckEventForRow(row: row, innerRow: innerRow)
         }
     }
 
-    func onSectionCheckBtnSelected(cell: NSTableCellView) {
-//        let row = self._tableView.row(for: cell)
-//        DispatchQueue.global().async{[weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            strongSelf._dataSource.onCheckEventForSection(row)
-//        }
-    }
-
     func onFoldBtnSelected(cell: NSTableCellView) {
-//        let row = self._tableView.row(for: cell)
-//        DispatchQueue.global().async{[weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            strongSelf._dataSource.onFoldEvent(row)
-//        }
     }
-
-    func onTipsBtnSelected(cell: NSTableCellView) {
-//        let row = self._tableView.row(for: cell)
-//        DispatchQueue.global().async{[weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            let (title, content): (String?, String?) = strongSelf._dataSource.tipsForHelp(row)
-//            DispatchQueue.main.async{
-//                let alert: NSAlert = NSAlert.init()
-//                alert.alertStyle = NSAlert.Style.informational
-//                alert.messageText = title == nil ? "Unknown" : title!
-//                alert.informativeText = content == nil ? "Unknown" : content!
-//                alert.addButton(withTitle: "OK")
-//                alert.runModal()
-//            }
-//        }
+    
+    func onCopyMenuItemSelected(cell: NSTableCellView, innerRow: Int) {
+        let row = self._tableView.row(for: cell)
+        let subDS = self._dataSource.dataSourceForkind(row)
+        let content: String? = subDS.contentForCopy(at: innerRow)
+        if content == nil {
+            return
+        }
+        DispatchQueue.main.async{
+            NSPasteboard.general.clearContents()
+            NSPasteboard.general.writeObjects([content! as NSString])
+        }
+    }
+    
+    func onShowInFinderMenuItemSelected(cell: NSTableCellView, innerRow: Int) {
+        let row = self._tableView.row(for: cell)
+        let subDS = self._dataSource.dataSourceForkind(row)
+        let path: String? = subDS.pathForOpen(at: innerRow)
+        if path == nil {
+            return
+        }
+        DispatchQueue.main.async{
+            NSWorkspace.shared.selectFile(path!, inFileViewerRootedAtPath: "")
+        }
     }
 }
 
@@ -250,51 +265,24 @@ extension BAXCManualCleanVC {
         self._backBtn.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
         self._refreshBtn.frame = CGRect.init(x: self._backBtn.frame.maxX + 5, y: 0, width: 30, height: 30)
         self._selAllCheckBox.frame = CGRect.init(x: self._topBar.bounds.width - 16 - 10, y: 4, width: 16, height: 16)
-        self._sizeTextField.frame = CGRect.init(x: self._refreshBtn.frame.maxX + 15, y: 3, width: self._topBar.frame.width - self._backBtn.frame.maxX * 2 - 30, height: 18)
+        self._sizeTextField.frame = CGRect.init(x: self._refreshBtn.frame.maxX + 15, y: 3, width: self._selAllCheckBox.frame.minX - self._refreshBtn.frame.maxX - 30, height: 18)
         self._tableView.sizeLastColumnToFit()
-    }
-}
-
-extension BAXCManualCleanVC: BAXCNestedTableCellDelegate {
-    func onCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int) {
-        let kind = self._tableView.row(for: cell)
-        let subDS = self._dataSource.dataSourceForkind(kind)
-        subDS.onCheckEventForRow(innerRow)
-        self.onDatasChanged()
-    }
-    
-    func onCheckAllBoxSelected(cell: BAXCNestedTableCell) {
-        let kind = self._tableView.row(for: cell)
-        let subDS = self._dataSource.dataSourceForkind(kind)
-        if subDS.isAllChecked() {
-            subDS.uncheckAll()
-        } else {
-            subDS.checkAll()
-        }
-        self.onDatasChanged()
     }
 }
 
 // MARK: - selector methods
 extension BAXCManualCleanVC {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
-//        if self._selAllCheckBox.state == BAXCTPCheckBox.State.Uncheck {
-//            self._selAllCheckBox.state = BAXCTPCheckBox.State.Check
-//            DispatchQueue.global().async{[weak self] in
-//                guard let strongSelf = self else {
-//                    return
-//                }
-//                strongSelf._dataSource.checkAll()
-//            }
-//        } else {
-//            self._selAllCheckBox.state = BAXCTPCheckBox.State.Uncheck
-//            DispatchQueue.global().async{[weak self] in
-//                guard let strongSelf = self else {
-//                    return
-//                }
-//                strongSelf._dataSource.uncheckAll()
-//            }
-//        }
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            if strongSelf._dataSource.isAllChecked() {
+                strongSelf._dataSource.uncheckAll()
+            } else {
+                strongSelf._dataSource.checkAll()
+            }
+        }
     }
     
     @objc private func _onBackBtnSelected(_ sender: NSButton?) {
@@ -373,39 +361,6 @@ extension BAXCManualCleanVC {
     
     @objc private func _onRefreshBtnSelected(_ sender: NSButton?) {
         self._refresh()
-    }
-    
-    @objc private func _onCopyMenuItemSelected() {
-//        let row = self._tableView.clickedRow
-//        DispatchQueue.global().async{[weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            let content: String? = strongSelf._dataSource.contentForCopy(at: row)
-//            if content == nil {
-//                return
-//            }
-//            DispatchQueue.main.async{
-//                NSPasteboard.general.clearContents()
-//                NSPasteboard.general.writeObjects([content! as NSString])
-//            }
-//        }
-    }
-    
-    @objc private func _onShowInFinderMenuItemSelected() {
-//        let row = self._tableView.clickedRow
-//        DispatchQueue.global().async{[weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            let path: String? = strongSelf._dataSource.pathForOpen(at: row)
-//            if path == nil {
-//                return
-//            }
-//            DispatchQueue.main.async{
-//                NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
-//            }
-//        }
     }
 }
 

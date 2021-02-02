@@ -233,7 +233,7 @@ public class BAXCSimulatorCacheSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func contentForCopy(at row: Int) -> String? {
-        if row <= 0 || self.cacheInfos == nil || row > self.cacheInfos!.count {
+        if row < 0 || self.cacheInfos == nil || row > self.cacheInfos!.count {
             return nil
         }
         let (path, name, _, size, _) = self.cacheInfos![row - 1]
@@ -241,7 +241,7 @@ public class BAXCSimulatorCacheSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func pathForOpen(at row: Int) -> String? {
-        if row <= 0 || self.cacheInfos == nil || row > self.cacheInfos!.count {
+        if row < 0 || self.cacheInfos == nil || row > self.cacheInfos!.count {
             return nil
         }
         let (path, _, _, _, _) = self.cacheInfos![row - 1]

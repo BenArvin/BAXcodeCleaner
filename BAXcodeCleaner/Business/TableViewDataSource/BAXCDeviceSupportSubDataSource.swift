@@ -233,18 +233,18 @@ public class BAXCDeviceSupportSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func contentForCopy(at row: Int) -> String? {
-        if row <= 0 || self.deviceSupportInfos == nil || row > self.deviceSupportInfos!.count {
+        if row < 0 || self.deviceSupportInfos == nil || row > self.deviceSupportInfos!.count {
             return nil
         }
-        let (path, name, size, _) = self.deviceSupportInfos![row - 1]
+        let (path, name, size, _) = self.deviceSupportInfos![row]
         return String.init(format: "%@  %@  %@", name ?? "", path, String.init(fromSize: size))
     }
     
     public override func pathForOpen(at row: Int) -> String? {
-        if row <= 0 || self.deviceSupportInfos == nil || row > self.deviceSupportInfos!.count {
+        if row < 0 || self.deviceSupportInfos == nil || row > self.deviceSupportInfos!.count {
             return nil
         }
-        let (path, _, _, _) = self.deviceSupportInfos![row - 1]
+        let (path, _, _, _) = self.deviceSupportInfos![row]
         return path
     }
     

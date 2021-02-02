@@ -8,12 +8,14 @@
 
 import Cocoa
 
-public protocol BAXCTableViewDataSourceProtocol_new: class {
+public protocol BAXCTableViewDataSourceProtocol: class {
     func onDatasChanged()
-    func onRowCheckBtnSelected(cell: NSTableCellView)
+    func onRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int)
     func onSectionCheckBtnSelected(cell: NSTableCellView)
     func onFoldBtnSelected(cell: NSTableCellView)
     func onTipsBtnSelected(cell: NSTableCellView)
+    func onCopyMenuItemSelected(cell: NSTableCellView, innerRow: Int)
+    func onShowInFinderMenuItemSelected(cell: NSTableCellView, innerRow: Int)
 }
 
 public class BAXCTableViewDataSource {
@@ -24,21 +26,23 @@ public class BAXCTableViewDataSource {
         case All = 2
     }
     
-    public var delegate: BAXCTableViewDataSourceProtocol_new?
+    public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSource] = {
-        let result: [BAXCTableViewSubDataSource] = [BAXCDerivedDataSubDataSource(),
-                                                    BAXCArchivesSubDataSource(),
-                                                    BAXCDeviceSupportSubDataSource(),
-                                                    BAXCSimulatorDeviceSubDataSource(),
-                                                    BAXCSimulatorCacheSubDataSource(),
-                                                    BAXCApplicationsSubDataSource()]
-//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(), BAXCSimulatorDeviceSubDataSource()]
+//        let result: [BAXCTableViewSubDataSource] = [BAXCDerivedDataSubDataSource(),
+//                                                    BAXCArchivesSubDataSource(),
+//                                                    BAXCDeviceSupportSubDataSource(),
+//                                                    BAXCSimulatorDeviceSubDataSource(),
+//                                                    BAXCSimulatorCacheSubDataSource(),
+//                                                    BAXCApplicationsSubDataSource()]
+        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(), BAXCSimulatorDeviceSubDataSource()]
         for subDSItem in result {
             subDSItem.onRowCheckBtnSelected = self._onSubDSRowCheckBtnSelected
             subDSItem.onSectionCheckBtnSelected = self._onSubDSSectionCheckBtnSelected
             subDSItem.onFoldBtnSelected = self._onSubDSFoldBtnSelected
             subDSItem.onTipsBtnSelected = self._onSubDStipsBtnSelected
+            subDSItem.onCopyMenuItemSelected = self._onSubDSCopyMenuItemSelected
+            subDSItem.onShowInFinderMenuItemSelected = self._onSubDSShowInFinderMenuItemSelected
         }
         return result
     }()
@@ -52,11 +56,6 @@ extension BAXCTableViewDataSource {
     public func numberOfKinds() -> Int {
         return self._subDS.count
     }
-    
-//    public func numberOfRows(in kind: Int) -> Int {
-//        let item = self._subDS[kind]
-//        return item.numberOfRows()
-//    }
     
     public func height(for kind: Int) -> CGFloat {
         return 20
@@ -115,7 +114,7 @@ extension BAXCTableViewDataSource {
     }
     
     public func onCheckEventForSection(_ row: Int) {
-        let (subDS, _) = self._subDataSource(for: row)
+        let subDS = self._subDataSource(for: row)
         if subDS == nil {
             return
         }
@@ -123,12 +122,12 @@ extension BAXCTableViewDataSource {
         self._callDelegateDatasChangedFunc()
     }
     
-    public func onCheckEventForRow(_ row: Int) {
-        let (subDS, realRow) = self._subDataSource(for: row)
+    public func onCheckEventForRow(row: Int, innerRow: Int) {
+        let subDS = self._subDataSource(for: row)
         if subDS == nil {
             return
         }
-        subDS!.onCheckEventForRow(realRow)
+        subDS!.onCheckEventForRow(innerRow)
         self._callDelegateDatasChangedFunc()
     }
     
@@ -173,30 +172,21 @@ extension BAXCTableViewDataSource {
         }
     }
     
-    public func contentForCopy(at row: Int) -> String? {
-        let (subDS, realRow) = self._subDataSource(for: row)
+    public func contentForCopy(at row: Int, innerRow: Int) -> String? {
+        let subDS = self._subDataSource(for: row)
         if subDS != nil {
-            return subDS!.contentForCopy(at: realRow)
+            return subDS!.contentForCopy(at: innerRow)
         } else {
             return nil
         }
     }
     
-    public func pathForOpen(at row: Int) -> String? {
-        let (subDS, realRow) = self._subDataSource(for: row)
+    public func pathForOpen(at row: Int, innerRow: Int) -> String? {
+        let subDS = self._subDataSource(for: row)
         if subDS != nil {
-            return subDS!.pathForOpen(at: realRow)
+            return subDS!.pathForOpen(at: innerRow)
         } else {
             return nil
-        }
-    }
-    
-    public func isSectionRow(_ row: Int) -> Bool {
-        let (subDS, realRow) = self._subDataSource(for: row)
-        if subDS != nil {
-            return realRow == 0 ? true : false
-        } else {
-            return false
         }
     }
     
@@ -212,7 +202,7 @@ extension BAXCTableViewDataSource {
     }
     
     public func tipsForHelp(_ row: Int) -> (String?, String?) {
-        let (subDS, _) = self._subDataSource(for: row)
+        let subDS = self._subDataSource(for: row)
         if subDS != nil {
             return subDS!.tipsForHelp()
         } else {
@@ -229,16 +219,11 @@ extension BAXCTableViewDataSource {
         }
     }
     
-    private func _subDataSource(for row: Int) -> (BAXCTableViewSubDataSource?, Int) {
-        var rowOffset: Int = 0
-        for subDSItem in self._subDS {
-            let countTmp: Int = subDSItem.numberOfRows()
-            if row >= rowOffset && row < rowOffset + countTmp {
-                return (subDSItem, row - rowOffset)
-            }
-            rowOffset = rowOffset + countTmp
+    private func _subDataSource(for row: Int) -> BAXCTableViewSubDataSource? {
+        if row < 0 || row >= self._subDS.count {
+            return nil
         }
-        return (nil, 0)
+        return self._subDS[row]
     }
     
     public func _cleanCheck() -> (Bool, String?) {
@@ -251,9 +236,9 @@ extension BAXCTableViewDataSource {
         return (true, nil)
     }
     
-    private func _onSubDSRowCheckBtnSelected(cell: NSTableCellView) {
+    private func _onSubDSRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int) {
         if self.delegate != nil {
-            self.delegate!.onRowCheckBtnSelected(cell: cell)
+            self.delegate!.onRowCheckBtnSelected(cell: cell, innerRow: innerRow)
         }
     }
     
@@ -272,6 +257,18 @@ extension BAXCTableViewDataSource {
     private func _onSubDStipsBtnSelected(cell: NSTableCellView) {
         if self.delegate != nil {
             self.delegate!.onTipsBtnSelected(cell: cell)
+        }
+    }
+    
+    private func _onSubDSCopyMenuItemSelected(cell: NSTableCellView, innerRow: Int) {
+        if self.delegate != nil {
+            self.delegate!.onCopyMenuItemSelected(cell: cell, innerRow: innerRow)
+        }
+    }
+    
+    private func _onSubDSShowInFinderMenuItemSelected(cell: NSTableCellView, innerRow: Int) {
+        if self.delegate != nil {
+            self.delegate!.onShowInFinderMenuItemSelected(cell: cell, innerRow: innerRow)
         }
     }
 }

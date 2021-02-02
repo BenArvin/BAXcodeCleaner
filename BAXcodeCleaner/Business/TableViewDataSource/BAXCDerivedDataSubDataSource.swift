@@ -86,7 +86,7 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
             let result: BAXCCheckBoxCell = BAXCCheckBoxCell.init()
             result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCell.identifier)
             result.index = row
-            result.delegate = self
+            result.delegate = (delegate as! BAXCCheckBoxCellDelegate)
             return result
         }
         return super.cell(for: row, column: column, delegate: delegate)
@@ -232,18 +232,18 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func contentForCopy(at row: Int) -> String? {
-        if row <= 0 || self.derivedDataInfos == nil || row > self.derivedDataInfos!.count {
+        if row < 0 || self.derivedDataInfos == nil || row > self.derivedDataInfos!.count {
             return nil
         }
-        let (path, name, _, size, _) = self.derivedDataInfos![row - 1]
+        let (path, name, _, size, _) = self.derivedDataInfos![row]
         return String.init(format: "%@  %@  %@", name ?? "", path, String.init(fromSize: size))
     }
     
     public override func pathForOpen(at row: Int) -> String? {
-        if row <= 0 || self.derivedDataInfos == nil || row > self.derivedDataInfos!.count {
+        if row < 0 || self.derivedDataInfos == nil || row > self.derivedDataInfos!.count {
             return nil
         }
-        let (path, _, _, _, _) = self.derivedDataInfos![row - 1]
+        let (path, _, _, _, _) = self.derivedDataInfos![row]
         return path
     }
     

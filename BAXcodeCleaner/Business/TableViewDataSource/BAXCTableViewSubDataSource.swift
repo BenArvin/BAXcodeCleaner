@@ -12,10 +12,12 @@ public class BAXCTableViewSubDataSource: NSObject {
     private var _columnWidth: [CGFloat] = []
     
     public var columnEverSetted: Bool = false
-    public var onRowCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    public var onRowCheckBtnSelected: ((_: NSTableCellView, _: Int) -> ())? = nil
     public var onSectionCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
     public var onFoldBtnSelected: ((_: NSTableCellView) -> ())? = nil
     public var onTipsBtnSelected: ((_: NSTableCellView) -> ())? = nil
+    public var onCopyMenuItemSelected: ((_: NSTableCellView, _: Int) -> ())? = nil
+    public var onShowInFinderMenuItemSelected: ((_: NSTableCellView, _: Int) -> ())? = nil
     
     public override init() {
         super.init()
@@ -132,32 +134,34 @@ public class BAXCTableViewSubDataSource: NSObject {
     }
 }
 
-extension BAXCTableViewSubDataSource: BAXCSectionTitleCellDelegate {
-    @objc public func onSectionTitleCellFoldBtnSelected(cell: BAXCSectionTitleCell) {
-        if self.onFoldBtnSelected != nil {
-            self.onFoldBtnSelected!(cell)
-        }
-    }
-    
-    @objc public func onSectionTitleCellTipsBtnSelected(cell: BAXCSectionTitleCell) {
+extension BAXCTableViewSubDataSource: BAXCNestedTableCellDelegate {
+    public func onNestedCellTipsBtnSelected(cell: BAXCNestedTableCell) {
         if self.onTipsBtnSelected != nil {
             self.onTipsBtnSelected!(cell)
         }
     }
-}
-
-extension BAXCTableViewSubDataSource: BAXCCheckBoxCellDelegate {
-    @objc public func onCheckBoxSelected(cell: BAXCCheckBoxCell) {
-        if self.onRowCheckBtnSelected != nil {
-            self.onRowCheckBtnSelected!(cell)
-        }
-    }
-}
-
-extension BAXCTableViewSubDataSource: BAXCSectionCheckBoxCellDelegate {
-    @objc public func onSectionCheckBoxSelected(cell: BAXCSectionCheckBoxCell) {
+    
+    public func onNestedCellCheckAllBoxSelected(cell: BAXCNestedTableCell) {
         if self.onSectionCheckBtnSelected != nil {
             self.onSectionCheckBtnSelected!(cell)
+        }
+    }
+    
+    public func onNestedCellCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int) {
+        if self.onRowCheckBtnSelected != nil {
+            self.onRowCheckBtnSelected!(cell, innerRow)
+        }
+    }
+    
+    public func onNestedCellCopyMenuItemSelected(cell: BAXCNestedTableCell, innerRow: Int) {
+        if self.onCopyMenuItemSelected != nil {
+            self.onCopyMenuItemSelected!(cell, innerRow)
+        }
+    }
+    
+    public func onNestedCellShowInFinderMenuItemSelected(cell: BAXCNestedTableCell, innerRow: Int) {
+        if self.onShowInFinderMenuItemSelected != nil {
+            self.onShowInFinderMenuItemSelected!(cell, innerRow)
         }
     }
 }

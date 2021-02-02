@@ -233,18 +233,18 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func contentForCopy(at row: Int) -> String? {
-        if row <= 0 || self.archiveInfos == nil || row > self.archiveInfos!.count {
+        if row < 0 || self.archiveInfos == nil || row > self.archiveInfos!.count {
             return nil
         }
-        let (name, path, size, _) = self.archiveInfos![row - 1]
+        let (name, path, size, _) = self.archiveInfos![row]
         return String.init(format: "%@  %@  %@", name, path!, String.init(fromSize: size))
     }
     
     public override func pathForOpen(at row: Int) -> String? {
-        if row <= 0 || self.archiveInfos == nil || row > self.archiveInfos!.count {
+        if row < 0 || self.archiveInfos == nil || row > self.archiveInfos!.count {
             return nil
         }
-        let (_, path, _, _) = self.archiveInfos![row - 1]
+        let (_, path, _, _) = self.archiveInfos![row]
         return path
     }
     

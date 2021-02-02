@@ -233,18 +233,18 @@ public class BAXCSimulatorDeviceSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func contentForCopy(at row: Int) -> String? {
-        if row <= 0 || self.simulatoInfos == nil || row > self.simulatoInfos!.count {
+        if row < 0 || self.simulatoInfos == nil || row > self.simulatoInfos!.count {
             return nil
         }
-        let (path, name, _, _, size, _) = self.simulatoInfos![row - 1]
+        let (path, name, _, _, size, _) = self.simulatoInfos![row]
         return String.init(format: "%@  %@  %@", name ?? "", path, String.init(fromSize: size))
     }
     
     public override func pathForOpen(at row: Int) -> String? {
-        if row <= 0 || self.simulatoInfos == nil || row > self.simulatoInfos!.count {
+        if row < 0 || self.simulatoInfos == nil || row > self.simulatoInfos!.count {
             return nil
         }
-        let (path, _, _, _, _, _) = self.simulatoInfos![row - 1]
+        let (path, _, _, _, _, _) = self.simulatoInfos![row]
         return path
     }
     

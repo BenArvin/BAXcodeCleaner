@@ -65,11 +65,11 @@ extension AppDelegate {
     }
     
     @objc func refreshAction() {
-        self.rootVC!.onMenuRefreshItemSelected(nil)
+        self.rootNavi!.topViewController!.onMenuRefreshItemSelected(nil)
     }
     
     @objc func deleteAction() {
-        self.rootVC!.onMenuCleanItemSelected(nil)
+        self.rootNavi!.topViewController!.onMenuCleanItemSelected(nil)
     }
     
     @objc func bugReportAction() {

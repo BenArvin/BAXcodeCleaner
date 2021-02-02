@@ -23,15 +23,11 @@
 		E4349E0F258468A900BC7203 /* BAXCArchivesSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E07258468A800BC7203 /* BAXCArchivesSubDataSource.swift */; };
 		E4349E10258468A900BC7203 /* BAXCApplicationsSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E08258468A800BC7203 /* BAXCApplicationsSubDataSource.swift */; };
 		E4349E11258468A900BC7203 /* BAXCSimulatorCacheSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E09258468A900BC7203 /* BAXCSimulatorCacheSubDataSource.swift */; };
-		E43DB90923C35BE60021417D /* BAXCSectionSizeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43DB90823C35BE60021417D /* BAXCSectionSizeCell.swift */; };
 		E43DB90F23C6CC220021417D /* BAXCTPCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43DB90E23C6CC220021417D /* BAXCTPCheckBox.swift */; };
-		E43DB91123C70B4B0021417D /* BAXCSectionCheckBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43DB91023C70B4B0021417D /* BAXCSectionCheckBoxCell.swift */; };
 		E456783223CC1A0E003395EA /* BAXCTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E456783123CC1A0E003395EA /* BAXCTableView.swift */; };
-		E487977523BA1BD800087258 /* BAXCSectionTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E487977423BA1BD800087258 /* BAXCSectionTitleCell.swift */; };
 		E487977723BA1BEC00087258 /* BAXCCheckBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E487977623BA1BEC00087258 /* BAXCCheckBoxCell.swift */; };
 		E487977923BA1BF900087258 /* BAXCTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E487977823BA1BF900087258 /* BAXCTitleCell.swift */; };
 		E487977B23BA1C0700087258 /* BAXCContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E487977A23BA1C0700087258 /* BAXCContentCell.swift */; };
-		E487977D23BA1C1E00087258 /* BAXCSectionBlankCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E487977C23BA1C1E00087258 /* BAXCSectionBlankCell.swift */; };
 		E487978023BA201300087258 /* BAXCBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E487977F23BA201300087258 /* BAXCBlockView.swift */; };
 		E493A94B23B3056E00F8FE78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E493A94A23B3056E00F8FE78 /* AppDelegate.swift */; };
 		E493A94F23B3057000F8FE78 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E493A94E23B3057000F8FE78 /* Assets.xcassets */; };
@@ -98,15 +94,11 @@
 		E4349E07258468A800BC7203 /* BAXCArchivesSubDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCArchivesSubDataSource.swift; sourceTree = "<group>"; };
 		E4349E08258468A800BC7203 /* BAXCApplicationsSubDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCApplicationsSubDataSource.swift; sourceTree = "<group>"; };
 		E4349E09258468A900BC7203 /* BAXCSimulatorCacheSubDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCSimulatorCacheSubDataSource.swift; sourceTree = "<group>"; };
-		E43DB90823C35BE60021417D /* BAXCSectionSizeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCSectionSizeCell.swift; sourceTree = "<group>"; };
 		E43DB90E23C6CC220021417D /* BAXCTPCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTPCheckBox.swift; sourceTree = "<group>"; };
-		E43DB91023C70B4B0021417D /* BAXCSectionCheckBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCSectionCheckBoxCell.swift; sourceTree = "<group>"; };
 		E456783123CC1A0E003395EA /* BAXCTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTableView.swift; sourceTree = "<group>"; };
-		E487977423BA1BD800087258 /* BAXCSectionTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCSectionTitleCell.swift; sourceTree = "<group>"; };
 		E487977623BA1BEC00087258 /* BAXCCheckBoxCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCCheckBoxCell.swift; sourceTree = "<group>"; };
 		E487977823BA1BF900087258 /* BAXCTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCTitleCell.swift; sourceTree = "<group>"; };
 		E487977A23BA1C0700087258 /* BAXCContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCContentCell.swift; sourceTree = "<group>"; };
-		E487977C23BA1C1E00087258 /* BAXCSectionBlankCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCSectionBlankCell.swift; sourceTree = "<group>"; };
 		E487977F23BA201300087258 /* BAXCBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCBlockView.swift; sourceTree = "<group>"; };
 		E493A94723B3056E00F8FE78 /* BAXcodeCleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BAXcodeCleaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E493A94A23B3056E00F8FE78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -186,10 +178,6 @@
 			children = (
 				E4110F2623BC44E900C56137 /* BAXCTableViewCell.swift */,
 				E408B8482583739E00AB84CD /* NestedTableCell */,
-				E487977423BA1BD800087258 /* BAXCSectionTitleCell.swift */,
-				E487977C23BA1C1E00087258 /* BAXCSectionBlankCell.swift */,
-				E43DB90823C35BE60021417D /* BAXCSectionSizeCell.swift */,
-				E43DB91023C70B4B0021417D /* BAXCSectionCheckBoxCell.swift */,
 				E487977823BA1BF900087258 /* BAXCTitleCell.swift */,
 				E487977A23BA1C0700087258 /* BAXCContentCell.swift */,
 				E4AA40BA23BE087E005CA901 /* BAXCFileSizeCell.swift */,
@@ -472,7 +460,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E43DB90923C35BE60021417D /* BAXCSectionSizeCell.swift in Sources */,
 				E4110F2323BC399A00C56137 /* Bundle+Extension.swift in Sources */,
 				E4B2DF372583189200A63C93 /* BAXCXcodeInnerPlatformsTrashManager.swift in Sources */,
 				E4FE080725831C93004A6620 /* BAXCNestedTableCell.swift in Sources */,
@@ -485,7 +472,6 @@
 				E4EFF0E323D06F5000291D81 /* BAXCDefines.swift in Sources */,
 				E487977923BA1BF900087258 /* BAXCTitleCell.swift in Sources */,
 				E4349E0A258468A900BC7203 /* BAXCDerivedDataSubDataSource.swift in Sources */,
-				E487977523BA1BD800087258 /* BAXCSectionTitleCell.swift in Sources */,
 				E4349E10258468A900BC7203 /* BAXCApplicationsSubDataSource.swift in Sources */,
 				E4EFF0C623CC73A400291D81 /* BANavigationController.swift in Sources */,
 				E4EFF0DD23CF392A00291D81 /* BAUpdateManager.swift in Sources */,
@@ -503,7 +489,6 @@
 				E4349DFB2584663B00BC7203 /* BAXCTableViewDataSource.swift in Sources */,
 				E43DB90F23C6CC220021417D /* BAXCTPCheckBox.swift in Sources */,
 				E4110F2D23BC76B400C56137 /* BAXCArchivesTrashManager.swift in Sources */,
-				E43DB91123C70B4B0021417D /* BAXCSectionCheckBoxCell.swift in Sources */,
 				E4349E0E258468A900BC7203 /* BAXCSimulatorDeviceSubDataSource.swift in Sources */,
 				E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */,
 				E4EFF0DA23CEFADD00291D81 /* BABugReporterVC.swift in Sources */,
@@ -523,7 +508,6 @@
 				E4EFF0D823CEF7A500291D81 /* BACrashLogAnalyzer.swift in Sources */,
 				E4349E11258468A900BC7203 /* BAXCSimulatorCacheSubDataSource.swift in Sources */,
 				E4EFF0DF23CF397100291D81 /* BAVersionCheck.swift in Sources */,
-				E487977D23BA1C1E00087258 /* BAXCSectionBlankCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
