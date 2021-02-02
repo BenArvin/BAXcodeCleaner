@@ -9,7 +9,7 @@
 import Cocoa
 
 public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
-    var archiveInfos: [(String, String?, Int, Bool)]? = nil
+    var archiveInfos: [(String, String?, String?, Int, Bool)]? = nil
     var fullSize: Int = 0
     
     public override func title() -> String {
@@ -28,15 +28,17 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func numberOfColumns() -> Int {
-        return 4
+        return 5
     }
     
     public override func titleFor(column: Int) -> String {
         if column == 0 {
             return "name"
         } else if column == 1 {
-            return "path"
+            return "creation date"
         } else if column == 2 {
+            return "path"
+        } else if column == 3 {
             return "size"
         } else {
             return super.titleFor(column: column)
@@ -44,7 +46,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func maxWidthFor(column: Int) -> CGFloat {
-        if column == 3 {
+        if column == 4 {
             return 30
         } else {
             return super.maxWidthFor(column: column)
@@ -56,10 +58,12 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         if column == 0 {
             return 0.2 * realWidth
         } else if column == 1 {
-            return 0.7 * realWidth
+            return 0.2 * realWidth
         } else if column == 2 {
-            return 0.1 * realWidth
+            return 0.5 * realWidth
         } else if column == 3 {
+            return 0.1 * realWidth
+        } else if column == 4 {
             return 30
         } else {
             return super.defaultWidthFor(column: column, totalWidth: totalWidth)
@@ -78,11 +82,16 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
             result.index = row
             return result
         } else if column == 2 {
+            let result: BAXCContentCell = BAXCContentCell.init()
+            result.identifier = NSUserInterfaceItemIdentifier.init(BAXCContentCell.identifier)
+            result.index = row
+            return result
+        } else if column == 3 {
             let result: BAXCFileSizeCell = BAXCFileSizeCell.init()
             result.identifier = NSUserInterfaceItemIdentifier.init(BAXCFileSizeCell.identifier)
             result.index = row
             return result
-        } else if column == 3 {
+        } else if column == 4 {
             let result: BAXCCheckBoxCell = BAXCCheckBoxCell.init()
             result.identifier = NSUserInterfaceItemIdentifier.init(BAXCCheckBoxCell.identifier)
             result.index = row
@@ -94,7 +103,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func setContent(for cell: NSTableCellView, row: Int, column: Int) {
-        let (name, path, size, state) = self.archiveInfos![row]
+        let (name, creationDate, path, size, state) = self.archiveInfos![row]
         if column == 0 {
             let titleCell: BAXCTitleCell? = cell as? BAXCTitleCell
             if titleCell != nil {
@@ -103,14 +112,19 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         } else if column == 1 {
             let contentCell: BAXCContentCell? = cell as? BAXCContentCell
             if contentCell != nil {
-                contentCell!.text = path
+                contentCell!.text = creationDate
             }
         } else if column == 2 {
+            let contentCell: BAXCContentCell? = cell as? BAXCContentCell
+            if contentCell != nil {
+                contentCell!.text = path
+            }
+        } else if column == 3 {
             let sizeCell: BAXCFileSizeCell? = cell as? BAXCFileSizeCell
             if sizeCell != nil {
                 sizeCell!.size = size
             }
-        } else if column == 3 {
+        } else if column == 4 {
             let checkboxCell: BAXCCheckBoxCell? = cell as? BAXCCheckBoxCell
             if checkboxCell != nil {
                 checkboxCell!.selected = state
@@ -119,34 +133,34 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
     }
     
     public override func refresh() {
-        let datas: ([(String, String?, Int)]?, Int) = BAXCArchivesTrashManager.datas() as! ([(String, String?, Int)]?, Int)
+        let datas: ([(String, String?, String?, Int)]?, Int) = BAXCArchivesTrashManager.datas() as! ([(String, String?, String?, Int)]?, Int)
         let (devices, fullSize) = datas
         if devices == nil {
             self.archiveInfos = nil
         } else {
-            var newAppInfos: [(String, String?, Int, Bool)] = []
+            var newAppInfos: [(String, String?, String?, Int, Bool)] = []
             self.fullSize = fullSize
-            for (name, path, size) in devices! {
+            for (name, creationDate, path, size) in devices! {
                 if size == 0 {
                     continue
                 }
                 var finded: Bool = false
                 if self.archiveInfos != nil {
-                    for (_, oldPath, _, oldState) in self.archiveInfos! {
+                    for (_, _, oldPath, _, oldState) in self.archiveInfos! {
                         if oldPath == path {
-                            newAppInfos.append((name, path, size, oldState))
+                            newAppInfos.append((name, creationDate, path, size, oldState))
                             finded = true
                             break
                         }
                     }
                 }
                 if finded == false {
-                    newAppInfos.append((name, path, size, false))
+                    newAppInfos.append((name, creationDate, path, size, false))
                 }
             }
             newAppInfos.sort { (arg0, arg1) -> Bool in
-                let (_, _, size0, _) = arg0
-                let (_, _, size1, _) = arg1
+                let (_, _, _, size0, _) = arg0
+                let (_, _, _, size1, _) = arg1
                 return size0 > size1
             }
             self.archiveInfos = newAppInfos
@@ -158,7 +172,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
             return true
         }
         var allSelected: Bool = true
-        for (_, _, _, state) in self.archiveInfos! {
+        for (_, _, _, _, state) in self.archiveInfos! {
             if state == false {
                 allSelected = false
             }
@@ -171,7 +185,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
             return true
         }
         var noneSelected: Bool = true
-        for (_, _, _, state) in self.archiveInfos! {
+        for (_, _, _, _, state) in self.archiveInfos! {
             if state == true {
                 noneSelected = false
             }
@@ -191,8 +205,8 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         if row < 0 || self.archiveInfos == nil || row >= self.archiveInfos!.count {
             return
         }
-        let (name, path, size, state) = self.archiveInfos![row]
-        self.archiveInfos![row] = (name, path, size, !state)
+        let (name, creationDate, path, size, state) = self.archiveInfos![row]
+        self.archiveInfos![row] = (name, creationDate, path, size, !state)
     }
     
     public override func checkAll() {
@@ -200,8 +214,8 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
             return
         }
         var index: Int = 0
-        for (name, path, size, _) in self.archiveInfos! {
-            self.archiveInfos![index] = (name, path, size, true)
+        for (name, creationDate, path, size, _) in self.archiveInfos! {
+            self.archiveInfos![index] = (name, creationDate, path, size, true)
             index = index + 1
         }
     }
@@ -211,8 +225,8 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
             return
         }
         var index: Int = 0
-        for (name, path, size, _) in self.archiveInfos! {
-            self.archiveInfos![index] = (name, path, size, false)
+        for (name, creationDate, path, size, _) in self.archiveInfos! {
+            self.archiveInfos![index] = (name, creationDate, path, size, false)
             index = index + 1
         }
     }
@@ -225,7 +239,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         if self.archiveInfos == nil {
             return
         }
-        for (_, path, _, state) in self.archiveInfos! {
+        for (_, _, path, _, state) in self.archiveInfos! {
             if state == true {
                 BAXCArchivesTrashManager.clean(path)
             }
@@ -236,7 +250,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         if row < 0 || self.archiveInfos == nil || row > self.archiveInfos!.count {
             return nil
         }
-        let (name, path, size, _) = self.archiveInfos![row]
+        let (name, _, path, size, _) = self.archiveInfos![row]
         return String.init(format: "%@  %@  %@", name, path!, String.init(fromSize: size))
     }
     
@@ -244,7 +258,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         if row < 0 || self.archiveInfos == nil || row > self.archiveInfos!.count {
             return nil
         }
-        let (_, path, _, _) = self.archiveInfos![row]
+        let (_, _, path, _, _) = self.archiveInfos![row]
         return path
     }
     
@@ -254,7 +268,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         }
         var total = 0
         var selected = 0
-        for (_, _, size, state) in self.archiveInfos! {
+        for (_, _, _, size, state) in self.archiveInfos! {
             total = total + size
             if state == true {
                 selected = selected + size

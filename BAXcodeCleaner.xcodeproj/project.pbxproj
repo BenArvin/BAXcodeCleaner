@@ -15,6 +15,7 @@
 		E4110F2923BC73DA00C56137 /* BAXCDeviceSupportTrashManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F2823BC73DA00C56137 /* BAXCDeviceSupportTrashManager.swift */; };
 		E4110F2D23BC76B400C56137 /* BAXCArchivesTrashManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F2C23BC76B300C56137 /* BAXCArchivesTrashManager.swift */; };
 		E4110F3123BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4110F3023BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift */; };
+		E412D82C25C93A01009ADF0F /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412D82B25C93A01009ADF0F /* Date+Extension.swift */; };
 		E4349DFB2584663B00BC7203 /* BAXCTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349DFA2584663B00BC7203 /* BAXCTableViewDataSource.swift */; };
 		E4349E0A258468A900BC7203 /* BAXCDerivedDataSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E02258468A800BC7203 /* BAXCDerivedDataSubDataSource.swift */; };
 		E4349E0C258468A900BC7203 /* BAXCDeviceSupportSubDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4349E04258468A800BC7203 /* BAXCDeviceSupportSubDataSource.swift */; };
@@ -86,6 +87,7 @@
 		E4110F2823BC73DA00C56137 /* BAXCDeviceSupportTrashManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCDeviceSupportTrashManager.swift; sourceTree = "<group>"; };
 		E4110F2C23BC76B300C56137 /* BAXCArchivesTrashManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCArchivesTrashManager.swift; sourceTree = "<group>"; };
 		E4110F3023BC7A5F00C56137 /* BAXCSimulatorTrashManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAXCSimulatorTrashManager.swift; sourceTree = "<group>"; };
+		E412D82B25C93A01009ADF0F /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		E4349DFA2584663B00BC7203 /* BAXCTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCTableViewDataSource.swift; sourceTree = "<group>"; };
 		E4349E02258468A800BC7203 /* BAXCDerivedDataSubDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCDerivedDataSubDataSource.swift; sourceTree = "<group>"; };
 		E4349E04258468A800BC7203 /* BAXCDeviceSupportSubDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BAXCDeviceSupportSubDataSource.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				E497EE3723B75E5500D9212E /* String+Extension.swift */,
 				E4D60BB42584CCFB00B00041 /* NSAttributedString+Extension.swift */,
 				E4110F2223BC399A00C56137 /* Bundle+Extension.swift */,
+				E412D82B25C93A01009ADF0F /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 				E4349E0E258468A900BC7203 /* BAXCSimulatorDeviceSubDataSource.swift in Sources */,
 				E497EE3523B7523F00D9212E /* BAXCXcodePathManager.swift in Sources */,
 				E4EFF0DA23CEFADD00291D81 /* BABugReporterVC.swift in Sources */,
+				E412D82C25C93A01009ADF0F /* Date+Extension.swift in Sources */,
 				E4EFF0E123D04B6400291D81 /* BACheckUpdateVC.swift in Sources */,
 				E4D60BB52584CCFB00B00041 /* NSAttributedString+Extension.swift in Sources */,
 				E4110F2923BC73DA00C56137 /* BAXCDeviceSupportTrashManager.swift in Sources */,
@@ -673,7 +677,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenArvin.BAXcodeCleaner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -695,7 +699,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenArvin.BAXcodeCleaner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

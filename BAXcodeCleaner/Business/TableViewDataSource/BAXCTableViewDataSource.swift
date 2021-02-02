@@ -29,13 +29,13 @@ public class BAXCTableViewDataSource {
     public var delegate: BAXCTableViewDataSourceProtocol?
     
     private lazy var _subDS: [BAXCTableViewSubDataSource] = {
-//        let result: [BAXCTableViewSubDataSource] = [BAXCDerivedDataSubDataSource(),
-//                                                    BAXCArchivesSubDataSource(),
-//                                                    BAXCDeviceSupportSubDataSource(),
-//                                                    BAXCSimulatorDeviceSubDataSource(),
-//                                                    BAXCSimulatorCacheSubDataSource(),
-//                                                    BAXCApplicationsSubDataSource()]
-        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource(), BAXCSimulatorDeviceSubDataSource()]
+        let result: [BAXCTableViewSubDataSource] = [BAXCDerivedDataSubDataSource(),
+                                                    BAXCArchivesSubDataSource(),
+                                                    BAXCDeviceSupportSubDataSource(),
+                                                    BAXCSimulatorDeviceSubDataSource(),
+                                                    BAXCSimulatorCacheSubDataSource(),
+                                                    BAXCApplicationsSubDataSource()]
+//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource()]
         for subDSItem in result {
             subDSItem.onRowCheckBtnSelected = self._onSubDSRowCheckBtnSelected
             subDSItem.onSectionCheckBtnSelected = self._onSubDSSectionCheckBtnSelected

@@ -15,19 +15,30 @@ public class BAXCArchivesTrashManager: BAXCTrashDataManager {
             return (nil, 0)
         }
         var fullSize: Int = 0
-        var result: [(String, String?, Int)]? = nil
+        var result: [(String, String?, String?, Int)]? = nil
         for pathItem in appPaths! {
             let innerPaths: [String]? = BAXCFileUtil.contentsOfDir(pathItem)
             if innerPaths != nil {
                 for innerPathItem in innerPaths! {
-                    let fileName: String? = BAXCFileUtil.splitAbnormalPath(innerPathItem)
-                    if fileName != nil {
-                        let sizeItem: Int = BAXCFileUtil.size(innerPathItem)
-                        if result == nil {
-                            result = []
-                        }
-                        result!.append((fileName!, innerPathItem, sizeItem))
+                    let pathURL: URL? = URL.init(fileURLWithPath: innerPathItem)
+                    if pathURL == nil {
+                        continue
                     }
+                    let infoPlistPath = pathURL?.appendingPathComponent("Info.plist")
+                    let (isExisted, isDir) = BAXCFileUtil.isPathExisted(infoPlistPath!.path)
+                    if !isExisted || isDir {
+                        continue
+                    }
+                    let name: String? = BAXCPlistAnalyzer.read(path: infoPlistPath!.path, key: "Name") as? String
+                    if name == nil {
+                        continue
+                    }
+                    let creationDate: String? = (BAXCPlistAnalyzer.read(path: infoPlistPath!.path, key: "CreationDate") as? Date)?.mc_toSecStr()
+                    let sizeItem: Int = BAXCFileUtil.size(innerPathItem)
+                    if result == nil {
+                        result = []
+                    }
+                    result!.append((name!, creationDate, innerPathItem, sizeItem))
                 }
             }
             let sizeItem: Int = BAXCFileUtil.size(pathItem)

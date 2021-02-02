@@ -290,73 +290,73 @@ extension BAXCManualCleanVC {
     }
     
     @objc private func _onCleanBtnSelected(_ sender: NSButton?) {
-//        DispatchQueue.global().async{[weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            if strongSelf._dataSource.isNoneChecked() == true {
-//                return
-//            }
-//            DispatchQueue.main.async{[weak strongSelf] in
-//                guard let strongSelf2 = strongSelf else {
-//                    return
-//                }
-//                let alert: NSAlert = NSAlert.init()
-//                alert.alertStyle = NSAlert.Style.critical
-//                alert.messageText = "Are you sure to clean those files?"
-//                alert.informativeText = "Take it easy, you can find and retrive those files from Trash🗑 if you regret it. The world won't be destroyed."
-//                alert.addButton(withTitle: "YES")
-//                alert.addButton(withTitle: "NO")
-//                let res: NSApplication.ModalResponse = alert.runModal()
-//                if res != NSApplication.ModalResponse.alertFirstButtonReturn {
-//                    return
-//                }
-//                strongSelf2._loadingView.message = "Cleaning..."
-//                strongSelf2._loadingView.show()
-//                DispatchQueue.global().async{[weak strongSelf2] in
-//                    guard let strongSelf3 = strongSelf2 else {
-//                        return
-//                    }
-//                    strongSelf3._dataSource.clean { [weak strongSelf3] (successed, errorMsg) in
-//                        guard let strongSelf4 = strongSelf3 else {
-//                            return
-//                        }
-//                        if successed == false {
-//                            DispatchQueue.main.async{ [weak strongSelf4] in
-//                                guard let strongSelf5 = strongSelf4 else {
-//                                    return
-//                                }
-//                                strongSelf5._loadingView.hide()
-//                                let alert: NSAlert = NSAlert.init()
-//                                alert.alertStyle = NSAlert.Style.critical
-//                                alert.messageText = "Clean failed!"
-//                                alert.informativeText = errorMsg == nil ? "unknown" : errorMsg!
-//                                alert.addButton(withTitle: "OK")
-//                                alert.runModal()
-//                            }
-//                            return
-//                        }
-//                        DispatchQueue.main.async{[weak strongSelf4] in
-//                            guard let strongSelf5 = strongSelf4 else {
-//                                return
-//                            }
-//                            strongSelf5._loadingView.message = "Searching..."
-//                        }
-//                        strongSelf4._dataSource.refresh {[weak strongSelf4] in
-//                            guard let strongSelf5 = strongSelf4 else {
-//                                return
-//                            }
-//                            DispatchQueue.main.async{[weak strongSelf5] in
-//                                guard let strongSelf6 = strongSelf5 else {
-//                                    return
-//                                }
-//                                strongSelf6._loadingView.hide()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        DispatchQueue.global().async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            if strongSelf._dataSource.isNoneChecked() == true {
+                return
+            }
+            DispatchQueue.main.async{[weak strongSelf] in
+                guard let strongSelf2 = strongSelf else {
+                    return
+                }
+                let alert: NSAlert = NSAlert.init()
+                alert.alertStyle = NSAlert.Style.critical
+                alert.messageText = "Are you sure to clean those files?"
+                alert.informativeText = "Take it easy, you can find and retrive those files from Trash🗑 if you regret it. The world won't be destroyed."
+                alert.addButton(withTitle: "YES")
+                alert.addButton(withTitle: "NO")
+                let res: NSApplication.ModalResponse = alert.runModal()
+                if res != NSApplication.ModalResponse.alertFirstButtonReturn {
+                    return
+                }
+                strongSelf2._loadingView.message = "Cleaning..."
+                strongSelf2._loadingView.show()
+                DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2) { [weak strongSelf2] in
+                    guard let strongSelf3 = strongSelf2 else {
+                        return
+                    }
+                    strongSelf3._dataSource.clean { [weak strongSelf3] (successed, errorMsg) in
+                        guard let strongSelf4 = strongSelf3 else {
+                            return
+                        }
+                        if successed == false {
+                            DispatchQueue.main.async{ [weak strongSelf4] in
+                                guard let strongSelf5 = strongSelf4 else {
+                                    return
+                                }
+                                strongSelf5._loadingView.hide()
+                                let alert: NSAlert = NSAlert.init()
+                                alert.alertStyle = NSAlert.Style.critical
+                                alert.messageText = "Clean failed!"
+                                alert.informativeText = errorMsg == nil ? "unknown" : errorMsg!
+                                alert.addButton(withTitle: "OK")
+                                alert.runModal()
+                            }
+                            return
+                        }
+                        DispatchQueue.main.async{[weak strongSelf4] in
+                            guard let strongSelf5 = strongSelf4 else {
+                                return
+                            }
+                            strongSelf5._loadingView.message = "Researching..."
+                        }
+                        strongSelf4._dataSource.refresh {[weak strongSelf4] in
+                            guard let strongSelf5 = strongSelf4 else {
+                                return
+                            }
+                            DispatchQueue.main.async{[weak strongSelf5] in
+                                guard let strongSelf6 = strongSelf5 else {
+                                    return
+                                }
+                                strongSelf6._loadingView.hide()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     @objc private func _onRefreshBtnSelected(_ sender: NSButton?) {
