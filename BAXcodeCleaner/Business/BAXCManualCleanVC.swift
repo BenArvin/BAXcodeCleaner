@@ -297,6 +297,7 @@ extension BAXCManualCleanVC {
             if strongSelf._dataSource.isNoneChecked() == true {
                 return
             }
+            let (_, selectedSize) = strongSelf._dataSource.size()
             DispatchQueue.main.async{[weak strongSelf] in
                 guard let strongSelf2 = strongSelf else {
                     return
@@ -340,18 +341,7 @@ extension BAXCManualCleanVC {
                             guard let strongSelf5 = strongSelf4 else {
                                 return
                             }
-                            strongSelf5._loadingView.message = "Researching..."
-                        }
-                        strongSelf4._dataSource.refresh {[weak strongSelf4] in
-                            guard let strongSelf5 = strongSelf4 else {
-                                return
-                            }
-                            DispatchQueue.main.async{[weak strongSelf5] in
-                                guard let strongSelf6 = strongSelf5 else {
-                                    return
-                                }
-                                strongSelf6._loadingView.hide()
-                            }
+                            strongSelf5._showCleanSuccessAlert(selectedSize)
                         }
                     }
                 }
@@ -405,6 +395,31 @@ extension BAXCManualCleanVC {
             self._sizeTextField.stringValue = String.init(format: "total: %@", String.init(fromSize: total))
         } else {
             self._sizeTextField.stringValue = String.init(format: "total: %@ / selected: %@", String.init(fromSize: total), String.init(fromSize: selected))
+        }
+    }
+    
+    private func _showCleanSuccessAlert(_ cleanedSize: Int) {
+        DispatchQueue.main.async{[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            let alert: NSAlert = NSAlert.init()
+            alert.alertStyle = NSAlert.Style.critical
+            alert.messageText = "Clean finished!"
+            alert.addButton(withTitle: "👍")
+            alert.informativeText = String.init(format: "%@ has been cleaned, bravo! 🎉", String.init(fromSize: cleanedSize))
+            alert.addButton(withTitle: "Research")
+            let res: NSApplication.ModalResponse = alert.runModal()
+            if res == NSApplication.ModalResponse.alertFirstButtonReturn {
+                strongSelf.navigationController?.popViewControllerAnimated(true, completion: nil)
+            } else if res == NSApplication.ModalResponse.alertSecondButtonReturn {
+                DispatchQueue.main.async{[weak strongSelf] in
+                    guard let strongSelf2 = strongSelf else {
+                        return
+                    }
+                    strongSelf2._refresh()
+                }
+            }
         }
     }
 }
