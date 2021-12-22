@@ -8,7 +8,7 @@
 
 import Cocoa
 
-public protocol BAXCCheckBoxCellDelegate: class {
+public protocol BAXCCheckBoxCellDelegate: AnyObject {
     func onCheckBoxSelected(cell: BAXCCheckBoxCell)
 }
 

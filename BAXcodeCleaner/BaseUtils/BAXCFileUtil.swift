@@ -31,6 +31,7 @@ extension BAXCFileError: LocalizedError {
 }
 
 public class BAXCFileUtil {
+    public static let dsStoreDirName = ".DS_Store"
 }
 
 extension BAXCFileUtil {
@@ -87,7 +88,7 @@ extension BAXCFileUtil {
         }
         var result:[String] = []
         for item: String in items {
-            if item == ".DS_Store" {
+            if item == dsStoreDirName {
                 continue
             }
             let itemPath = self.assemblePath(path, item)
@@ -96,6 +97,73 @@ extension BAXCFileUtil {
             }
         }
         return result
+    }
+    
+    public enum SearchTarget {
+        case plain(_ value: String)
+        case regexp(_ value: String)
+    }
+    
+    public class func search(_ target: SearchTarget, in dir: String, skipLink: Bool = true) -> [String] {
+        var useRegexp = false
+        var plainName: String? = nil
+        var regexp: NSRegularExpression? = nil
+        switch target {
+        case .plain(let value):
+            plainName = value
+        case .regexp(let value):
+            useRegexp = true
+            do {
+                regexp = try NSRegularExpression.init(pattern: value)
+            } catch {
+                return []
+            }
+        }
+        let (existed, isDir) = self.isPathExisted(dir)
+        if !existed || !isDir {
+            return []
+        }
+        let dirURL = URL.init(fileURLWithPath: dir)
+        var result: [String] = []
+        self._search(in: dirURL, useRegexp: useRegexp, plainName: plainName, regexp: regexp, skipLink: skipLink, result: &result)
+        return result
+    }
+    
+    private class func _search(in dirURL: URL, useRegexp: Bool, plainName: String?, regexp: NSRegularExpression?, skipLink: Bool = true, result: inout [String]) {
+        do {
+            let items = try FileManager.default.contentsOfDirectory(atPath: dirURL.path)
+            for itemName: String in items {
+                if itemName == dsStoreDirName {
+                    continue
+                }
+                let itemURL = dirURL.appendingPathComponent(itemName)
+                if useRegexp {
+                    guard let regexp = regexp else {
+                        continue
+                    }
+                    let checkResult: [NSTextCheckingResult] = regexp.matches(in: itemName, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSRange.init(location: 0, length: itemName.count))
+                    if checkResult.count > 0 {
+                        result.append(itemURL.path)
+                    }
+                } else {
+                    if itemName == plainName {
+                        result.append(itemURL.path)
+                    }
+                }
+                var isDir = ObjCBool.init(false)
+                let existed: Bool = FileManager.default.fileExists(atPath: itemURL.path, isDirectory: &isDir)
+                if !existed || !isDir.boolValue {
+                    continue
+                }
+                let atts = try itemURL.resourceValues(forKeys: [.totalFileAllocatedSizeKey, .fileResourceTypeKey])
+                if skipLink && atts.fileResourceType == .symbolicLink {
+                    continue
+                }
+                self._search(in: itemURL, useRegexp: useRegexp, plainName: plainName, regexp: regexp, skipLink: skipLink, result: &result)
+            }
+        } catch {
+            return
+        }
     }
 }
 

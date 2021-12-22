@@ -56,4 +56,8 @@ public class BAXCXcodeInfoManager {
     public class func simulatorCachesDyldPath() -> String {
         return BAXCFileUtil.assemblePath(self.simulatorCachesPath(), "dyld")!
     }
+    
+    public class func sysPrivatePath() -> String {
+        return "/private"
+    }
 }

@@ -33,7 +33,7 @@ public class BACrashLogAnalyzer {
         
         var result: [(String, String, Date)] = []
         for item: String in items {
-            if item == ".DS_Store" {
+            if item == BAXCFileUtil.dsStoreDirName {
                 continue
             }
             let itemTmp: NSString = item as NSString

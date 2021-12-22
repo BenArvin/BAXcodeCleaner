@@ -8,7 +8,7 @@
 
 import Cocoa
 
-public protocol BAXCTableViewDataSourceProtocol: class {
+public protocol BAXCTableViewDataSourceProtocol: AnyObject {
     func onDatasChanged()
     func onRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int)
     func onSectionCheckBtnSelected(cell: NSTableCellView)
@@ -34,8 +34,9 @@ public class BAXCTableViewDataSource {
                                                     BAXCDeviceSupportSubDataSource(),
                                                     BAXCSimulatorDeviceSubDataSource(),
                                                     BAXCSimulatorCacheSubDataSource(),
+                                                    BAXCEmbeddedAppDeltasSubDataSource(),
                                                     BAXCApplicationsSubDataSource()]
-//        let result: [BAXCTableViewSubDataSource] = [BAXCArchivesSubDataSource()]
+//        let result: [BAXCTableViewSubDataSource] = [BAXCEmbeddedAppDeltasSubDataSource()]
         for subDSItem in result {
             subDSItem.onRowCheckBtnSelected = self._onSubDSRowCheckBtnSelected
             subDSItem.onSectionCheckBtnSelected = self._onSubDSSectionCheckBtnSelected
