@@ -19,23 +19,38 @@ public class BAVersionCheck {
     
     public class func queryLatestVersion(_ completion: ((_ : Bool, _: String?) -> ())?) {
         self._requestRepoInfo { (successed, infoStr) in
-            if successed == false || infoStr == nil {
+            guard successed, let infoStr = infoStr else {
                 if completion != nil {
                     completion!(false, nil)
                 }
                 return
             }
-            let infoDic: [String: Any?]? = self._analyzeRepoInfo(infoStr!)
-            if infoDic == nil {
-                if completion != nil {
-                    completion!(false, nil)
+            do {
+                let regexp = try NSRegularExpression.init(pattern: "href=\\\"\\/BenArvin\\/BAXcodeCleaner\\/releases\\/tag\\/.*?\"")
+                let checkResult: [NSTextCheckingResult] = regexp.matches(in: infoStr, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSRange.init(location: 0, length: infoStr.count))
+                guard let fullStrRange = checkResult.first?.range else {
+                    if let completion = completion {
+                        completion(false, nil)
+                    }
+                    return
+                }
+                let fullStr = (infoStr as NSString).substring(with: fullStrRange)
+                let lastDivRange = (fullStr as NSString).range(of: "/", options: .backwards)
+                if lastDivRange.length != 1 {
+                    if let completion = completion {
+                        completion(false, nil)
+                    }
+                    return
+                }
+                let versionStrTmp = (fullStr as NSString).substring(from: lastDivRange.location + 1)
+                if let completion = completion {
+                    completion(true, versionStrTmp.replacingOccurrences(of: "\"", with: ""))
+                }
+            } catch {
+                if let completion = completion {
+                    completion(false, nil)
                 }
                 return
-            }
-            let tagName: String? = infoDic!["tag_name"] as? String ?? nil
-            let version: String? = self._analyzeTagName(tagName)
-            if completion != nil {
-                completion!(!(version == nil || version!.isEmpty), version)
             }
         }
     }
@@ -71,43 +86,5 @@ extension BAVersionCheck {
                 }
             }
         }.resume()
-    }
-    
-    private class func _analyzeRepoInfo(_ infoStr: String?) -> [String: Any?]? {
-        if infoStr == nil || infoStr!.isEmpty {
-            return nil
-        }
-        let jsonData: Data? = infoStr!.data(using: String.Encoding.utf8)
-        if jsonData == nil {
-            return nil
-        }
-        var result: [String: Any?]? = nil
-        do {
-            try result = JSONSerialization.jsonObject(with: jsonData!, options: .mutableContainers) as? [String : Any?] ?? nil
-        } catch {
-            return nil
-        }
-        return result
-    }
-    
-    private class func _analyzeTagName(_ tagName: String?) -> String? {
-        if tagName == nil || tagName!.isEmpty {
-            return nil
-        }
-        var expression: NSRegularExpression? = nil
-        do {
-            try expression = NSRegularExpression.init(pattern: "^v[0-9]*.[0-9]*.[0-9]*$")
-        } catch {
-            return nil
-        }
-        if expression == nil {
-            return nil
-        }
-        let checkResult: [NSTextCheckingResult] = expression!.matches(in: tagName!, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSRange.init(location: 0, length: tagName!.count))
-        if checkResult.count == 0 {
-            return nil
-        }
-        let resultTmp = tagName![tagName!.index(tagName!.startIndex, offsetBy: 1)..<tagName!.index(tagName!.startIndex, offsetBy: tagName!.count)]
-        return String(resultTmp)
     }
 }
