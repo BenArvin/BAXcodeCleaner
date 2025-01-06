@@ -9,7 +9,7 @@
 import Cocoa
 
 public protocol BAXCNestedTableCellDelegate: AnyObject {
-    func onNestedCellCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int)
+    func onNestedCellCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int) -> BAXCTPCheckBox.State
     func onNestedCellCheckAllBoxSelected(cell: BAXCNestedTableCell)
     func onNestedCellTipsBtnSelected(cell: BAXCNestedTableCell)
     func onNestedCellCopyMenuItemSelected(cell: BAXCNestedTableCell, innerRow: Int)

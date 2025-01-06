@@ -126,7 +126,7 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
         } else if column == 4 {
             let checkboxCell: BAXCCheckBoxCell? = cell as? BAXCCheckBoxCell
             if checkboxCell != nil {
-                checkboxCell!.selected = state
+                checkboxCell!.state = state ? .Check : .Uncheck
             }
         }
     }
@@ -200,12 +200,13 @@ public class BAXCDerivedDataSubDataSource: BAXCTableViewSubDataSource {
         }
     }
     
-    public override func onCheckEventForRow(_ row: Int) {
+    public override func onCheckEventForRow(_ row: Int) -> BAXCTPCheckBox.State {
         if row < 0 || self.derivedDataInfos == nil || row >= self.derivedDataInfos!.count {
-            return
+            return .Uncheck
         }
         let (path, name, targetPath, lastUpdateTime, size, state) = self.derivedDataInfos![row]
         self.derivedDataInfos![row] = (path, name, targetPath, lastUpdateTime, size, !state)
+        return state ? .Uncheck : .Check
     }
     
     public override func checkAll() {

@@ -12,7 +12,7 @@ public class BAXCTableViewSubDataSource: NSObject {
     private var _columnWidth: [CGFloat] = []
     
     public var columnEverSetted: Bool = false
-    public var onRowCheckBtnSelected: ((_: NSTableCellView, _: Int) -> ())? = nil
+    public var onRowCheckBtnSelected: ((_: NSTableCellView, _: Int) -> BAXCTPCheckBox.State)? = nil
     public var onSectionCheckBtnSelected: ((_: NSTableCellView) -> ())? = nil
     public var onFoldBtnSelected: ((_: NSTableCellView) -> ())? = nil
     public var onTipsBtnSelected: ((_: NSTableCellView) -> ())? = nil
@@ -101,7 +101,8 @@ public class BAXCTableViewSubDataSource: NSObject {
     public func onCheckEventForSection() {
     }
     
-    public func onCheckEventForRow(_ row: Int) {
+    public func onCheckEventForRow(_ row: Int) -> BAXCTPCheckBox.State {
+        return .Uncheck
     }
     
     public func checkAll() {
@@ -147,9 +148,11 @@ extension BAXCTableViewSubDataSource: BAXCNestedTableCellDelegate {
         }
     }
     
-    public func onNestedCellCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int) {
+    public func onNestedCellCheckBoxSelected(cell: BAXCNestedTableCell, innerRow: Int) -> BAXCTPCheckBox.State {
         if self.onRowCheckBtnSelected != nil {
-            self.onRowCheckBtnSelected!(cell, innerRow)
+            return self.onRowCheckBtnSelected!(cell, innerRow)
+        } else {
+            return .Uncheck
         }
     }
     

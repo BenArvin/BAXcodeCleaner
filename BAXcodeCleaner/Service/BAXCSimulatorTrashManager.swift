@@ -43,6 +43,13 @@ fileprivate class BAXCSimulatorHelper {
         }
         return BAXCFileUtil.assemblePath(path!, "data")
     }
+    
+    fileprivate class func _buildDeadCachePath(_ path: String?) -> String? {
+        if path == nil {
+            return nil
+        }
+        return BAXCFileUtil.assemblePath(path!, "data/Library/Caches/com.apple.containermanagerd/Dead")
+    }
 }
 
 public class BAXCSimulatorDeviceTrashManager: BAXCTrashDataManager {
@@ -52,7 +59,7 @@ public class BAXCSimulatorDeviceTrashManager: BAXCTrashDataManager {
             return (nil, 0)
         }
         var fullSize: Int = 0
-        var result: [(String, String?, String?, String?, Int)]? = nil
+        var result: [(Int, String, String?, String?, String?, Int)]? = nil
         for pathItem in appPaths! {
             let name: String? = BAXCFileUtil.splitAbnormalPath(pathItem)
             let devicePlistPath: String? = BAXCFileUtil.assemblePath(pathItem, "device.plist")
@@ -70,7 +77,14 @@ public class BAXCSimulatorDeviceTrashManager: BAXCTrashDataManager {
             if result == nil {
                 result = []
             }
-            result!.append((pathItem, name, BAXCSimulatorHelper._getLastPart(deviceType), BAXCSimulatorHelper._getLastPart(runtime), sizeItem))
+            fullSize = fullSize + sizeItem
+            result!.append((0, pathItem, name, BAXCSimulatorHelper._getLastPart(deviceType), BAXCSimulatorHelper._getLastPart(runtime), sizeItem))
+            let deadCachePath = BAXCSimulatorHelper._buildDeadCachePath(pathItem)
+            let deadCacheSize = BAXCFileUtil.size(deadCachePath)
+            if deadCachePath != nil && deadCacheSize > 0 {
+                result!.append((1, deadCachePath!, "DeadCaches", "", "", deadCacheSize))
+                result!.append((1, dataPath!, "Others", "", "", sizeItem - deadCacheSize))
+            }
         }
         return (result, fullSize)
     }

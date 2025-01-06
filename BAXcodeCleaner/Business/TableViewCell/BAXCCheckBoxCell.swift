@@ -9,21 +9,21 @@
 import Cocoa
 
 public protocol BAXCCheckBoxCellDelegate: AnyObject {
-    func onCheckBoxSelected(cell: BAXCCheckBoxCell)
+    func onCheckBoxSelected(cell: BAXCCheckBoxCell) -> BAXCTPCheckBox.State
 }
 
 public class BAXCCheckBoxCell: BAXCTableViewCell {
     public static let identifier: String = "BAXCCheckBoxCell"
     public var delegate: BAXCCheckBoxCellDelegate?
     
-    private var _selected: Bool = false
-    public var selected: Bool {
+    private var _state: BAXCTPCheckBox.State = BAXCTPCheckBox.State.Uncheck
+    public var state: BAXCTPCheckBox.State {
         set {
-            self._selected = newValue
-            self._checkBox.state = newValue == true ? BAXCTPCheckBox.State.Check : BAXCTPCheckBox.State.Uncheck
+            self._state = newValue
+            self._checkBox.state = newValue
         }
         get {
-            return self._selected
+            return self._state
         }
     }
     
@@ -46,7 +46,7 @@ public class BAXCCheckBoxCell: BAXCTableViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        self.selected = false
+        self._state = BAXCTPCheckBox.State.Uncheck
     }
     
     public override func layout() {
@@ -60,13 +60,8 @@ public class BAXCCheckBoxCell: BAXCTableViewCell {
 
 extension BAXCCheckBoxCell {
     @objc private func _onSelAllCheckBoxSelected(_ sender: NSButton?) {
-        if self._checkBox.state == BAXCTPCheckBox.State.Uncheck {
-            self.selected = true
-        } else {
-            self.selected = false
-        }
         if self.delegate != nil {
-            self.delegate!.onCheckBoxSelected(cell: self)
+            self.state = self.delegate!.onCheckBoxSelected(cell: self)
         }
     }
 }

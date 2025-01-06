@@ -10,7 +10,7 @@ import Cocoa
 
 public protocol BAXCTableViewDataSourceProtocol: AnyObject {
     func onDatasChanged()
-    func onRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int)
+    func onRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int) -> BAXCTPCheckBox.State
     func onSectionCheckBtnSelected(cell: NSTableCellView)
     func onFoldBtnSelected(cell: NSTableCellView)
     func onTipsBtnSelected(cell: NSTableCellView)
@@ -123,13 +123,14 @@ extension BAXCTableViewDataSource {
         self._callDelegateDatasChangedFunc()
     }
     
-    public func onCheckEventForRow(row: Int, innerRow: Int) {
+    public func onCheckEventForRow(row: Int, innerRow: Int) -> BAXCTPCheckBox.State {
         let subDS = self._subDataSource(for: row)
         if subDS == nil {
-            return
+            return .Uncheck
         }
-        subDS!.onCheckEventForRow(innerRow)
+        let res = subDS!.onCheckEventForRow(innerRow)
         self._callDelegateDatasChangedFunc()
+        return res
     }
     
     public func checkAll() {
@@ -237,9 +238,11 @@ extension BAXCTableViewDataSource {
         return (true, nil)
     }
     
-    private func _onSubDSRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int) {
+    private func _onSubDSRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int) -> BAXCTPCheckBox.State {
         if self.delegate != nil {
-            self.delegate!.onRowCheckBtnSelected(cell: cell, innerRow: innerRow)
+            return self.delegate!.onRowCheckBtnSelected(cell: cell, innerRow: innerRow)
+        } else {
+            return .Uncheck
         }
     }
     

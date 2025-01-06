@@ -127,7 +127,7 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         } else if column == 4 {
             let checkboxCell: BAXCCheckBoxCell? = cell as? BAXCCheckBoxCell
             if checkboxCell != nil {
-                checkboxCell!.selected = state
+                checkboxCell!.state = state ? .Check : .Uncheck
             }
         }
     }
@@ -201,12 +201,13 @@ public class BAXCArchivesSubDataSource: BAXCTableViewSubDataSource {
         }
     }
     
-    public override func onCheckEventForRow(_ row: Int) {
+    public override func onCheckEventForRow(_ row: Int) -> BAXCTPCheckBox.State {
         if row < 0 || self.archiveInfos == nil || row >= self.archiveInfos!.count {
-            return
+            return .Uncheck
         }
         let (name, creationDate, path, size, state) = self.archiveInfos![row]
         self.archiveInfos![row] = (name, creationDate, path, size, !state)
+        return state ? .Uncheck : .Check
     }
     
     public override func checkAll() {

@@ -92,7 +92,9 @@ public class BACheckUpdateVC: NSViewController {
     }
     
     override public func loadView() {
-      self.view = NSView()
+        self.view = BADarkView()
+        self.view.wantsLayer = true
+        self.view.layer!.backgroundColor = NSColor.init(red: 0.141, green: 0.125, blue: 0.137, alpha: 1.0).cgColor
     }
     
     override public func viewWillAppear() {

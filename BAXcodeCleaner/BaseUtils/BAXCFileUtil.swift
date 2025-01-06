@@ -75,6 +75,19 @@ extension BAXCFileUtil {
         sema.wait()
     }
     
+    public class func recycleContents(_ path: String) {
+        if path.isEmpty {
+            return
+        }
+        let innerPaths: [String]? = self.contentsOfDir(path)
+        if innerPaths == nil {
+            return
+        }
+        for innerPathItem in innerPaths! {
+            BAXCFileUtil.recycle(innerPathItem)
+        }
+    }
+    
     public class func contentsOfDir(_ path: String) -> [String]? {
         let (existed, isDir) = self.isPathExisted(path)
         if existed == false || isDir == false {

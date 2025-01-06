@@ -204,14 +204,9 @@ extension BAXCManualCleanVC: BAXCTableViewDataSourceProtocol {
         }
     }
 
-    func onRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int) {
+    func onRowCheckBtnSelected(cell: NSTableCellView, innerRow: Int) -> BAXCTPCheckBox.State {
         let row = self._tableView.row(for: cell)
-        DispatchQueue.global().async{[weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf._dataSource.onCheckEventForRow(row: row, innerRow: innerRow)
-        }
+        return self._dataSource.onCheckEventForRow(row: row, innerRow: innerRow)
     }
 
     func onFoldBtnSelected(cell: NSTableCellView) {

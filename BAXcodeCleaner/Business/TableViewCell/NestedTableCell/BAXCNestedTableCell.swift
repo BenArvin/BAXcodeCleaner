@@ -266,10 +266,12 @@ extension BAXCNestedTableCell: NSTableViewDataSource {
 }
 
 extension BAXCNestedTableCell: BAXCCheckBoxCellDelegate {
-    public func onCheckBoxSelected(cell: BAXCCheckBoxCell) {
+    public func onCheckBoxSelected(cell: BAXCCheckBoxCell) -> BAXCTPCheckBox.State {
         let row = self._tableView.row(for: cell)
         if self.delegate != nil {
-            self.delegate!.onNestedCellCheckBoxSelected(cell: self, innerRow: row)
+            return self.delegate!.onNestedCellCheckBoxSelected(cell: self, innerRow: row)
+        } else {
+            return cell.state
         }
     }
 }

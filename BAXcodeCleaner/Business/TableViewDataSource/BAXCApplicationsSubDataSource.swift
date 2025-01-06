@@ -113,7 +113,7 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
         } else if column == 3 {
             let checkboxCell: BAXCCheckBoxCell? = cell as? BAXCCheckBoxCell
             if checkboxCell != nil {
-                checkboxCell!.selected = state
+                checkboxCell!.state = state ? .Check : .Uncheck
             }
         }
     }
@@ -187,12 +187,13 @@ public class BAXCApplicationsSubDataSource: BAXCTableViewSubDataSource {
         }
     }
     
-    public override func onCheckEventForRow(_ row: Int) {
+    public override func onCheckEventForRow(_ row: Int) -> BAXCTPCheckBox.State {
         if row < 0 || self.appInfos == nil || row >= self.appInfos!.count {
-            return
+            return .Uncheck
         }
         let (path, version, size, state) = self.appInfos![row]
         self.appInfos![row] = (path, version, size, !state)
+        return state ? .Uncheck : .Check
     }
     
     public override func checkAll() {
